@@ -1,7 +1,7 @@
-// import { getPosts } from "@/graphql/queries/getPosts";
-import type { WordPressPost } from '@/graphql/api';
+
 import styles from './page.module.css';
 import {getMenu} from "@/graphql/queries/getMenu";
+import {getPageBySlug} from "@/graphql/queries/getPageBySlug";
 
 type LangPageParams = {
   params: { lang: string };
@@ -20,9 +20,13 @@ const copy = {
 
 export default async function LangHome({ params }: LangPageParams) {
   const { lang } = await params;
-  // const posts = await getPosts(lang);
-  const menus = await getMenu("EN");
-  const locale = lang || 'en';
+
+  // 🔠 Полиланг очаква езиковия префикс в slug-а с главни букви
+  const slugWithLang = lang.toUpperCase() === 'EN' ? '/home' : `${lang.toUpperCase()}/home`;
+
+  const page = await getPageBySlug(slugWithLang);
+
+  console.log('page ', page)
 
   return (
     <section className={styles.container}>

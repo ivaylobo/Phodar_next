@@ -24,13 +24,21 @@ export default function MainNavigation({ currentLang, menu }: MainNavigationProp
 
   const navClassName = `${styles.mainLinks} ${mobileOpen ? styles.active : ''}`;
 
+  const normalizeUrl = (url: string) => {
+    const clean = url.replace('http://phodar.local', '');
+    return clean.replace(/\/home\/?$/, '/');
+  };
+
   return (
       <ul className={navClassName}>
         {menu.map((item) => {
-          const href = item.url.replace('http://phodar.local', '');
+          const href = normalizeUrl(item.url);
 
-          const normalizedPath = pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
-          const normalizedHref = href.endsWith('/') && href !== '/' ? href.slice(0, -1) : href;
+          // 🧩 Нормализираме и текущия път
+          const normalizedPath =
+              pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
+          const normalizedHref =
+              href.endsWith('/') && href !== '/' ? href.slice(0, -1) : href;
           const isActive = normalizedPath === normalizedHref;
 
           return (
@@ -40,7 +48,7 @@ export default function MainNavigation({ currentLang, menu }: MainNavigationProp
                     className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
                     onClick={handleLinkClick}
                 >
-                  {item.label}
+                  {item.label.replace(/\s*(en|bg)\s*$/i, '').trim()}
                 </Link>
               </li>
           );
