@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getPageBySlug } from '@/graphql/queries/getPageBySlug';
+import InformationalTemplate from "@/templates/Informational/Informational";
 
 type LangSlugPageProps = {
     params: Promise<{ lang: string; slug: string }>;
@@ -12,11 +13,17 @@ export default async function LangSlugPage({ params }: LangSlugPageProps) {
 
     const page = await getPageBySlug(slugWithLang);
 
-    console.log('page: ', page)
-
     // ❌ Ако я няма → 404
     if (!page) {
         notFound();
+    }
+
+    const templateValue = page.template?.template;
+    const hasInformationalTemplate =
+        Array.isArray(templateValue) && templateValue.some((value) => value?.toLowerCase() === 'informational');
+
+    if (hasInformationalTemplate) {
+        return <InformationalTemplate page={page} />;
     }
 
     return (

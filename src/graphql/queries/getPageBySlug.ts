@@ -6,6 +6,9 @@ export type WordPressPage = {
     content: string;
     slug: string;
     uri: string;
+    template?: {
+        template?: string[] | null;
+    } | null;
 };
 
 export async function getPageBySlug(slug: string): Promise<WordPressPage | null> {

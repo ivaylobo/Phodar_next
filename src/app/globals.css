@@ -200,7 +200,7 @@ span.Dropdown-arrow, .is-open span.Dropdown-arrow {
   .container {
     max-width: 970px;
     width: 970px;
-  }
+    margin: 0 auto;  }
 }
 
 .lang li:last-of-type {
