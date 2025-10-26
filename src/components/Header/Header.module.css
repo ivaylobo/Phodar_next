@@ -1,0 +1,49 @@
+.header {
+    z-index: 101;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: #fff;
+}
+
+.scrolled {
+    background: #fff;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, .35);
+}
+
+.headerRow {
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    position: relative;
+    left: 10px;
+    white-space: nowrap;
+    display: flex;
+}
+
+.logo span {
+    font-size: 21px;
+    text-transform: uppercase;
+    font-family: "Conv_Intro";
+    color: #000;
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 12px;
+    white-space: normal;
+    max-width: 200px;
+    line-height: 1;
+}
+
+@media (max-width: 980px) {
+    .logo {
+        order: 2;
+    }
+    .logo span {
+        display: none;
+    }
+}

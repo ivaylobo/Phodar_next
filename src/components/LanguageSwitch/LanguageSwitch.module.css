@@ -1,0 +1,44 @@
+.switch {
+  position: relative;
+  margin-right: 10px;
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    margin-right: -5px;
+    background: transparent url("../../assets/images/language.svg") center center no-repeat;
+    background-size: contain;
+  }
+
+  &:after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #000; /* цветът на стрелката */
+    pointer-events: none;
+    display: inline-block;
+    margin-left: -10px;
+    vertical-align: 2px;
+  }
+}
+
+.select {
+  appearance: none;
+  background-color: transparent;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 14px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #BB1817;
+  text-transform: uppercase;
+  font-family: "Conv_Intro", Sans-Serif;
+  border: none;
+}
+
+.select:focus {
+  outline: none;
+}

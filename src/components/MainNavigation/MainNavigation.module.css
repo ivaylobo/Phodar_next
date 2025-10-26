@@ -1,0 +1,122 @@
+.mainLinks {
+    list-style-type: none;
+    margin: 0;
+}
+
+.mainLinks li a.buttonLink, .mainLinks li a.buttonLink:visited {
+    color: rgba(188, 24, 24, 0.8);
+    font-family: 'Conv_Intro', sans-serif;
+    letter-spacing: 0;
+    line-height: 28px;
+    text-align: center;
+    display: inline-block;
+    padding: 10px 40px;
+    background: transparent;
+    border: 2px solid rgba(188, 24, 24, 0.8);
+    text-decoration: none;
+}
+
+
+.mainLinks li a.buttonLink:hover {
+    background: rgba(188, 24, 24, 0.8);
+    color: #fff;
+    text-decoration: none;
+}
+
+.mainLinks.active {
+    display: block;
+    position: absolute;
+    right: 0;
+    width: 100%;
+    text-align: center;
+    background: #fff;
+    padding: 0;
+    z-index: 10;
+    border-radius: 5px;
+    top: 60px;
+}
+
+.mainLinks li {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.mainLinks.active li {
+    display: block;
+}
+
+
+.mainLinks li a {
+    font-family: 'Conv_Intro';
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #15151F;
+    margin: 0 33px;
+    display: inline-block;
+}
+
+.navLink {
+    font-family: 'Conv_Intro';
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #15151F;
+    margin: 0 33px;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.navLinkActive,
+.navLink:hover {
+    text-decoration: underline;
+    color: #BB1817;
+}
+
+.mainLinks.active li a {
+    margin: 0;
+    padding: 10px 0;
+    font-size: 16px;
+}
+
+.mainLinks li a.bordered {
+    color: #BB1817;
+    padding: 8px 11px;
+    border: 1px solid #BB1817;
+}
+
+.mainLinks li a.bordered:hover {
+    color: #fff;
+    padding: 8px 11px;
+    background: #BB1817;
+    text-decoration: none;
+}
+
+.mainLinks li a.active, .mainLinks li a:hover {
+    text-decoration: underline;
+    color: #BB1817;
+}
+
+.mainLinks li:first-of-type a {
+    margin-left: 0;
+}
+
+@media (max-width: 1280px) {
+
+    .mainLinks li a {
+        margin: 0 10px;
+    }
+
+}
+
+@media (max-width: 980px) {
+    .mainLinks {
+        display: none;
+    }
+
+    .mainLinks.active{
+        padding-bottom: 10px;
+    }
+
+    .mainLinks.active li .buttonLink{
+        display: none;
+    }
+}

@@ -1,0 +1,46 @@
+.container {
+  display: grid;
+  gap: 2rem;
+}
+
+.heading {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.empty {
+  margin: 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.list {
+  display: grid;
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.listItem {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 16px 35px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 0.75rem;
+}
+
+.postTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111;
+}
+
+.postExcerpt :global(p) {
+  margin: 0;
+  color: #444;
+  line-height: 1.6;
+}

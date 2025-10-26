@@ -1,0 +1,62 @@
+.navTrigger {
+    display: none;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    right: 67px;
+    top: 20px;
+    cursor: pointer;
+    position: static;
+    order: 1;
+    margin-left: 20px;
+}
+
+.openNav {
+    display: none;
+    background: transparent;
+}
+
+.openNav.active{
+    display: block;
+}
+
+.closeNav {
+    display: none;
+    padding: 15px 0;
+}
+
+.openNav.active,
+.closeNav.active {
+    display: block;
+}
+
+.openNav div,
+.closeNav div {
+    height: 3px;
+    border-radius: 2px;
+    background: #4e4e4e;
+    margin: 5px 0;
+}
+
+.closeNav div {
+    margin: -3px 0;
+}
+
+.closeNav div:first-of-type {
+    transform: rotate(45deg);
+    transition: transform 2s;
+}
+
+.closeNav div:last-of-type {
+    transform: rotate(-45deg);
+    transition: transform 2s;
+}
+
+@media (max-width: 980px) {
+    .navTrigger {
+        position: static;
+        order: 1;
+        margin-left: 20px;
+        display: block;
+    }
+}
