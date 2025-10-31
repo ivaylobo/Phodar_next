@@ -26,8 +26,6 @@ export default async function LangHome({ params }: LangPageParams) {
 
   const page = await getPageBySlug(slugWithLang);
 
-  console.log('page ', page)
-
   return (
     <section className={styles.container}>
       {/*{posts.length === 0 ? (*/}
@@ -51,3 +49,5 @@ export default async function LangHome({ params }: LangPageParams) {
     </section>
   );
 }
+
+export { generateLangStaticParams as generateStaticParams } from '../../lib/staticParams';

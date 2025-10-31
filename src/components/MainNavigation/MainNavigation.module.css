@@ -65,7 +65,7 @@
     text-decoration: none;
 }
 
-.navLinkActive,
+.mainLinks li a.navLinkActive,
 .navLink:hover {
     text-decoration: underline;
     color: #BB1817;

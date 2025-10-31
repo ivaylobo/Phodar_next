@@ -33,3 +33,5 @@ export default async function LangSlugPage({ params }: LangSlugPageProps) {
         </article>
     );
 }
+
+export { generateLangSlugStaticParams as generateStaticParams } from '../../../lib/staticParams';
