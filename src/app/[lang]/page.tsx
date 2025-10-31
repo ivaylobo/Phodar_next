@@ -1,8 +1,7 @@
 
 import styles from './page.module.css';
-import { getPageBySlug } from '@/graphql/queries/getPageBySlug';
+import { getHomePageBySlug } from '@/graphql/queries/getHomePage';
 import HomeTemplate from '@/templates/Home/Home';
-import { log } from 'console';
 
 type LangPageParams = {
   params: { lang: string };
@@ -11,18 +10,24 @@ type LangPageParams = {
 export default async function LangHome({ params }: LangPageParams) {
   const { lang } = await params;
 
+  const languageCode = lang.toUpperCase();
+  const slugWithLang = languageCode === 'EN' ? '/home' : `${languageCode}/home`;
 
-  const slugWithLang = lang.toUpperCase() === 'EN' ? '/home' : `${lang.toUpperCase()}/home`;
-
-  const page = await getPageBySlug(slugWithLang);
+  const page = await getHomePageBySlug(slugWithLang, languageCode);
 
 
   if (page) {
 
-    const templateName = page?.template?.template?.[0];
+    const templateValues =
+      page.translation?.template?.template ?? page.template?.template;
+    const templateName = Array.isArray(templateValues)
+      ? templateValues.find((value) => typeof value === 'string' && value.length > 0)
+      : undefined;
+
+    const homeTemplate = page.translation?.template?.homeTemplate ?? page.template?.homeTemplate;
 
     if (templateName && templateName.toLowerCase() === 'homepage') {
-      return <HomeTemplate page={page} />;
+      return <HomeTemplate homeTemplate={homeTemplate} />;
     }
 
     return (

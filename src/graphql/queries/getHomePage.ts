@@ -17,26 +17,22 @@ type ImageField = {
     node?: Maybe<ImageNode>;
 };
 
+export type HomeTemplateCta = {
+    label?: Maybe<string>;
+    targetBlanc?: Maybe<boolean>;
+    href?: Maybe<string | LinkField>;
+};
+
+export type HomeTemplateSlide = {
+    image?: Maybe<ImageField>;
+};
+
 export type HomeTemplateHead = {
-    cta?: Maybe<
-        Array<
-            Maybe<{
-                label?: Maybe<string>;
-                targetBlanc?: Maybe<boolean>;
-                href?: Maybe<LinkField>;
-            }>
-        >
-    >;
+    cta?: Maybe<HomeTemplateCta | Array<Maybe<HomeTemplateCta>>>;
     durationSeconds?: Maybe<number>;
     editionLabel?: Maybe<string>;
     editionNumber?: Maybe<string>;
-    slides?: Maybe<
-        Array<
-            Maybe<{
-                image?: Maybe<ImageField>;
-            }>
-        >
-    >;
+    slides?: Maybe<HomeTemplateSlide | Array<Maybe<HomeTemplateSlide>>>;
     subtitle?: Maybe<string>;
     topicLabel?: Maybe<string>;
     topicTitle?: Maybe<string>;
@@ -54,7 +50,7 @@ export type HomeTemplateMainInfoBlock = {
     awards?: Maybe<Array<Maybe<string>>>;
     headline?: Maybe<string>;
     leftColumnHeadlines?: Maybe<Array<Maybe<string>>>;
-    rightColumnText?: Maybe<Array<Maybe<string>>>;
+    rightColumnText?: Maybe<string | Array<Maybe<string>>>;
 };
 
 export type HomeTemplateExhibitions = {
@@ -74,10 +70,16 @@ export type HomeTemplatePastEditionColumn = {
     year?: Maybe<string>;
 };
 
+export type HomeTemplatePastEditionColumnEntry = {
+    leftColumn?: Maybe<
+        HomeTemplatePastEditionColumn | Array<Maybe<HomeTemplatePastEditionColumn>>
+    >;
+};
+
 export type HomeTemplatePastEditions = {
-    desktopColumns?: Maybe<{
-        leftColumn?: Maybe<Array<Maybe<HomeTemplatePastEditionColumn>>>;
-    }>;
+    desktopColumns?: Maybe<
+        HomeTemplatePastEditionColumnEntry | Array<Maybe<HomeTemplatePastEditionColumnEntry>>
+    >;
     subtitle?: Maybe<string>;
     title?: Maybe<string>;
 };
@@ -91,7 +93,7 @@ export type HomeTemplateBody = {
     additional?: Maybe<HomeTemplateAdditional>;
     exhibitions?: Maybe<HomeTemplateExhibitions>;
     mainInfo?: Maybe<HomeTemplateMainInfoBlock>;
-    partners?: Maybe<Array<Maybe<HomeTemplatePartner>>>;
+    partners?: Maybe<HomeTemplatePartner | Array<Maybe<HomeTemplatePartner>>>;
     pastEditions?: Maybe<HomeTemplatePastEditions>;
     photobook?: Maybe<HomeTemplatePhotobook>;
 };
@@ -136,6 +138,88 @@ const GET_HOME_PAGE_QUERY = `
       uri
       template {
         template
+        homeTemplate {
+          head: headSection {
+            cta {
+              label: ctaLabel
+              targetBlanc
+              href
+            }
+            durationSeconds
+            editionLabel
+            editionNumber
+            slides {
+              image {
+                node {
+                  altText
+                  sourceUrl
+                }
+              }
+            }
+            subtitle
+            topicLabel
+            topicTitle
+            transitionSeconds
+          }
+          mainInfo {
+            additional {
+              headline
+              highlightText
+              mainSectionText
+              shouldShow
+            }
+            exhibitions {
+              image1 {
+                node {
+                  altText
+                  sourceUrl
+                }
+              }
+              title
+            }
+            mainInfo {
+              awards
+              headline
+              leftColumnHeadlines
+              rightColumnText
+            }
+            partners {
+              image {
+                node {
+                  altText
+                  sourceUrl
+                }
+              }
+              link
+              name
+            }
+            pastEditions {
+              desktopColumns {
+                leftColumn {
+                  image {
+                    node {
+                      altText
+                      sourceUrl
+                    }
+                  }
+                  link
+                  year
+                }
+              }
+              subtitle
+              title
+            }
+            photobook {
+              title
+              image {
+                node {
+                  altText
+                  sourceUrl
+                }
+              }
+            }
+          }
+        }
       }
       translation(language: $language) {
         id
@@ -144,17 +228,13 @@ const GET_HOME_PAGE_QUERY = `
         uri
         template {
           template
-          homeTemplate {
-            head {
-              cta {
-                label
-                targetBlanc
-                href {
-                  url
-                  title
-                  target
+            homeTemplate {
+              head: headSection {
+                cta {
+                  label: ctaLabel
+                  targetBlanc
+                  href
                 }
-              }
               durationSeconds
               editionLabel
               editionNumber

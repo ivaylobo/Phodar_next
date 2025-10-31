@@ -1,9 +1,13 @@
-import type { WordPressPage } from '@/graphql/queries/getPageBySlug';
+import type {
+  HomeTemplateData as WordPressHomeTemplateData,
+  HomeTemplateHead,
+  HomeTemplateBody,
+  HomeTemplatePastEditionColumn,
+} from '@/graphql/queries/getHomePage';
 import BackgroundSlideshow, {
   type BackgroundSlide,
 } from '@/components/BackgroundSlideshow/BackgroundSlideshow';
 import styles from './Home.module.css';
-import { getHomePageBySlug } from '@/graphql/queries/getHomePage';
 
 
 
@@ -36,7 +40,7 @@ type HomePastEdition = {
   image: string;
 };
 
-type HomeTemplateData = {
+type HomeViewModel = {
   hero: {
     editionNumber: string;
     editionLabel: string;
@@ -75,220 +79,425 @@ type HomeTemplateData = {
   };
 };
 
-const defaultHomeData: HomeTemplateData = {
+const defaultHomeViewModel: HomeViewModel = {
   hero: {
-    editionNumber: '13',
-    editionLabel: 'edition',
-    subtitle: 'international photo competition',
-    topicLabel: 'topic:',
-    topicTitle: 'Photographic reality',
-    ctas: [
-      {
-        label: 'winners',
-        href: '/editions',
-        targetBlank: true,
-        rel: 'noopener noreferrer',
-      },
-    ],
-    slides: [
-      { src: '/assets/images/head_1.jpg', alt: 'Festival hero photography 1' },
-      { src: '/assets/images/head_2.jpg', alt: 'Festival hero photography 2' },
-      { src: '/assets/images/head_4.jpg', alt: 'Festival hero photography 3' },
-    ],
+    editionNumber: '',
+    editionLabel: '',
+    subtitle: '',
+    topicLabel: '',
+    topicTitle: '',
+    ctas: [],
+    slides: [],
     durationSeconds: 5,
     transitionSeconds: 1,
   },
   mainInfo: {
-    headline: '2025_1',
-    highlightHtml: '<strong>2025_4</strong>',
-    program: [
-      { title: '2025_5_1', descriptionHtml: '2025_5' },
-      { title: '2025_6_1', descriptionHtml: '2025_6' },
-      { title: '2025_7_1', descriptionHtml: '2025_7' },
-    ],
-    paragraphs: ['2025_2', '2025_3'],
-    title: 'HOME_MAIN_TEXT',
-    awardsHtml: [
-      'HOME_MAIN_TEXT_1 <strong>$2,000</strong>',
-      'Award for Humanistic Photography <strong>$600</strong>',
-      'HOME_MAIN_TEXT_9 <strong>$600</strong>',
-    ],
-    leftColumn: ['HOME_MAIN_TEXT_4', 'HOME_MAIN_TEXT_5', 'HOME_MAIN_TEXT_6'],
-    rightColumn: ['terms_4', 'terms_4_5'],
+    headline: '',
+    highlightHtml: '',
+    program: [],
+    paragraphs: [],
+    title: '',
+    awardsHtml: [],
+    leftColumn: [],
+    rightColumn: [],
   },
-  partners: [
-    {
-      name: 'Culture Department Sofia',
-      href: 'https://kultura.sofia.bg/',
-      image: '/assets/images/logo_programa_2_kontur_eng.svg',
-    },
-    {
-      name: 'National Gallery',
-      href: 'https://nationalgallery.bg/',
-      image: '/assets/images/NG.svg',
-    },
-    {
-      name: 'National Culture Fund',
-      href: 'https://ncf.bg/bg',
-      image: '/assets/images/NCF.svg',
-    },
-    {
-      name: 'Obscura Magazine',
-      href: 'https://obscuramag.com/',
-      image: '/assets/images/obscura.svg',
-    },
-  ],
+  partners: [],
   exhibitions: {
-    title: 'showcase your photography in our festival exhibitions',
-    rows: [
-      [
-        { image: '/assets/images/exibition1.jpg', alt: 'Exhibition highlight 1' },
-        { image: '/assets/images/exibition2.jpg', alt: 'Exhibition highlight 2' },
-      ],
-      [
-        { image: '/assets/images/exibition3.jpg', alt: 'Exhibition highlight 3' },
-        { image: '/assets/images/exibition4.jpg', alt: 'Exhibition highlight 4' },
-      ],
-    ],
+    title: '',
+    rows: [],
   },
   photobook: {
-    title: 'BE PART OF OUR EDITION PHOTO BOOK',
-    image: '/assets/images/photobook.png',
+    title: '',
+    image: '',
   },
   pastEditions: {
-    title: 'editions',
-    subtitle: 'SEE THE FULL GALLERY OF WINNERS & PARTICIPANTS IN PAST EDITIONS',
-    desktopColumns: [
-      [
-        { year: '2023', href: '/editions/2023/', image: '/assets/images/galleries_links/23.jpg' },
-        { year: '2019', href: '/editions/2019/', image: '/assets/images/galleries_links/19.jpg' },
-        { year: '2013', href: '/editions/2013', image: '/assets/images/galleries_links/13.jpg' },
-        { year: '2009', href: '/editions/2009', image: '/assets/images/galleries_links/09.jpg' },
-        { year: '2005', href: '/editions/2005', image: '/assets/images/galleries_links/05.jpg' },
-        { year: '2001', href: '/editions/2001', image: '/assets/images/galleries_links/01.jpg' },
-      ],
-      [
-        { year: '2021', href: '/editions/2021/', image: '/assets/images/galleries_links/21.jpg' },
-        { year: '2015', href: '/editions/2015/', image: '/assets/images/galleries_links/15.jpg' },
-        { year: '2011', href: '/editions/2011', image: '/assets/images/galleries_links/11.jpg' },
-        { year: '2007', href: '/editions/2007', image: '/assets/images/galleries_links/07.jpg' },
-        { year: '2003', href: '/editions/2003', image: '/assets/images/galleries_links/03.jpg' },
-        { year: '1999', href: '/editions/1999', image: '/assets/images/galleries_links/99.jpg' },
-      ],
-    ],
-    mobileList: [
-      { year: '2023', href: '/editions/2023/', image: '/assets/images/galleries_links/23.jpg' },
-      { year: '2021', href: '/editions/2021/', image: '/assets/images/galleries_links/21.jpg' },
-      { year: '2019', href: '/editions/2019/', image: '/assets/images/galleries_links/19.jpg' },
-      { year: '2015', href: '/editions/2015', image: '/assets/images/galleries_links/15.jpg' },
-      { year: '2013', href: '/editions/2013', image: '/assets/images/galleries_links/13.jpg' },
-      { year: '2011', href: '/editions/2011', image: '/assets/images/galleries_links/11.jpg' },
-      { year: '2009', href: '/editions/2009', image: '/assets/images/galleries_links/09.jpg' },
-      { year: '2007', href: '/editions/2007', image: '/assets/images/galleries_links/07.jpg' },
-      { year: '2003', href: '/editions/2003', image: '/assets/images/galleries_links/03.jpg' },
-      { year: '2001', href: '/editions/2001', image: '/assets/images/galleries_links/01.jpg' },
-      { year: '1999', href: '/editions/1999', image: '/assets/images/galleries_links/99.jpg' },
-    ],
+    title: '',
+    subtitle: '',
+    desktopColumns: [],
+    mobileList: [],
   },
 };
 
-const defaultHomeDataJSON = JSON.stringify(defaultHomeData);
+const defaultHomeViewModelJSON = JSON.stringify(defaultHomeViewModel);
 
-function cloneDefaults(): HomeTemplateData {
-  return JSON.parse(defaultHomeDataJSON) as HomeTemplateData;
+function cloneDefaults(): HomeViewModel {
+  return JSON.parse(defaultHomeViewModelJSON) as HomeViewModel;
 }
 
-function decodeHtmlEntities(value: string): string {
-  const entities: Record<string, string> = {
-    '&quot;': '"',
-    '&#34;': '"',
-    '&#39;': "'",
-    '&apos;': "'",
-    '&amp;': '&',
-    '&lt;': '<',
-    '&gt;': '>',
-    '&nbsp;': ' ',
+type Maybe<T> = T | null | undefined;
+
+function isNonEmptyString(value?: Maybe<string>): value is string {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function buildParagraphs(value?: Maybe<string>): string[] {
+  if (!value) {
+    return [];
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return [];
+  }
+
+  const segments = trimmed
+    .split(/\n{2,}/)
+    .map((segment) => segment.trim())
+    .filter((segment) => segment.length > 0);
+
+  return segments.length > 0 ? segments : [trimmed];
+}
+
+function toArray<T>(value?: Maybe<T | Array<Maybe<T>>>): Maybe<T>[] {
+  if (!value) {
+    return [];
+  }
+
+  return Array.isArray(value) ? value : [value];
+}
+
+function mapCtas(ctas?: Maybe<HomeTemplateHead['cta']>): HomeTemplateLink[] {
+  const items = toArray(ctas);
+
+  return items
+    .map((cta) => {
+      if (!cta) {
+        return null;
+      }
+
+      const hrefField = cta.href;
+      const href =
+        typeof hrefField === 'string'
+          ? hrefField.trim()
+          : hrefField?.url;
+      const fallbackLabel =
+        typeof hrefField === 'string'
+          ? undefined
+          : hrefField?.title;
+      const label = cta.label ?? fallbackLabel;
+
+      if (!isNonEmptyString(label) || !isNonEmptyString(href)) {
+        return null;
+      }
+
+      const link: HomeTemplateLink = {
+        label: label.trim(),
+        href,
+      };
+
+      const target =
+        typeof hrefField === 'string'
+          ? undefined
+          : hrefField?.target;
+      const targetBlank = cta.targetBlanc ?? (target === '_blank');
+      if (targetBlank) {
+        link.targetBlank = true;
+        link.rel = 'noopener noreferrer';
+      }
+
+      return link;
+    })
+    .filter((cta): cta is HomeTemplateLink => cta !== null);
+}
+
+function mapSlides(slides?: Maybe<HomeTemplateHead['slides']>): BackgroundSlide[] {
+  const items = toArray(slides);
+
+  return items
+    .map((slide) => {
+      const imageNode = slide?.image?.node;
+      if (!imageNode?.sourceUrl) {
+        return null;
+      }
+
+      const result: BackgroundSlide = {
+        src: imageNode.sourceUrl,
+      };
+
+      if (isNonEmptyString(imageNode.altText)) {
+        result.alt = imageNode.altText.trim();
+      }
+
+      return result;
+    })
+    .filter((slide): slide is BackgroundSlide => slide !== null);
+}
+
+function mapTextArray(values?: Maybe<Array<Maybe<string>>>): string[] {
+  if (!Array.isArray(values)) {
+    return [];
+  }
+
+  return values
+    .map((value) => (isNonEmptyString(value) ? value.trim() : null))
+    .filter((value): value is string => value !== null);
+}
+
+function mapRichText(values?: Maybe<string | Array<Maybe<string>>>): string[] {
+  if (!values) {
+    return [];
+  }
+
+  if (typeof values === 'string') {
+    return buildParagraphs(values);
+  }
+
+  if (Array.isArray(values)) {
+    return values.flatMap((value) => (isNonEmptyString(value) ? buildParagraphs(value) : []));
+  }
+
+  return [];
+}
+
+function mapPartners(partners?: Maybe<HomeTemplateBody['partners']>): HomePartner[] {
+  const items = toArray(partners);
+
+  return items
+    .map((partner) => {
+      if (!partner) {
+        return null;
+      }
+
+      const image = partner.image?.node?.sourceUrl;
+      const name = partner.name;
+
+      if (!isNonEmptyString(image) || !isNonEmptyString(name)) {
+        return null;
+      }
+
+      const href = partner.link;
+
+      return {
+        name: name.trim(),
+        href: isNonEmptyString(href) ? href : '#',
+        image,
+      };
+    })
+    .filter((partner): partner is HomePartner => partner !== null);
+}
+
+function mapExhibitions(
+  exhibitions?: Maybe<HomeTemplateBody['exhibitions']>,
+): HomeViewModel['exhibitions'] {
+  const result: HomeViewModel['exhibitions'] = {
+    title: '',
+    rows: [],
   };
 
-  return value.replace(/&[a-zA-Z0-9#]+;/g, (entity) => entities[entity] ?? entity);
-}
-
-function stripHtmlTags(value: string): string {
-  return value.replace(/<[^>]*>/g, '');
-}
-
-function mergeWithDefaults<T>(defaults: T, overrides: unknown): T {
-  if (overrides === null || overrides === undefined) {
-    return defaults;
+  if (!exhibitions) {
+    return result;
   }
 
-  if (Array.isArray(defaults)) {
-    return (Array.isArray(overrides) ? overrides : defaults) as T;
+  if (isNonEmptyString(exhibitions.title)) {
+    result.title = exhibitions.title.trim();
   }
 
-  if (typeof defaults === 'object' && defaults !== null && typeof overrides === 'object') {
-    const result: Record<string, unknown> = Array.isArray(defaults)
-      ? [...(defaults as unknown[])]
-      : { ...(defaults as Record<string, unknown>) };
+  const imageNode = exhibitions.image1?.node;
+  if (imageNode?.sourceUrl) {
+    result.rows = [
+      [
+        {
+          image: imageNode.sourceUrl,
+          alt: isNonEmptyString(imageNode.altText) ? imageNode.altText.trim() : undefined,
+        },
+      ],
+    ];
+  }
 
-    for (const [key, value] of Object.entries(overrides)) {
-      const defaultValue = (defaults as Record<string, unknown>)[key];
-      if (value === undefined || value === null) {
-        continue;
-      }
+  return result;
+}
 
-      if (Array.isArray(defaultValue)) {
-        result[key] = Array.isArray(value) ? value : defaultValue;
-      } else if (
-        typeof defaultValue === 'object' &&
-        defaultValue !== null &&
-        typeof value === 'object' &&
-        value !== null
-      ) {
-        result[key] = mergeWithDefaults(defaultValue, value);
-      } else {
-        result[key] = value;
-      }
+function mapPhotobook(
+  photobook?: Maybe<HomeTemplateBody['photobook']>,
+): HomeViewModel['photobook'] {
+  const result: HomeViewModel['photobook'] = {
+    title: '',
+    image: '',
+  };
+
+  if (!photobook) {
+    return result;
+  }
+
+  if (isNonEmptyString(photobook.title)) {
+    result.title = photobook.title.trim();
+  }
+
+  const imageNode = photobook.image?.node;
+  if (imageNode?.sourceUrl) {
+    result.image = imageNode.sourceUrl;
+  }
+
+  return result;
+}
+
+function mapPastEditionColumn(edition?: Maybe<HomeTemplatePastEditionColumn>): HomePastEdition | null {
+  if (!edition) {
+    return null;
+  }
+
+  const image = edition.image?.node?.sourceUrl;
+  const year = edition.year;
+
+  if (!isNonEmptyString(image) || !isNonEmptyString(year)) {
+    return null;
+  }
+
+  return {
+    year: year.trim(),
+    href: isNonEmptyString(edition.link) ? edition.link : '#',
+    image,
+  };
+}
+
+function mapPastEditions(
+  pastEditions?: Maybe<HomeTemplateBody['pastEditions']>,
+): HomeViewModel['pastEditions'] {
+  const result: HomeViewModel['pastEditions'] = {
+    title: '',
+    subtitle: '',
+    desktopColumns: [],
+    mobileList: [],
+  };
+
+  if (!pastEditions) {
+    return result;
+  }
+
+  if (isNonEmptyString(pastEditions.title)) {
+    result.title = pastEditions.title.trim();
+  }
+
+  if (isNonEmptyString(pastEditions.subtitle)) {
+    result.subtitle = pastEditions.subtitle.trim();
+  }
+
+  const collectEditions = (
+    entries?: Maybe<
+      HomeTemplatePastEditionColumn | Array<Maybe<HomeTemplatePastEditionColumn>>
+    >,
+  ) => {
+    const normalized = toArray(entries);
+    return normalized
+      .map((entry) => mapPastEditionColumn(entry))
+      .filter((entry): entry is HomePastEdition => entry !== null);
+  };
+
+  const desktopColumns = pastEditions.desktopColumns;
+
+  let editions: HomePastEdition[] = [];
+
+  if (Array.isArray(desktopColumns)) {
+    editions = desktopColumns.flatMap((column) => collectEditions(column?.leftColumn));
+  } else if (desktopColumns) {
+    editions = collectEditions(desktopColumns.leftColumn);
+  }
+
+  if (editions.length > 0) {
+    result.desktopColumns = [editions];
+    result.mobileList = editions;
+  }
+
+  return result;
+}
+
+function buildHomeViewModel(homeTemplate?: WordPressHomeTemplateData | null): HomeViewModel {
+  const viewModel = cloneDefaults();
+
+  if (!homeTemplate) {
+    return viewModel;
+  }
+
+  console.log('homeTemplate ', homeTemplate.head)
+
+  if (homeTemplate.head) {
+    const head = homeTemplate.head;
+
+    if (isNonEmptyString(head.editionNumber)) {
+      viewModel.hero.editionNumber = head.editionNumber.trim();
     }
 
-    return result as T;
+    if (isNonEmptyString(head.editionLabel)) {
+      viewModel.hero.editionLabel = head.editionLabel.trim();
+    }
+
+    if (isNonEmptyString(head.subtitle)) {
+      viewModel.hero.subtitle = head.subtitle.trim();
+    }
+
+    if (isNonEmptyString(head.topicLabel)) {
+      viewModel.hero.topicLabel = head.topicLabel.trim();
+    }
+
+    if (isNonEmptyString(head.topicTitle)) {
+      viewModel.hero.topicTitle = head.topicTitle.trim();
+    }
+
+    const ctas = mapCtas(head.cta);
+    if (ctas.length > 0) {
+      viewModel.hero.ctas = ctas;
+    }
+
+    const slides = mapSlides(head.slides);
+    if (slides.length > 0) {
+      viewModel.hero.slides = slides;
+    }
+
+    if (typeof head.durationSeconds === 'number') {
+      viewModel.hero.durationSeconds = head.durationSeconds;
+    }
+
+    if (typeof head.transitionSeconds === 'number') {
+      viewModel.hero.transitionSeconds = head.transitionSeconds;
+    }
   }
 
-  return (overrides as T) ?? defaults;
-}
+  if (homeTemplate.mainInfo) {
+    const mainInfo = homeTemplate.mainInfo;
 
-function parseHomeTemplateData(content?: string | null): HomeTemplateData {
-  if (!content) {
-    return cloneDefaults();
+    if (mainInfo.additional) {
+      const additional = mainInfo.additional;
+
+      if (isNonEmptyString(additional.headline)) {
+        viewModel.mainInfo.headline = additional.headline.trim();
+      }
+
+      if (isNonEmptyString(additional.highlightText)) {
+        viewModel.mainInfo.highlightHtml = additional.highlightText;
+      }
+
+      viewModel.mainInfo.paragraphs = buildParagraphs(additional.mainSectionText);
+    }
+
+    if (mainInfo.mainInfo) {
+      const infoBlock = mainInfo.mainInfo;
+
+      if (isNonEmptyString(infoBlock.headline)) {
+        viewModel.mainInfo.title = infoBlock.headline.trim();
+      }
+
+      viewModel.mainInfo.awardsHtml = mapTextArray(infoBlock.awards);
+      viewModel.mainInfo.leftColumn = mapTextArray(infoBlock.leftColumnHeadlines);
+      viewModel.mainInfo.rightColumn = mapRichText(infoBlock.rightColumnText);
+    }
+
+    viewModel.partners = mapPartners(mainInfo.partners);
+    viewModel.exhibitions = mapExhibitions(mainInfo.exhibitions);
+    viewModel.photobook = mapPhotobook(mainInfo.photobook);
+    viewModel.pastEditions = mapPastEditions(mainInfo.pastEditions);
   }
 
-  const trimmed = content.trim();
-  if (!trimmed) {
-    return cloneDefaults();
-  }
-
-  const sanitized = decodeHtmlEntities(stripHtmlTags(trimmed)).trim();
-  if (!sanitized) {
-    return cloneDefaults();
-  }
-
-  try {
-    const parsed = JSON.parse(sanitized) as Partial<HomeTemplateData>;
-    return mergeWithDefaults(cloneDefaults(), parsed);
-  } catch (error) {
-    console.error('Home template JSON parse error:', error);
-    return cloneDefaults();
-  }
+  return viewModel;
 }
 
 type HomeTemplateProps = {
-  page: WordPressPage;
+  homeTemplate?: WordPressHomeTemplateData | null;
 };
 
-export const homeTemplateDefaultData = defaultHomeData;
+export const homeTemplateDefaultData = defaultHomeViewModel;
 
-export default function HomeTemplate({ page }: HomeTemplateProps) {
-  const data = parseHomeTemplateData(page.content);
+export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
+  const data = buildHomeViewModel(homeTemplate);
 
   return (
     <div className={styles.homePage}>
@@ -361,7 +570,7 @@ export default function HomeTemplate({ page }: HomeTemplateProps) {
             </div>
             <div className={styles.infoColumn}>
               {data.mainInfo.paragraphs.map((paragraph, index) => (
-                <p
+                <div
                   key={`${paragraph}-${index}`}
                   className={styles.mainInfoParagraph}
                   dangerouslySetInnerHTML={{ __html: paragraph }}
@@ -394,7 +603,7 @@ export default function HomeTemplate({ page }: HomeTemplateProps) {
             </div>
             <div className={`${styles.infoColumn} ${styles.rightText}`}>
               {data.mainInfo.rightColumn.map((item, index) => (
-                <p
+                <div
                   key={`${item}-${index}`}
                   className={styles.mainInfoParagraph}
                   dangerouslySetInnerHTML={{ __html: item }}
