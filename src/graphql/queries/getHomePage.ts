@@ -28,11 +28,11 @@ export type HomeTemplateSlide = {
 };
 
 export type HomeTemplateHead = {
-    cta?: Maybe<HomeTemplateCta | Array<Maybe<HomeTemplateCta>>>;
+    cta?: Maybe<HomeTemplateCta>;
     durationSeconds?: Maybe<number>;
     editionLabel?: Maybe<string>;
     editionNumber?: Maybe<string>;
-    slides?: Maybe<HomeTemplateSlide | Array<Maybe<HomeTemplateSlide>>>;
+    slides?: Maybe<Array<Maybe<HomeTemplateSlide>>>;
     subtitle?: Maybe<string>;
     topicLabel?: Maybe<string>;
     topicTitle?: Maybe<string>;
@@ -46,14 +46,19 @@ export type HomeTemplateAdditional = {
     shouldShow?: Maybe<boolean>;
 };
 
+/**
+ * ✅ Всички WYSIWYG полета са string (HTML)
+ */
 export type HomeTemplateMainInfoBlock = {
-    awards?: Maybe<Array<Maybe<string>>>;
+    awards?: Maybe<string>;               // WYSIWYG
     headline?: Maybe<string>;
-    leftColumnHeadlines?: Maybe<Array<Maybe<string>>>;
-    rightColumnText?: Maybe<string | Array<Maybe<string>>>;
+    leftColumnHeadlines?: Maybe<string>;  // WYSIWYG
+    rightColumnText?: Maybe<string>;      // WYSIWYG
 };
 
-/** ✅ Актуализиран тип според новите imgFirst–Fourth */
+/**
+ * ✅ Актуализирана структура за 4 изображения
+ */
 export type HomeTemplateExhibitions = {
     title?: Maybe<string>;
     imgFirst?: Maybe<ImageField>;
@@ -132,6 +137,9 @@ export type HomePageQueryResult = {
     }>;
 };
 
+/**
+ * ✅ Единен GraphQL фрагмент за page + translation
+ */
 const GET_HOME_PAGE_QUERY = `
   fragment HomePageTemplateFields on Page {
     id
@@ -173,30 +181,10 @@ const GET_HOME_PAGE_QUERY = `
           }
           exhibitions {
             title
-            imgFirst {
-              node {
-                altText
-                sourceUrl
-              }
-            }
-            imgSecond {
-              node {
-                altText
-                sourceUrl
-              }
-            }
-            imgThird {
-              node {
-                altText
-                sourceUrl
-              }
-            }
-            imgFourth {
-              node {
-                altText
-                sourceUrl
-              }
-            }
+            imgFirst { node { altText sourceUrl } }
+            imgSecond { node { altText sourceUrl } }
+            imgThird { node { altText sourceUrl } }
+            imgFourth { node { altText sourceUrl } }
           }
           mainInfo {
             awards
@@ -205,24 +193,14 @@ const GET_HOME_PAGE_QUERY = `
             rightColumnText
           }
           partners {
-            image {
-              node {
-                altText
-                sourceUrl
-              }
-            }
+            image { node { altText sourceUrl } }
             link
             name
           }
           pastEditions {
             desktopColumns {
               leftColumn {
-                image {
-                  node {
-                    altText
-                    sourceUrl
-                  }
-                }
+                image { node { altText sourceUrl } }
                 link
                 year
               }
@@ -232,12 +210,7 @@ const GET_HOME_PAGE_QUERY = `
           }
           photobook {
             title
-            image {
-              node {
-                altText
-                sourceUrl
-              }
-            }
+            image { node { altText sourceUrl } }
           }
         }
       }

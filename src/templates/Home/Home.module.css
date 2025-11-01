@@ -320,6 +320,10 @@
   line-height: 37px;
   text-transform: uppercase;
   color: #0f0f0f;
+
+  strong{
+    font-family: Nunito, Sans-Serif;
+  }
 }
 
 .mainInfoAwards span :global(h3) {
