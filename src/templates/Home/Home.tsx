@@ -1,6 +1,7 @@
 import type { HomeTemplateData as WordPressHomeTemplateData } from '@/graphql/queries/getHomePage';
 import BackgroundSlideshow from '@/components/BackgroundSlideshow/BackgroundSlideshow';
 import type { BackgroundSlide } from '@/components/BackgroundSlideshow/BackgroundSlideshow';
+import { renderWPContent} from "@/helpers/parseWYSIWYG";
 import styles from './Home.module.css';
 
 type HomeTemplateProps = {
@@ -123,16 +124,12 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
       <section className={styles.mainInfo}>
         <div className="container">
           <div className={styles.mainInfoHeader}>
-              <h3>{body?.additional?.headline ?? ''}</h3>
-            <p
-              className={styles.highlight}
-              dangerouslySetInnerHTML={{
-                __html:
-                  typeof body?.additional?.highlightText === 'string'
-                    ? body.additional.highlightText
-                    : '',
-              }}
-            />
+            <h3>{body?.additional?.headline ?? ''}</h3>
+            <div className={styles.highlight}>
+              {typeof body?.additional?.highlightText === 'string'
+                ? renderWPContent(body.additional.highlightText)
+                : null}
+            </div>
           </div>
 
           <div className={styles.mainInfoColumns}>
@@ -143,15 +140,18 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
               {(typeof body?.additional?.mainSectionText === 'string'
                 ? [body.additional.mainSectionText]
                 : []
-              ).map((paragraph, index) => (
-                <div
-                  key={`${paragraph}-${index}`}
-                  className={styles.mainInfoParagraph}
-                  dangerouslySetInnerHTML={{
-                    __html: paragraph,
-                  }}
-                />
-              ))}
+              ).map((paragraph, index) => {
+                const content = renderWPContent(paragraph);
+                if (!content) {
+                  return null;
+                }
+
+                return (
+                  <div key={index} className={styles.mainInfoParagraph}>
+                    {content}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -160,14 +160,18 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
             <div className={styles.mainInfoAwards}>
               {(Array.isArray(body?.mainInfo?.awards) ? body.mainInfo.awards : [])
                 .filter((value): value is string => typeof value === 'string')
-                .map((line, index) => (
-                  <span
-                    key={`${line}-${index}`}
-                    dangerouslySetInnerHTML={{
-                      __html: line,
-                    }}
-                  />
-                ))}
+                .map((line, index) => {
+                  const content = renderWPContent(line);
+                  if (!content) {
+                    return null;
+                  }
+
+                  return (
+                    <span key={index}>
+                      {content}
+                    </span>
+                  );
+                })}
             </div>
           </div>
 
@@ -177,15 +181,18 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
                 ? body.mainInfo.leftColumnHeadlines
                 : [])
                 .filter((value): value is string => typeof value === 'string')
-                .map((item, index) => (
-                  <div
-                    key={`${item}-${index}`}
-                    className={styles.mainInfoHeading}
-                    dangerouslySetInnerHTML={{
-                      __html: item,
-                    }}
-                  />
-                ))}
+                .map((item, index) => {
+                  const content = renderWPContent(item);
+                  if (!content) {
+                    return null;
+                  }
+
+                  return (
+                    <div key={index} className={styles.mainInfoHeading}>
+                      {content}
+                    </div>
+                  );
+                })}
             </div>
             <div className={`${styles.infoColumn} ${styles.rightText}`}>
               {(() => {
@@ -198,15 +205,18 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
 
                 return values
                   .filter((value): value is string => typeof value === 'string')
-                  .map((item, index) => (
-                  <div
-                    key={`${item}-${index}`}
-                    className={styles.mainInfoParagraph}
-                    dangerouslySetInnerHTML={{
-                      __html: item,
-                    }}
-                  />
-                  ));
+                  .map((item, index) => {
+                    const content = renderWPContent(item);
+                    if (!content) {
+                      return null;
+                    }
+
+                    return (
+                      <div key={index} className={styles.mainInfoParagraph}>
+                        {content}
+                      </div>
+                    );
+                  });
               })()}
             </div>
           </div>
