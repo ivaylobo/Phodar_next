@@ -39,7 +39,9 @@ body h4 {
   text-transform: uppercase;
   text-align: center;
 }
-
+h3.align-left{
+  text-align: left;
+}
 #ReactBackgroundSlider > figure{
   position: absolute!important;
 }

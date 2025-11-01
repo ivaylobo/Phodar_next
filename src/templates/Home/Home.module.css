@@ -307,6 +307,10 @@
   margin: 40px 0;
 }
 
+.textLeft{
+  text-align: left;
+}
+
 .mainInfoAwards {
   display: flex;
   flex-direction: column;
@@ -639,8 +643,23 @@
   }
 
   .mainInfoColumns {
-    grid-template-columns: 1fr;
-    gap: 30px;
+    display: grid;
+    grid-template-columns: minmax(260px, 320px) 1fr; /* лява по-тясна, дясна по-широка */
+    align-items: start;
+    gap: 40px;
+    margin-top: 40px;
+  }
+
+  .mainInfoSingleColumn {
+    display: block;
+    margin-top: 40px;
+  }
+
+  /* responsive: една под друга на мобилно */
+  @media (max-width: 991px) {
+    .mainInfoColumns {
+      grid-template-columns: 1fr;
+    }
   }
 
   .rightText {

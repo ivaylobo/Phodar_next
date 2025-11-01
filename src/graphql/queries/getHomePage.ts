@@ -316,7 +316,24 @@ const GET_HOME_PAGE_QUERY = `
   }
 `;
 
-export async function getHomePageBySlug(slug: string, language: string) {
-    const data = await fetchGraphQL<HomePageQueryResult>(GET_HOME_PAGE_QUERY, { slug, language });
-    return data.page ?? null;
+export async function getHomePageBySlug(
+    slug: string,
+    language: string,
+): Promise<HomePageQueryResult["page"]> {
+    try {
+        const data = await fetchGraphQL<HomePageQueryResult>(
+            GET_HOME_PAGE_QUERY,
+            { slug, language },
+        );
+
+        if (!data || !data.page) {
+            console.warn(`[getHomePageBySlug] Page not found for slug: ${slug}`);
+            return null;
+        }
+
+        return data.page;
+    } catch (error) {
+        console.error(`[getHomePageBySlug] GraphQL fetch failed:`, error);
+        return null;
+    }
 }

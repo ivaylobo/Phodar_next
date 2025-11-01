@@ -1,222 +1,99 @@
-import { createElement } from 'react';
+import { createElement, ReactElement, CSSProperties } from "react";
 import parse, {
   domToReact,
   Element,
+  DOMNode,
   HTMLReactParserOptions,
-} from 'html-react-parser';
-import type { ReactNode } from 'react';
+} from "html-react-parser";
 
-type ElementHandler = (node: Element, options: HTMLReactParserOptions) => ReactNode;
+type ElementHandler = (
+    node: Element,
+    options: HTMLReactParserOptions,
+) => ReactElement | null;
 
 const VOID_ELEMENTS = new Set([
-  'area',
-  'base',
-  'br',
-  'col',
-  'embed',
-  'hr',
-  'img',
-  'input',
-  'link',
-  'meta',
-  'param',
-  'source',
-  'track',
-  'wbr',
+  "area", "base", "br", "col", "embed", "hr", "img", "input", "link",
+  "meta", "param", "source", "track", "wbr",
 ]);
 
 const STANDARD_ELEMENTS = new Set([
-  'a',
-  'abbr',
-  'address',
-  'article',
-  'aside',
-  'audio',
-  'b',
-  'blockquote',
-  'body',
-  'button',
-  'canvas',
-  'caption',
-  'cite',
-  'code',
-  'colgroup',
-  'data',
-  'datalist',
-  'dd',
-  'del',
-  'details',
-  'dfn',
-  'dialog',
-  'dir',
-  'div',
-  'dl',
-  'dt',
-  'em',
-  'fieldset',
-  'figure',
-  'figcaption',
-  'footer',
-  'form',
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-  'header',
-  'hgroup',
-  'i',
-  'iframe',
-  'ins',
-  'kbd',
-  'label',
-  'legend',
-  'li',
-  'main',
-  'mark',
-  'meter',
-  'nav',
-  'noscript',
-  'object',
-  'ol',
-  'optgroup',
-  'option',
-  'output',
-  'p',
-  'picture',
-  'pre',
-  'progress',
-  'q',
-  'rp',
-  'rt',
-  'ruby',
-  's',
-  'samp',
-  'section',
-  'select',
-  'small',
-  'span',
-  'strong',
-  'sub',
-  'summary',
-  'sup',
-  'table',
-  'tbody',
-  'td',
-  'template',
-  'textarea',
-  'tfoot',
-  'th',
-  'thead',
-  'time',
-  'tr',
-  'u',
-  'ul',
-  'var',
-  'video',
+  "a","abbr","address","article","aside","audio","b","blockquote","body","button",
+  "canvas","caption","cite","code","colgroup","data","datalist","dd","del","details",
+  "dfn","dialog","dir","div","dl","dt","em","fieldset","figure","figcaption","footer",
+  "form","h1","h2","h3","h4","h5","h6","header","hgroup","i","iframe","ins","kbd",
+  "label","legend","li","main","mark","meter","nav","noscript","object","ol","optgroup",
+  "option","output","p","picture","pre","progress","q","rp","rt","ruby","s","samp",
+  "section","select","small","span","strong","sub","summary","sup","table","tbody",
+  "td","template","textarea","tfoot","th","thead","time","tr","u","ul","var","video",
 ]);
 
 const SVG_ELEMENTS = new Set([
-  'svg',
-  'animate',
-  'animateMotion',
-  'animateTransform',
-  'circle',
-  'clipPath',
-  'defs',
-  'desc',
-  'ellipse',
-  'feBlend',
-  'feColorMatrix',
-  'feComponentTransfer',
-  'feComposite',
-  'feConvolveMatrix',
-  'feDiffuseLighting',
-  'feDisplacementMap',
-  'feDistantLight',
-  'feDropShadow',
-  'feFlood',
-  'feFuncA',
-  'feFuncB',
-  'feFuncG',
-  'feFuncR',
-  'feGaussianBlur',
-  'feImage',
-  'feMerge',
-  'feMergeNode',
-  'feMorphology',
-  'feOffset',
-  'fePointLight',
-  'feSpecularLighting',
-  'feSpotLight',
-  'feTile',
-  'feTurbulence',
-  'filter',
-  'foreignObject',
-  'g',
-  'image',
-  'line',
-  'linearGradient',
-  'marker',
-  'mask',
-  'metadata',
-  'mpath',
-  'path',
-  'pattern',
-  'polygon',
-  'polyline',
-  'radialGradient',
-  'rect',
-  'set',
-  'stop',
-  'switch',
-  'symbol',
-  'text',
-  'textPath',
-  'tspan',
-  'use',
-  'view',
+  "svg","animate","animateMotion","animateTransform","circle","clipPath","defs","desc",
+  "ellipse","feBlend","feColorMatrix","feComponentTransfer","feComposite","feConvolveMatrix",
+  "feDiffuseLighting","feDisplacementMap","feDistantLight","feDropShadow","feFlood","feFuncA",
+  "feFuncB","feFuncG","feFuncR","feGaussianBlur","feImage","feMerge","feMergeNode",
+  "feMorphology","feOffset","fePointLight","feSpecularLighting","feSpotLight","feTile",
+  "feTurbulence","filter","foreignObject","g","image","line","linearGradient","marker","mask",
+  "metadata","mpath","path","pattern","polygon","polyline","radialGradient","rect","set",
+  "stop","switch","symbol","text","textPath","tspan","use","view",
 ]);
 
-const createElementWithChildren: ElementHandler = (node, options) =>
-  createElement(
-    node.name,
-    node.attribs ?? undefined,
-    domToReact(node.children, options),
-  );
+/** Convert inline style string (from WP) → React style object */
+function parseStyleAttribute(styleString?: string): CSSProperties | undefined {
+  if (!styleString) return undefined;
+  const styleObject: CSSProperties = {};
+  styleString.split(";").forEach((declaration) => {
+    const [prop, value] = declaration.split(":").map((s) => s.trim());
+    if (!prop || !value) return;
+    const camelProp = prop.replace(/-([a-z])/g, (_, l) => l.toUpperCase());
+    (styleObject as any)[camelProp] = value;
+  });
+  return styleObject;
+}
 
-const createVoidElement: ElementHandler = (node, _options) =>
-  createElement(node.name, node.attribs ?? undefined);
+/** Normalize HTML attributes so React can understand them */
+function normalizeAttributes(attribs?: Record<string, string>): Record<string, any> | undefined {
+  if (!attribs) return undefined;
+  const { style, ...rest } = attribs;
+  const parsedStyle = parseStyleAttribute(style);
+  return parsedStyle ? { ...rest, style: parsedStyle } : rest;
+}
+
+const createElementWithChildren: ElementHandler = (node, options) =>
+    createElement(
+        node.name,
+        normalizeAttributes(node.attribs),
+        domToReact(node.children as DOMNode[], options),
+    );
+
+const createVoidElement: ElementHandler = (node) =>
+    createElement(node.name, normalizeAttributes(node.attribs));
 
 export function renderWPContent(html: string) {
-  if (!html) {
-    return null;
-  }
+  if (!html) return null;
 
   const options: HTMLReactParserOptions = {
-    replace: (node) => {
-      if (!(node instanceof Element)) {
-        return undefined;
+    replace(domNode) {
+      if (!(domNode instanceof Element)) return undefined;
+
+      const handler = getHandler(domNode);
+      if (handler) return handler(domNode, options);
+
+      console.warn(`element <${domNode.name}> is missing in WYSIWYG functionality`);
+
+      if (STANDARD_ELEMENTS.has(domNode.name) || SVG_ELEMENTS.has(domNode.name)) {
+        return createElementWithChildren(domNode, options);
       }
 
-      const handler = getHandler(node);
+      if (VOID_ELEMENTS.has(domNode.name)) {
+        return createVoidElement(domNode, options);
+      }
 
-      if (handler) {
-      return handler(node, options);
-    }
-
-    console.log(`element ${node.name} is missing in WYSIWYG functionallity`);
-
-      return STANDARD_ELEMENTS.has(node.name) || SVG_ELEMENTS.has(node.name)
-        ? createElementWithChildren(node, options)
-        : VOID_ELEMENTS.has(node.name)
-          ? createVoidElement(node, options)
-          : createElement(
-              node.name,
-              node.attribs ?? undefined,
-              domToReact(node.children, options),
-            );
+      return createElement(
+          domNode.name,
+          normalizeAttributes(domNode.attribs),
+          domToReact(domNode.children as DOMNode[], options),
+      );
     },
   };
 
@@ -224,13 +101,9 @@ export function renderWPContent(html: string) {
 }
 
 function getHandler(node: Element): ElementHandler | undefined {
-  if (VOID_ELEMENTS.has(node.name)) {
-    return createVoidElement;
-  }
-
+  if (VOID_ELEMENTS.has(node.name)) return createVoidElement;
   if (STANDARD_ELEMENTS.has(node.name) || SVG_ELEMENTS.has(node.name)) {
     return createElementWithChildren;
   }
-
   return undefined;
 }

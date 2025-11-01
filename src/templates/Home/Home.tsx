@@ -1,7 +1,7 @@
 import type { HomeTemplateData as WordPressHomeTemplateData } from '@/graphql/queries/getHomePage';
 import BackgroundSlideshow from '@/components/BackgroundSlideshow/BackgroundSlideshow';
 import type { BackgroundSlide } from '@/components/BackgroundSlideshow/BackgroundSlideshow';
-import { renderWPContent } from './helpers/parseWYSIWYG';
+import { renderWPContent } from '../../helpers/parseWYSIWYG';
 import PastEditionsHome from './components/PastEditionsHome';
 import styles from './Home.module.css';
 
@@ -55,14 +55,12 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
       typeof item === 'string' && item.trim().length > 0,
   );
 
-  const leftColumnItems = (
-    Array.isArray(mainInfoData?.leftColumnHeadlines)
-      ? mainInfoData.leftColumnHeadlines
-      : []
-  ).filter(
-    (item): item is string =>
-      typeof item === 'string' && item.trim().length > 0,
-  );
+    const leftColumnValue = mainInfoData?.leftColumnHeadlines as string | undefined;
+
+    const leftColumnItems =
+        typeof leftColumnValue === 'string' && leftColumnValue.trim().length > 0
+            ? leftColumnValue
+            : null;
 
   const rightColumnTexts = (
     Array.isArray(mainInfoData?.rightColumnText)
@@ -77,8 +75,10 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
       typeof item === 'string' && item.trim().length > 0,
   );
 
-  const hasLeftColumn = leftColumnItems.length > 0;
+  const hasLeftColumn = !!leftColumnItems;
   const hasRightColumn = rightColumnTexts.length > 0;
+
+    console.log('body?.exhibitions: ', body)
 
   return (
     <div className={styles.homePage}>
@@ -236,37 +236,29 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
             </div>
           ) : null}
 
-          {hasLeftColumn || hasRightColumn ? (
-            <div
-              className={
-                hasLeftColumn && hasRightColumn
-                  ? styles.mainInfoColumns
-                  : styles.mainInfoSingleColumn
-              }
-            >
-              {hasLeftColumn ? (
-                <div className={styles.infoColumn}>
-                  {leftColumnItems.map((item, index) => (
-                    <div key={index} className={styles.mainInfoHeading}>
-                      {renderWPContent(item)}
-                    </div>
-                  ))}
+            {(hasLeftColumn || hasRightColumn) && (
+                <div
+                    className={
+                        hasLeftColumn && hasRightColumn
+                            ? styles.mainInfoColumns
+                            : styles.mainInfoSingleColumn
+                    }
+                >
+                    {leftColumnItems && (
+                        <div className={styles.mainInfoHeading}>
+                            {renderWPContent(leftColumnItems)}
+                        </div>
+                    )}
+
+                    {hasRightColumn &&
+                        rightColumnTexts.map((item, index) => (
+                            <div key={`right-${index}`} className={styles.mainInfoParagraph}>
+                                {renderWPContent(item)}
+                            </div>
+                        ))}
                 </div>
-              ) : null}
-              {hasRightColumn ? (
-                <div className={`${styles.infoColumn} ${styles.rightText}`}>
-                  {rightColumnTexts.map((item, index) => (
-                    <div
-                      key={`right-${index}`}
-                      className={styles.mainInfoParagraph}
-                    >
-                      {renderWPContent(item)}
-                    </div>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-          ) : null}
+            )}
+
         </div>
       </section>
 
