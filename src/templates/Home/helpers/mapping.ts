@@ -383,8 +383,11 @@ export function buildHomeViewModel(
   if (homeTemplate.head) {
     const head = homeTemplate.head;
 
+    console.log('HomeTemplate head:', head);
+
     if (isNonEmptyString(head.editionNumber)) {
       viewModel.hero.editionNumber = head.editionNumber.trim();
+          console.log('viewModel.hero.editionNumber :', viewModel.hero.editionNumber );
     }
 
     if (isNonEmptyString(head.editionLabel)) {
