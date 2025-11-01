@@ -27,7 +27,7 @@ export default async function LangHome({ params }: LangPageParams) {
     const homeTemplate = page.translation?.template?.homeTemplate ?? page.template?.homeTemplate;
 
     if (templateName && templateName.toLowerCase() === 'homepage') {
-      console.log('Rendering HomeTemplate with data:', homeTemplate);
+
       return <HomeTemplate homeTemplate={homeTemplate} />;
     }
 

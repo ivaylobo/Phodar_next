@@ -1,47 +1,116 @@
 import type { HomeTemplateData as WordPressHomeTemplateData } from '@/graphql/queries/getHomePage';
 import BackgroundSlideshow from '@/components/BackgroundSlideshow/BackgroundSlideshow';
 import styles from './Home.module.css';
-import { buildHomeViewModel, homeTemplateDefaultData } from './helpers/mapping';
-
-export { homeTemplateDefaultData };
+import {
+  getCtas,
+  getExhibitionRows,
+  getPartners,
+  getPastEditions,
+  getPhotobookImage,
+  getSlides,
+} from './helpers/wordpress';
 
 type HomeTemplateProps = {
   homeTemplate?: WordPressHomeTemplateData | null;
 };
 
-export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
-  const data = buildHomeViewModel(homeTemplate);
+const asDisplayString = (value: unknown): string => {
+  if (typeof value === 'string') {
+    return value;
+  }
 
-  console.log('HomeTemplate data:', data);
+  if (typeof value === 'number') {
+    return String(value);
+  }
+
+  return '';
+};
+
+export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
+  const head = homeTemplate?.head;
+  const body = homeTemplate?.mainInfo;
+
+  const heroSlides = getSlides(head?.slides);
+  const heroCtas = getCtas(head?.cta);
+
+  const heroDurationSeconds =
+    typeof head?.durationSeconds === 'number' ? head.durationSeconds : undefined;
+  const heroTransitionSeconds =
+    typeof head?.transitionSeconds === 'number' ? head.transitionSeconds : undefined;
+
+  const additional = body?.additional;
+  const infoBlock = body?.mainInfo;
+
+  const partners = getPartners(body?.partners);
+
+  const exhibitionsRows = getExhibitionRows(body?.exhibitions);
+
+  const photobookImage = getPhotobookImage(body?.photobook);
+
+  const { columns: desktopPastEditionColumns, list: mobilePastEditions } =
+    getPastEditions(body?.pastEditions);
+
+  const mainInfoParagraphs =
+    typeof additional?.mainSectionText === 'string' ? [additional.mainSectionText] : [];
+
+  const mainInfoAwards = Array.isArray(infoBlock?.awards)
+    ? infoBlock.awards.filter(
+        (value): value is string | number =>
+          typeof value === 'string' || typeof value === 'number',
+      )
+    : [];
+
+  const mainInfoLeftColumn = Array.isArray(infoBlock?.leftColumnHeadlines)
+    ? infoBlock.leftColumnHeadlines.filter(
+        (value): value is string | number =>
+          typeof value === 'string' || typeof value === 'number',
+      )
+    : [];
+
+  const rightColumnSource = infoBlock?.rightColumnText;
+  const mainInfoRightColumn = Array.isArray(rightColumnSource)
+    ? rightColumnSource.filter(
+        (value): value is string | number =>
+          typeof value === 'string' || typeof value === 'number',
+      )
+    : typeof rightColumnSource === 'string' || typeof rightColumnSource === 'number'
+      ? [rightColumnSource]
+      : [];
 
   return (
     <div className={styles.homePage}>
       <section className={styles.summary}>
         <BackgroundSlideshow
           className={styles.backgroundSlider}
-          images={data.hero.slides}
-          durationSeconds={data.hero.durationSeconds}
-          transitionSeconds={data.hero.transitionSeconds}
+          images={heroSlides}
+          durationSeconds={heroDurationSeconds}
+          transitionSeconds={heroTransitionSeconds}
           overlay
         />
 
         <div className={`${styles.summaryContainer} container`}>
           <div className={styles.summaryTop}>
-            <h4 className={styles.summaryEditionNumber}>{data.hero.editionNumber}</h4>
-            <p className={styles.summaryEditionLabel} aria-label={data.hero.editionLabel}>
-              <span className={styles.summaryEditionLabelSmall}>{data.hero.editionLabel}</span>
+            <h4 className={styles.summaryEditionNumber}>
+              {asDisplayString(head?.editionNumber)}
+            </h4>
+            <p
+              className={styles.summaryEditionLabel}
+              aria-label={asDisplayString(head?.editionLabel)}
+            >
+              <span className={styles.summaryEditionLabelSmall}>
+                {asDisplayString(head?.editionLabel)}
+              </span>
             </p>
           </div>
-          <h3 className={styles.summaryTitle}>{data.hero.subtitle}</h3>
+          <h3 className={styles.summaryTitle}>{asDisplayString(head?.subtitle)}</h3>
           <div className={styles.summaryBottom}>
-            <span className={styles.summaryTopicLabel}>{data.hero.topicLabel}</span>
-            <h1 className={styles.summaryTopicTitle}>{data.hero.topicTitle}</h1>
+            <span className={styles.summaryTopicLabel}>{asDisplayString(head?.topicLabel)}</span>
+            <h1 className={styles.summaryTopicTitle}>{asDisplayString(head?.topicTitle)}</h1>
           </div>
           <div className={styles.summaryLinks}>
-            {data.hero.ctas.map((cta, index) => {
+            {heroCtas.map((cta, index) => {
               const target = cta.targetBlank ? '_blank' : undefined;
-              const rel =
-                target === '_blank' ? cta.rel ?? 'noopener noreferrer' : cta.rel ?? undefined;
+              const rel = target === '_blank' ? 'noopener noreferrer' : undefined;
 
               return (
                 <a
@@ -64,31 +133,29 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
           <div className={styles.mainInfoHeader}>
             <h3
               className={styles.mainInfoHeadline}
-              dangerouslySetInnerHTML={{ __html: data.mainInfo.headline }}
+              dangerouslySetInnerHTML={{ __html: asDisplayString(additional?.headline) }}
             />
             <p
               className={styles.highlight}
-              dangerouslySetInnerHTML={{ __html: data.mainInfo.highlightHtml }}
+              dangerouslySetInnerHTML={{
+                __html:
+                  typeof additional?.highlightText === 'string'
+                    ? additional.highlightText
+                    : '',
+              }}
             />
           </div>
 
           <div className={styles.mainInfoColumns}>
             <div className={styles.programColumn}>
-              <ul className={styles.program}>
-                {data.mainInfo.program.map((item, index) => (
-                  <li key={`${item.title}-${index}`}>
-                    <strong dangerouslySetInnerHTML={{ __html: item.title }} />
-                    <span dangerouslySetInnerHTML={{ __html: item.descriptionHtml }} />
-                  </li>
-                ))}
-              </ul>
+              <ul className={styles.program}></ul>
             </div>
             <div className={styles.infoColumn}>
-              {data.mainInfo.paragraphs.map((paragraph, index) => (
+              {mainInfoParagraphs.map((paragraph, index) => (
                 <div
                   key={`${paragraph}-${index}`}
                   className={styles.mainInfoParagraph}
-                  dangerouslySetInnerHTML={{ __html: paragraph }}
+                  dangerouslySetInnerHTML={{ __html: asDisplayString(paragraph) }}
                 />
               ))}
             </div>
@@ -97,31 +164,34 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
           <div className={styles.mainInfoAwardsBlock}>
             <h2
               className={styles.mainInfoTitle}
-              dangerouslySetInnerHTML={{ __html: data.mainInfo.title }}
+              dangerouslySetInnerHTML={{ __html: asDisplayString(infoBlock?.headline) }}
             />
             <div className={styles.mainInfoAwards}>
-              {data.mainInfo.awardsHtml.map((line, index) => (
-                <span key={`${line}-${index}`} dangerouslySetInnerHTML={{ __html: line }} />
+              {mainInfoAwards.map((line, index) => (
+                <span
+                  key={`${line}-${index}`}
+                  dangerouslySetInnerHTML={{ __html: asDisplayString(line) }}
+                />
               ))}
             </div>
           </div>
 
           <div className={styles.mainInfoColumns}>
             <div className={styles.infoColumn}>
-              {data.mainInfo.leftColumn.map((item, index) => (
-                <h4
+              {mainInfoLeftColumn.map((item, index) => (
+                <div
                   key={`${item}-${index}`}
                   className={styles.mainInfoHeading}
-                  dangerouslySetInnerHTML={{ __html: item }}
+                  dangerouslySetInnerHTML={{ __html: asDisplayString(item) }}
                 />
               ))}
             </div>
             <div className={`${styles.infoColumn} ${styles.rightText}`}>
-              {data.mainInfo.rightColumn.map((item, index) => (
+              {mainInfoRightColumn.map((item, index) => (
                 <div
                   key={`${item}-${index}`}
                   className={styles.mainInfoParagraph}
-                  dangerouslySetInnerHTML={{ __html: item }}
+                  dangerouslySetInnerHTML={{ __html: asDisplayString(item) }}
                 />
               ))}
             </div>
@@ -132,7 +202,7 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
       <section className={styles.logoSofia}>
         <div className={`container ${styles.partners}`}>
           <div className={styles.partnerGrid}>
-            {data.partners.map((partner) => (
+            {partners.map((partner) => (
               <div className={styles.partnerCard} key={partner.name}>
                 <a
                   className={styles.partnerLink}
@@ -152,9 +222,9 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
 
       <section className={styles.exhibitions}>
         <div className="container">
-          <h2>{data.exhibitions.title}</h2>
+          <h2>{asDisplayString(body?.exhibitions?.title)}</h2>
           <div className={styles.allWrapper}>
-            {data.exhibitions.rows.map((row, rowIndex) => (
+            {exhibitionsRows.map((row, rowIndex) => (
               <div
                 key={rowIndex}
                 className={`${styles.rowWrapper} ${
@@ -181,10 +251,16 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
           <div className={styles.photoBookInner}>
             <div
               className={styles.photoBookWrapper}
-              style={{ backgroundImage: `url(${data.photobook.image})` }}
+              style={{
+                backgroundImage: photobookImage ? `url(${photobookImage})` : undefined,
+              }}
             />
             <div className={styles.photoBookText}>
-              <h3 dangerouslySetInnerHTML={{ __html: data.photobook.title }} />
+              <h3
+                dangerouslySetInnerHTML={{
+                  __html: asDisplayString(body?.photobook?.title),
+                }}
+              />
             </div>
           </div>
         </div>
@@ -192,14 +268,18 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
 
       <section className={styles.pastEditionsSection}>
         <div className="container">
-          <h2 className={styles.pastEditionsTitle}>{data.pastEditions.title}</h2>
+          <h2 className={styles.pastEditionsTitle}>
+            {asDisplayString(body?.pastEditions?.title)}
+          </h2>
           <h3
             className={styles.pastEditionsSubtitle}
-            dangerouslySetInnerHTML={{ __html: data.pastEditions.subtitle }}
+            dangerouslySetInnerHTML={{
+              __html: asDisplayString(body?.pastEditions?.subtitle),
+            }}
           />
 
           <div>
-            {data.pastEditions.desktopColumns.map((column, columnIndex) => (
+            {desktopPastEditionColumns.map((column, columnIndex) => (
               <ul key={columnIndex} className={styles.desktopList}>
                 {column.map((edition) => (
                   <li
@@ -217,7 +297,7 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
           </div>
 
           <ul className={styles.mobileList}>
-            {data.pastEditions.mobileList.map((edition) => (
+            {mobilePastEditions.map((edition) => (
               <li
                 key={`mobile-${edition.year}`}
                 className={styles.mobileListItem}
