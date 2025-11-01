@@ -17,14 +17,19 @@
 }
 
 .summary::before {
-  content: '';
+  content: "";
   display: block;
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.65) 5%, rgba(0, 0, 0, 0.15) 55%, rgba(0, 0, 0, 0.65) 95%);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.65) 5%,
+    rgba(0, 0, 0, 0.15) 55%,
+    rgba(0, 0, 0, 0.65) 95%
+  );
   z-index: 2;
   pointer-events: none;
 }
@@ -41,7 +46,7 @@
 
 .summaryTop {
   padding-top: 200px;
-  font-family: 'Conv_Intro', Sans-Serif;
+  font-family: "Conv_Intro", Sans-Serif;
   font-weight: normal;
   opacity: 0.3;
   display: flex;
@@ -96,7 +101,7 @@
 }
 
 .summaryTopicTitle {
-  color: #F7F7F7;
+  color: #f7f7f7;
   font-size: 47px;
   margin: 0;
   text-transform: uppercase;
@@ -111,18 +116,20 @@
 }
 
 .buttonLink {
-  color: #F7F7F7;
-  font-family: 'Conv_Intro';
+  color: #f7f7f7;
+  font-family: "Conv_Intro";
   font-size: 23px;
   letter-spacing: 0;
   line-height: 28px;
   text-align: center;
   display: inline-block;
-  background: #D23C3B;
+  background: #d23c3b;
   padding: 20px 70px;
   margin-top: 120px;
   text-transform: uppercase;
-  transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition:
+    background 0.2s ease-in-out,
+    color 0.2s ease-in-out;
 }
 
 .buttonLink:hover {
@@ -139,22 +146,27 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-bottom: 20px;
 }
 
 .mainInfoColumns {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: minmax(220px, 320px) 1fr;
   gap: 40px;
   margin-top: 40px;
 }
 
-.programColumn {
-  display: flex;
+.mainInfoSingleColumn {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  margin-top: 40px;
 }
 
 .infoColumn {
   display: flex;
   flex-direction: column;
+  gap: 20px;
 }
 
 .mainInfoHeadline {
@@ -162,86 +174,188 @@
   text-align: left;
 }
 
-.highlight {
-  font-size: 18px;
-  color: #000;
-  margin: 0 0 10px;
+.additionalColumns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 40px;
+  margin: 20px 0 40px;
 }
 
-.highlight strong {
-  color: #D23C3B;
-  font-size: 30px;
-  font-weight: 900;
+.additionalHighlight {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.program {
-  padding-left: 20px;
-  list-style: none;
+.additionalText {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  line-height: 25px;
+  color: #1e1e1e;
+}
+
+.additionalText :global(p) {
   margin: 0;
 }
 
-.program li {
-  padding-bottom: 15px;
-  font-size: 16px;
-  line-height: 1.4;
+.additionalText :global(p + p) {
+  margin-top: 20px;
 }
 
-.program strong {
-  color: #D23C3B;
-  font-size: 18px;
-  margin-right: 8px;
+.highlight {
+  font-size: 20px;
+  line-height: 28px;
+  color: #d23c3b;
+  margin: 0;
+  font-family: "Conv_Intro", sans-serif;
+  text-transform: uppercase;
+}
+
+.highlight :global(p) {
+  margin: 0 0 12px;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: 600;
+  color: inherit;
+}
+
+.highlight :global(p:last-child) {
+  margin-bottom: 0;
+}
+
+.highlight :global(ul) {
+  margin: 0 0 12px 26px;
+  padding: 0;
+  list-style: disc;
+  font-size: 16px;
+  line-height: 24px;
+  font-family: "Nunito", sans-serif;
+  color: #15151f;
+}
+
+.highlight :global(li) {
+  margin-bottom: 6px;
+}
+
+.highlight :global(li:last-child) {
+  margin-bottom: 0;
+}
+
+.highlight :global(li strong) {
+  color: #d23c3b;
+}
+
+.highlight strong {
+  color: #d23c3b;
+  font-family: "Conv_Intro", sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  display: block;
+  margin-bottom: 8px;
 }
 
 .mainInfoParagraph {
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0;
   line-height: 25px;
-  color: #1E1E1E;
+  color: #1e1e1e;
   margin-bottom: 40px;
+}
+
+.mainInfoParagraph :global(p) {
+  margin: 0 0 20px;
+}
+
+.mainInfoParagraph :global(p:last-child) {
+  margin-bottom: 0;
+}
+
+.mainInfoParagraph :global(ul) {
+  margin: 0 0 20px;
+  padding-left: 18px;
+  list-style: disc;
+}
+
+.mainInfoParagraph :global(li) {
+  margin-bottom: 12px;
+}
+
+.mainInfoParagraph :global(li:last-child) {
+  margin-bottom: 0;
+}
+
+.mainInfoParagraph :global(li strong) {
+  color: #d23c3b;
 }
 
 .mainInfoTitle {
   font-size: 51px;
   letter-spacing: 0;
   line-height: 61px;
-  color: #191A29;
-  margin: 60px 0 10px;
+  color: #191a29;
+  margin: 0 0 15px;
   text-align: left;
 }
 
+.mainInfoAwardsSection {
+  width: 100%;
+  margin: 40px 0;
+}
+
 .mainInfoAwards {
-  font-weight: 900;
-  text-transform: none;
-  font-family: "Nunito", Sans-Serif;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: "Conv_Intro", sans-serif;
   font-size: 30px;
-  line-height: 1.3;
-  margin: 0 0 10px;
+  line-height: 37px;
+  text-transform: uppercase;
   color: #0f0f0f;
 }
 
-.mainInfoAwardsBlock {
-  margin-top: 60px;
+.mainInfoAwards span :global(h3) {
+  margin: 0;
 }
 
 .mainInfoAwards span {
   display: block;
-  margin-bottom: 8px;
 }
 
 .mainInfoAwards strong {
-  color: #D23C3B;
+  color: #d23c3b;
+}
+
+.mainInfoAwards span :global(strong) {
+  font-family: "Conv_Intro", sans-serif;
+  font-weight: 900;
 }
 
 .mainInfoHeading {
   margin: 0;
-  font-size: 20px;
+  font-size: 18px;
   letter-spacing: 0;
-  line-height: 24px;
-  color: #15151F;
-  padding-right: 60px;
+  line-height: 26px;
+  color: #0f0f0f;
+  text-transform: uppercase;
   text-align: left;
+  font-weight: 900;
+}
+
+.mainInfoHeading :global(*) {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  font-family: "Conv_Intro", sans-serif;
+}
+
+.mainInfoHeading :global(strong) {
+  color: #d23c3b;
 }
 
 .rightText {
@@ -351,7 +465,7 @@
 }
 
 .photoBook {
-  background: #D23C3B;
+  background: #d23c3b;
   padding-top: 118px;
   margin-top: 96px;
   text-align: left;
@@ -385,7 +499,7 @@
 }
 
 .photoBookText::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -411,7 +525,7 @@
 }
 
 .pastEditionsSubtitle {
-  color: #15151F;
+  color: #15151f;
   font-family: "Nunito", Sans-Serif;
   font-size: 16px;
   font-weight: 900;
@@ -421,72 +535,45 @@
   text-transform: uppercase;
 }
 
-.desktopList {
-  display: inline-block;
-  width: calc(50% - 6px);
-  vertical-align: top;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.pastEditionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+  margin: 40px 0 0;
 }
 
-.desktopListItem {
-  margin: 0 auto 30px;
-  height: 300px;
+.pastEditionCard {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 300px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  text-decoration: none;
   transition: transform 0.2s ease-in-out;
 }
 
-.desktopListItem:hover {
+.pastEditionCard:hover {
   transform: translateY(-4px);
 }
 
-.desktopListItem span {
+.pastEditionCard span {
   padding: 0 30px;
   border: 1px solid rgba(255, 255, 255, 0.73);
   color: #fff;
   font-size: 26px;
   line-height: 37px;
-  font-family: 'Conv_Intro';
-  transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+  font-family: "Conv_Intro", sans-serif;
+  text-transform: uppercase;
+  transition:
+    background 0.2s ease-in-out,
+    color 0.2s ease-in-out;
 }
 
-.desktopListItem span:hover {
-  background: #fff;
+.pastEditionCard span:hover {
+  background: rgba(255, 255, 255, 0.9);
   color: #000;
-}
-
-.mobileList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: none;
-}
-
-.mobileListItem {
-  width: 300px;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 30px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.mobileListItem span {
-  padding: 0 30px;
-  border: 1px solid rgba(255, 255, 255, 0.73);
-  color: #fff;
-  font-size: 20px;
-  line-height: 30px;
-  font-family: 'Conv_Intro';
 }
 
 .flexMobile {
@@ -505,12 +592,8 @@
 }
 
 @media (max-width: 1180px) {
-  .desktopList {
-    display: none;
-  }
-
-  .mobileList {
-    display: block;
+  .pastEditionCard {
+    height: 260px;
   }
 
   .summaryBottom {
@@ -545,6 +628,14 @@
 
   .mainInfoAwards {
     font-size: 24px;
+  }
+
+  .mainInfoAwardsSection {
+    margin: 40px 0 20px;
+  }
+
+  .additionalColumns {
+    grid-template-columns: 1fr;
   }
 
   .mainInfoColumns {
@@ -633,9 +724,13 @@
     display: block;
   }
 
-  .mobileListItem {
-    width: 260px;
-    height: 180px;
+  .pastEditionCard {
+    height: 200px;
+  }
+
+  .pastEditionCard span {
+    font-size: 22px;
+    line-height: 32px;
   }
 
   .photoBookText {

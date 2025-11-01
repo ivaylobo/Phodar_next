@@ -1,7 +1,8 @@
 import type { HomeTemplateData as WordPressHomeTemplateData } from '@/graphql/queries/getHomePage';
 import BackgroundSlideshow from '@/components/BackgroundSlideshow/BackgroundSlideshow';
 import type { BackgroundSlide } from '@/components/BackgroundSlideshow/BackgroundSlideshow';
-import { renderWPContent} from "@/helpers/parseWYSIWYG";
+import { renderWPContent } from './helpers/parseWYSIWYG';
+import PastEditionsHome from './components/PastEditionsHome';
 import styles from './Home.module.css';
 
 type HomeTemplateProps = {
@@ -11,9 +12,73 @@ type HomeTemplateProps = {
 export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
   const head = homeTemplate?.head;
   const body = homeTemplate?.mainInfo;
+  const additional = body?.additional;
+  const mainInfoData = body?.mainInfo;
 
-    console.log('head', head)
-    console.log('body', body)
+  const additionalHeadline =
+    typeof additional?.headline === 'string' &&
+    additional.headline.trim().length > 0
+      ? additional.headline
+      : null;
+
+  const additionalHighlight =
+    typeof additional?.highlightText === 'string' &&
+    additional.highlightText.trim().length > 0
+      ? additional.highlightText
+      : null;
+
+  const additionalMainSectionTexts =
+    typeof additional?.mainSectionText === 'string' &&
+    additional.mainSectionText.trim().length > 0
+      ? [additional.mainSectionText]
+      : Array.isArray(additional?.mainSectionText)
+        ? additional.mainSectionText.filter(
+            (item): item is string =>
+              typeof item === 'string' && item.trim().length > 0,
+          )
+        : [];
+
+  const mainInfoHeadline =
+    typeof mainInfoData?.headline === 'string' &&
+    mainInfoData.headline.trim().length > 0
+      ? mainInfoData.headline
+      : null;
+
+  const awardsList = (
+    Array.isArray(mainInfoData?.awards)
+      ? mainInfoData.awards
+      : typeof mainInfoData?.awards === 'string'
+        ? [mainInfoData.awards]
+        : []
+  ).filter(
+    (item): item is string =>
+      typeof item === 'string' && item.trim().length > 0,
+  );
+
+  const leftColumnItems = (
+    Array.isArray(mainInfoData?.leftColumnHeadlines)
+      ? mainInfoData.leftColumnHeadlines
+      : []
+  ).filter(
+    (item): item is string =>
+      typeof item === 'string' && item.trim().length > 0,
+  );
+
+  const rightColumnTexts = (
+    Array.isArray(mainInfoData?.rightColumnText)
+      ? mainInfoData.rightColumnText
+      : typeof mainInfoData?.rightColumnText === 'string'
+        ? [mainInfoData.rightColumnText]
+        : typeof mainInfoData?.rightColumnText === 'number'
+          ? [String(mainInfoData.rightColumnText)]
+          : []
+  ).filter(
+    (item): item is string =>
+      typeof item === 'string' && item.trim().length > 0,
+  );
+
+  const hasLeftColumn = leftColumnItems.length > 0;
+  const hasRightColumn = rightColumnTexts.length > 0;
 
   return (
     <div className={styles.homePage}>
@@ -35,7 +100,9 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
                   slides.push({
                     src: node.sourceUrl,
                     alt:
-                      typeof node.altText === 'string' ? node.altText : undefined,
+                      typeof node.altText === 'string'
+                        ? node.altText
+                        : undefined,
                   });
 
                   return slides;
@@ -71,155 +138,135 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
           </div>
           <h3 className={styles.summaryTitle}>{head?.subtitle}</h3>
           <div className={styles.summaryBottom}>
-            <span className={styles.summaryTopicLabel}>
-              {head?.topicLabel}
-            </span>
-            <h1 className={styles.summaryTopicTitle}>
-              {head?.topicTitle}
-            </h1>
+            <span className={styles.summaryTopicLabel}>{head?.topicLabel}</span>
+            <h1 className={styles.summaryTopicTitle}>{head?.topicTitle}</h1>
           </div>
           <div className={styles.summaryLinks}>
-            {(Array.isArray(head?.cta) ? head.cta : head?.cta ? [head.cta] : [])
-              .flatMap((cta) => {
-                if (!cta) {
-                  return [];
-                }
+            {(Array.isArray(head?.cta)
+              ? head.cta
+              : head?.cta
+                ? [head.cta]
+                : []
+            ).flatMap((cta) => {
+              if (!cta) {
+                return [];
+              }
 
-                const href =
-                  typeof cta.href === 'string'
-                    ? cta.href
-                    : typeof cta.href?.url === 'string'
-                      ? cta.href.url
-                      : undefined;
-                const label =
-                  typeof cta.label === 'string'
-                    ? cta.label
-                    : typeof cta.href !== 'string' &&
-                        typeof cta.href?.title === 'string'
-                      ? cta.href.title
-                      : undefined;
+              const href =
+                typeof cta.href === 'string'
+                  ? cta.href
+                  : typeof cta.href?.url === 'string'
+                    ? cta.href.url
+                    : undefined;
+              const label =
+                typeof cta.label === 'string'
+                  ? cta.label
+                  : typeof cta.href !== 'string' &&
+                      typeof cta.href?.title === 'string'
+                    ? cta.href.title
+                    : undefined;
 
-                if (!href || !label) {
-                  return [];
-                }
+              if (!href || !label) {
+                return [];
+              }
 
-                const target = cta.targetBlanc ? '_blank' : undefined;
+              const target = cta.targetBlanc ? '_blank' : undefined;
 
-                return [
-                  <a
-                    key={`${href}-${label}`}
-                    className={styles.buttonLink}
-                    href={href}
-                    target={target}
-                    rel={target === '_blank' ? 'noopener noreferrer' : undefined}
-                  >
-                    {label}
-                  </a>,
-                ];
-              })}
+              return [
+                <a
+                  key={`${href}-${label}`}
+                  className={styles.buttonLink}
+                  href={href}
+                  target={target}
+                  rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+                >
+                  {label}
+                </a>,
+              ];
+            })}
           </div>
         </div>
       </section>
 
       <section className={styles.mainInfo}>
         <div className="container">
-          <div className={styles.mainInfoHeader}>
-            <h3>{body?.additional?.headline ?? ''}</h3>
-            <div className={styles.highlight}>
-              {typeof body?.additional?.highlightText === 'string'
-                ? renderWPContent(body.additional.highlightText)
-                : null}
+          {additionalHeadline ? (
+            <div className={styles.mainInfoHeader}>
+              <h3 className={styles.mainInfoHeadline}>
+                {renderWPContent(additionalHeadline)}
+              </h3>
             </div>
-          </div>
+          ) : null}
 
-          <div className={styles.mainInfoColumns}>
-            <div className={styles.programColumn}>
-              <ul className={styles.program}></ul>
-            </div>
-            <div className={styles.infoColumn}>
-              {(typeof body?.additional?.mainSectionText === 'string'
-                ? [body.additional.mainSectionText]
-                : []
-              ).map((paragraph, index) => {
-                const content = renderWPContent(paragraph);
-                if (!content) {
-                  return null;
-                }
-
-                return (
-                  <div key={index} className={styles.mainInfoParagraph}>
-                    {content}
+          {additionalHighlight || additionalMainSectionTexts.length > 0 ? (
+            <div className={styles.additionalColumns}>
+              {additionalHighlight ? (
+                <div className={styles.additionalHighlight}>
+                  <div className={styles.highlight}>
+                    {renderWPContent(additionalHighlight)}
                   </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className={styles.mainInfoAwardsBlock}>
-              <h2>{body?.mainInfo?.headline ?? ''}</h2>
-            <div className={styles.mainInfoAwards}>
-              {(Array.isArray(body?.mainInfo?.awards) ? body.mainInfo.awards : [])
-                .filter((value): value is string => typeof value === 'string')
-                .map((line, index) => {
-                  const content = renderWPContent(line);
-                  if (!content) {
-                    return null;
-                  }
-
-                  return (
-                    <span key={index}>
-                      {content}
-                    </span>
-                  );
-                })}
-            </div>
-          </div>
-
-          <div className={styles.mainInfoColumns}>
-            <div className={styles.infoColumn}>
-              {(Array.isArray(body?.mainInfo?.leftColumnHeadlines)
-                ? body.mainInfo.leftColumnHeadlines
-                : [])
-                .filter((value): value is string => typeof value === 'string')
-                .map((item, index) => {
-                  const content = renderWPContent(item);
-                  if (!content) {
-                    return null;
-                  }
-
-                  return (
-                    <div key={index} className={styles.mainInfoHeading}>
-                      {content}
+                </div>
+              ) : null}
+              {additionalMainSectionTexts.length > 0 ? (
+                <div className={styles.additionalText}>
+                  {additionalMainSectionTexts.map((paragraph, index) => (
+                    <div key={`additional-text-${index}`}>
+                      {renderWPContent(paragraph)}
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
+              ) : null}
             </div>
-            <div className={`${styles.infoColumn} ${styles.rightText}`}>
-              {(() => {
-                const source = body?.mainInfo?.rightColumnText;
-                const values = Array.isArray(source)
-                  ? source
-                  : typeof source === 'string' || typeof source === 'number'
-                    ? [source]
-                    : [];
+          ) : null}
 
-                return values
-                  .filter((value): value is string => typeof value === 'string')
-                  .map((item, index) => {
-                    const content = renderWPContent(item);
-                    if (!content) {
-                      return null;
-                    }
-
-                    return (
-                      <div key={index} className={styles.mainInfoParagraph}>
-                        {content}
-                      </div>
-                    );
-                  });
-              })()}
+          {mainInfoHeadline || awardsList.length > 0 ? (
+            <div className={styles.mainInfoAwardsSection}>
+              {mainInfoHeadline ? (
+                <h2 className={styles.mainInfoTitle}>
+                  {renderWPContent(mainInfoHeadline)}
+                </h2>
+              ) : null}
+              {awardsList.length > 0 ? (
+                <div className={styles.mainInfoAwards}>
+                  {awardsList.map((award, index) => (
+                    <span key={index}>{renderWPContent(award)}</span>
+                  ))}
+                </div>
+              ) : null}
             </div>
-          </div>
+          ) : null}
+
+          {hasLeftColumn || hasRightColumn ? (
+            <div
+              className={
+                hasLeftColumn && hasRightColumn
+                  ? styles.mainInfoColumns
+                  : styles.mainInfoSingleColumn
+              }
+            >
+              {hasLeftColumn ? (
+                <div className={styles.infoColumn}>
+                  {leftColumnItems.map((item, index) => (
+                    <div key={index} className={styles.mainInfoHeading}>
+                      {renderWPContent(item)}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+              {hasRightColumn ? (
+                <div className={`${styles.infoColumn} ${styles.rightText}`}>
+                  {rightColumnTexts.map((item, index) => (
+                    <div
+                      key={`right-${index}`}
+                      className={styles.mainInfoParagraph}
+                    >
+                      {renderWPContent(item)}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </div>
       </section>
 
@@ -230,46 +277,51 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
               ? body.partners
               : body?.partners
                 ? [body.partners]
-                : [])
-              .flatMap((partner) => {
-                if (!partner) {
-                  return [];
-                }
+                : []
+            ).flatMap((partner) => {
+              if (!partner) {
+                return [];
+              }
 
-                const image = partner.image?.node?.sourceUrl;
-                const name = partner.name;
+              const image = partner.image?.node?.sourceUrl;
+              const name = partner.name;
 
-                if (typeof image !== 'string' || typeof name !== 'string') {
-                  return [];
-                }
+              if (typeof image !== 'string' || typeof name !== 'string') {
+                return [];
+              }
 
-                const href =
-                  typeof partner.link === 'string' && partner.link.length > 0
-                    ? partner.link
-                    : '#';
+              const href =
+                typeof partner.link === 'string' && partner.link.length > 0
+                  ? partner.link
+                  : '#';
 
-                return [
-                  <div className={styles.partnerCard} key={name}>
-                    <a
-                      className={styles.partnerLink}
-                      href={href}
-                      target="_blank"
-                      rel="noreferrer"
-                      style={{ backgroundImage: `url(${image})` }}
-                      aria-label={name}
-                    >
-                      {name}
-                    </a>
-                  </div>,
-                ];
-              })}
+              return [
+                <div className={styles.partnerCard} key={name}>
+                  <a
+                    className={styles.partnerLink}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ backgroundImage: `url(${image})` }}
+                    aria-label={name}
+                  >
+                    {name}
+                  </a>
+                </div>,
+              ];
+            })}
           </div>
         </div>
       </section>
 
       <section className={styles.exhibitions}>
         <div className="container">
-          <h2>{body?.exhibitions?.title}</h2>
+          <h2>
+            {typeof body?.exhibitions?.title === 'string' &&
+            body.exhibitions.title.trim().length > 0
+              ? renderWPContent(body.exhibitions.title)
+              : (body?.exhibitions?.title ?? '')}
+          </h2>
           <div className={styles.allWrapper}>
             {(() => {
               const imageNode = body?.exhibitions?.image1?.node;
@@ -330,147 +382,34 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
               }}
             />
             <div className={styles.photoBookText}>
-                <h3>{body?.photobook?.title ?? ''}</h3>
+              <h3>
+                {typeof body?.photobook?.title === 'string' &&
+                body.photobook.title.trim().length > 0
+                  ? renderWPContent(body.photobook.title)
+                  : (body?.photobook?.title ?? '')}
+              </h3>
             </div>
           </div>
         </div>
       </section>
 
       <section className={styles.pastEditionsSection}>
-          <div className="container">
-              <h2 className={styles.pastEditionsTitle}>
-                  {body?.pastEditions?.title}
-              </h2>
+        <div className="container">
+          <h2 className={styles.pastEditionsTitle}>
+            {body?.pastEditions?.title}
+          </h2>
 
-              <h3>{body?.pastEditions?.subtitle ?? ''}</h3>
+          <h3 className={styles.pastEditionsSubtitle}>
+            {typeof body?.pastEditions?.subtitle === 'string' &&
+            body.pastEditions.subtitle.trim().length > 0
+              ? renderWPContent(body.pastEditions.subtitle)
+              : (body?.pastEditions?.subtitle ?? '')}
+          </h3>
 
-              <div>
-                  {(Array.isArray(body?.pastEditions?.desktopColumns)
-                      ? body.pastEditions.desktopColumns
-                      : body?.pastEditions?.desktopColumns
-                          ? [body.pastEditions.desktopColumns]
-                          : [])
-                      .map((column) => {
-                          if (!column) {
-                              return [];
-                          }
-
-                          const leftColumn = column.leftColumn;
-                          return (Array.isArray(leftColumn)
-                                  ? leftColumn
-                                  : leftColumn
-                                      ? [leftColumn]
-                                      : []
-                          )
-                              .map((edition) => {
-                                  if (!edition) {
-                                      return null;
-                                  }
-
-                                  const image = edition.image?.node?.sourceUrl;
-                                  const year =
-                                      typeof edition.year === 'string' ? edition.year : null;
-                                  const href =
-                                      typeof edition.link === 'string' && edition.link.length > 0
-                                          ? edition.link
-                                          : '#';
-
-                                  if (typeof image !== 'string' || !year) {
-                                      return null;
-                                  }
-
-                                  return {
-                                      image,
-                                      year,
-                                      href,
-                                  };
-                              })
-                              .filter(
-                                  (
-                                      edition,
-                                  ): edition is { image: string; year: string; href: string } =>
-                                      edition !== null,
-                              );
-                      })
-                      .filter((column) => column.length > 0)
-                      .map((column, columnIndex) => (
-                          <ul key={columnIndex} className={styles.desktopList}>
-                              {column.map((edition) => (
-                                  <li
-                                      key={edition.year}
-                                      className={styles.desktopListItem}
-                                      style={{backgroundImage: `url(${edition.image})`}}
-                                  >
-                                      <a href={edition.href}>
-                                          <span>{edition.year}</span>
-                                      </a>
-                                  </li>
-                              ))}
-                          </ul>
-                      ))}
-              </div>
-
-              <ul className={styles.mobileList}>
-                  {(Array.isArray(body?.pastEditions?.desktopColumns)
-                      ? body.pastEditions.desktopColumns
-                      : body?.pastEditions?.desktopColumns
-                          ? [body.pastEditions.desktopColumns]
-                          : [])
-                      .flatMap((column) => {
-                          if (!column) {
-                              return [];
-                          }
-
-                          const leftColumn = column.leftColumn;
-                          return (Array.isArray(leftColumn)
-                                  ? leftColumn
-                                  : leftColumn
-                                      ? [leftColumn]
-                                      : []
-                          )
-                              .map((edition) => {
-                                  if (!edition) {
-                                      return null;
-                                  }
-
-                                  const image = edition.image?.node?.sourceUrl;
-                                  const year =
-                                      typeof edition.year === 'string' ? edition.year : null;
-                                  const href =
-                                      typeof edition.link === 'string' && edition.link.length > 0
-                                          ? edition.link
-                                          : '#';
-
-                                  if (typeof image !== 'string' || !year) {
-                                      return null;
-                                  }
-
-                                  return {
-                                      image,
-                                      year,
-                                      href,
-                                  };
-                              })
-                              .filter(
-                                  (
-                                      edition,
-                                  ): edition is { image: string; year: string; href: string } =>
-                                      edition !== null,
-                              );
-                      })
-                      .map((edition) => (
-                          <li
-                              key={`mobile-${edition.year}`}
-                              className={styles.mobileListItem}
-                              style={{backgroundImage: `url(${edition.image})`}}
-                          >
-                              <a href={edition.href}>
-                                  <span>{edition.year}</span>
-                              </a>
-                          </li>
-                      ))}
-              </ul>
-          </div>
+          <PastEditionsHome
+            desktopColumns={body?.pastEditions?.desktopColumns}
+          />
+        </div>
       </section>
     </div>
   );
