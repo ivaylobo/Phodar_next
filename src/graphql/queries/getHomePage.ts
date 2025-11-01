@@ -1,4 +1,4 @@
-import { fetchGraphQL } from '../client';
+import { fetchGraphQL } from "../client";
 
 type Maybe<T> = T | null | undefined;
 
@@ -53,9 +53,13 @@ export type HomeTemplateMainInfoBlock = {
     rightColumnText?: Maybe<string | Array<Maybe<string>>>;
 };
 
+/** ✅ Актуализиран тип според новите imgFirst–Fourth */
 export type HomeTemplateExhibitions = {
-    image1?: Maybe<ImageField>;
     title?: Maybe<string>;
+    imgFirst?: Maybe<ImageField>;
+    imgSecond?: Maybe<ImageField>;
+    imgThird?: Maybe<ImageField>;
+    imgFourth?: Maybe<ImageField>;
 };
 
 export type HomeTemplatePartner = {
@@ -129,151 +133,90 @@ export type HomePageQueryResult = {
 };
 
 const GET_HOME_PAGE_QUERY = `
-  query GetHomePage($slug: ID!, $language: LanguageCodeEnum!) {
-    page(id: $slug, idType: URI) {
-      id
-      title
-      slug
-      content
-      uri
-      template {
-        template
-        homeTemplate {
-          head: headSection {
-            cta {
-              label: ctaLabel
-              targetBlanc
-              href
-            }
-            durationSeconds
-            editionLabel
-            editionNumber
-            slides {
-              image {
-                node {
-                  altText
-                  sourceUrl
-                }
+  fragment HomePageTemplateFields on Page {
+    id
+    title
+    slug
+    content
+    uri
+    template {
+      template
+      homeTemplate {
+        head: headSection {
+          cta {
+            label: ctaLabel
+            targetBlanc
+            href
+          }
+          durationSeconds
+          editionLabel
+          editionNumber
+          slides {
+            image {
+              node {
+                altText
+                sourceUrl
               }
             }
-            subtitle
-            topicLabel
-            topicTitle
-            transitionSeconds
+          }
+          subtitle
+          topicLabel
+          topicTitle
+          transitionSeconds
+        }
+        mainInfo {
+          additional {
+            headline
+            highlightText
+            mainSectionText
+            shouldShow
+          }
+          exhibitions {
+            title
+            imgFirst {
+              node {
+                altText
+                sourceUrl
+              }
+            }
+            imgSecond {
+              node {
+                altText
+                sourceUrl
+              }
+            }
+            imgThird {
+              node {
+                altText
+                sourceUrl
+              }
+            }
+            imgFourth {
+              node {
+                altText
+                sourceUrl
+              }
+            }
           }
           mainInfo {
-            additional {
-              headline
-              highlightText
-              mainSectionText
-              shouldShow
-            }
-            exhibitions {
-              image1 {
-                node {
-                  altText
-                  sourceUrl
-                }
-              }
-              title
-            }
-            mainInfo {
-              awards
-              headline
-              leftColumnHeadlines
-              rightColumnText
-            }
-            partners {
-              image {
-                node {
-                  altText
-                  sourceUrl
-                }
-              }
-              link
-              name
-            }
-            pastEditions {
-              desktopColumns {
-                leftColumn {
-                  image {
-                    node {
-                      altText
-                      sourceUrl
-                    }
-                  }
-                  link
-                  year
-                }
-              }
-              subtitle
-              title
-            }
-            photobook {
-              title
-              image {
-                node {
-                  altText
-                  sourceUrl
-                }
-              }
-            }
+            awards
+            headline
+            leftColumnHeadlines
+            rightColumnText
           }
-        }
-      }
-      translation(language: $language) {
-        id
-        title
-        slug
-        uri
-        template {
-          template
-            homeTemplate {
-              head: headSection {
-                cta {
-                  label: ctaLabel
-                  targetBlanc
-                  href
-                }
-              durationSeconds
-              editionLabel
-              editionNumber
-              slides {
-                image {
-                  node {
-                    altText
-                    sourceUrl
-                  }
-                }
+          partners {
+            image {
+              node {
+                altText
+                sourceUrl
               }
-              subtitle
-              topicLabel
-              topicTitle
-              transitionSeconds
             }
-            mainInfo {
-              additional {
-                headline
-                highlightText
-                mainSectionText
-                shouldShow
-              }
-              exhibitions {
-                image1 {
-                  node {
-                    altText
-                    sourceUrl
-                  }
-                }
-                title
-              }
-              mainInfo {
-                awards
-                headline
-                leftColumnHeadlines
-                rightColumnText
-              }
-              partners {
+            link
+            name
+          }
+          pastEditions {
+            desktopColumns {
+              leftColumn {
                 image {
                   node {
                     altText
@@ -281,36 +224,31 @@ const GET_HOME_PAGE_QUERY = `
                   }
                 }
                 link
-                name
+                year
               }
-              pastEditions {
-                desktopColumns {
-                  leftColumn {
-                    image {
-                      node {
-                        altText
-                        sourceUrl
-                      }
-                    }
-                    link
-                    year
-                  }
-                }
-                subtitle
-                title
-              }
-              photobook {
-                title
-                image {
-                  node {
-                    altText
-                    sourceUrl
-                  }
-                }
+            }
+            subtitle
+            title
+          }
+          photobook {
+            title
+            image {
+              node {
+                altText
+                sourceUrl
               }
             }
           }
         }
+      }
+    }
+  }
+
+  query GetHomePage($slug: ID!, $language: LanguageCodeEnum!) {
+    page(id: $slug, idType: URI) {
+      ...HomePageTemplateFields
+      translation(language: $language) {
+        ...HomePageTemplateFields
       }
     }
   }
