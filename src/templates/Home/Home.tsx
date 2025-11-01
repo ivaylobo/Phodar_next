@@ -11,6 +11,9 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
   const head = homeTemplate?.head;
   const body = homeTemplate?.mainInfo;
 
+    console.log('head', head)
+    console.log('body', body)
+
   return (
     <div className={styles.homePage}>
       <section className={styles.summary}>
@@ -120,12 +123,7 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
       <section className={styles.mainInfo}>
         <div className="container">
           <div className={styles.mainInfoHeader}>
-            <h3
-              className={styles.mainInfoHeadline}
-              dangerouslySetInnerHTML={{
-                __html: body?.additional?.headline ?? '',
-              }}
-            />
+              <h3>{body?.additional?.headline ?? ''}</h3>
             <p
               className={styles.highlight}
               dangerouslySetInnerHTML={{
@@ -158,12 +156,7 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
           </div>
 
           <div className={styles.mainInfoAwardsBlock}>
-            <h2
-              className={styles.mainInfoTitle}
-              dangerouslySetInnerHTML={{
-                __html: body?.mainInfo?.headline ?? '',
-              }}
-            />
+              <h2>{body?.mainInfo?.headline ?? ''}</h2>
             <div className={styles.mainInfoAwards}>
               {(Array.isArray(body?.mainInfo?.awards) ? body.mainInfo.awards : [])
                 .filter((value): value is string => typeof value === 'string')
@@ -327,155 +320,147 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
               }}
             />
             <div className={styles.photoBookText}>
-              <h3
-                dangerouslySetInnerHTML={{
-                  __html: body?.photobook?.title ?? '',
-                }}
-              />
+                <h3>{body?.photobook?.title ?? ''}</h3>
             </div>
           </div>
         </div>
       </section>
 
       <section className={styles.pastEditionsSection}>
-        <div className="container">
-          <h2 className={styles.pastEditionsTitle}>
-            {body?.pastEditions?.title}
-          </h2>
-          <h3
-            className={styles.pastEditionsSubtitle}
-            dangerouslySetInnerHTML={{
-              __html: body?.pastEditions?.subtitle ?? '',
-            }}
-          />
+          <div className="container">
+              <h2 className={styles.pastEditionsTitle}>
+                  {body?.pastEditions?.title}
+              </h2>
 
-          <div>
-            {(Array.isArray(body?.pastEditions?.desktopColumns)
-              ? body.pastEditions.desktopColumns
-              : body?.pastEditions?.desktopColumns
-                ? [body.pastEditions.desktopColumns]
-                : [])
-              .map((column) => {
-                if (!column) {
-                  return [];
-                }
+              <h3>{body?.pastEditions?.subtitle ?? ''}</h3>
 
-                const leftColumn = column.leftColumn;
-                return (Array.isArray(leftColumn)
-                  ? leftColumn
-                  : leftColumn
-                    ? [leftColumn]
-                    : []
-                )
-                  .map((edition) => {
-                    if (!edition) {
-                      return null;
-                    }
+              <div>
+                  {(Array.isArray(body?.pastEditions?.desktopColumns)
+                      ? body.pastEditions.desktopColumns
+                      : body?.pastEditions?.desktopColumns
+                          ? [body.pastEditions.desktopColumns]
+                          : [])
+                      .map((column) => {
+                          if (!column) {
+                              return [];
+                          }
 
-                    const image = edition.image?.node?.sourceUrl;
-                    const year =
-                      typeof edition.year === 'string' ? edition.year : null;
-                    const href =
-                      typeof edition.link === 'string' && edition.link.length > 0
-                        ? edition.link
-                        : '#';
+                          const leftColumn = column.leftColumn;
+                          return (Array.isArray(leftColumn)
+                                  ? leftColumn
+                                  : leftColumn
+                                      ? [leftColumn]
+                                      : []
+                          )
+                              .map((edition) => {
+                                  if (!edition) {
+                                      return null;
+                                  }
 
-                    if (typeof image !== 'string' || !year) {
-                      return null;
-                    }
+                                  const image = edition.image?.node?.sourceUrl;
+                                  const year =
+                                      typeof edition.year === 'string' ? edition.year : null;
+                                  const href =
+                                      typeof edition.link === 'string' && edition.link.length > 0
+                                          ? edition.link
+                                          : '#';
 
-                    return {
-                      image,
-                      year,
-                      href,
-                    };
-                  })
-                  .filter(
-                    (
-                      edition,
-                    ): edition is { image: string; year: string; href: string } =>
-                      edition !== null,
-                  );
-              })
-              .filter((column) => column.length > 0)
-              .map((column, columnIndex) => (
-                <ul key={columnIndex} className={styles.desktopList}>
-                  {column.map((edition) => (
-                    <li
-                      key={edition.year}
-                      className={styles.desktopListItem}
-                      style={{ backgroundImage: `url(${edition.image})` }}
-                    >
-                      <a href={edition.href}>
-                        <span>{edition.year}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              ))}
+                                  if (typeof image !== 'string' || !year) {
+                                      return null;
+                                  }
+
+                                  return {
+                                      image,
+                                      year,
+                                      href,
+                                  };
+                              })
+                              .filter(
+                                  (
+                                      edition,
+                                  ): edition is { image: string; year: string; href: string } =>
+                                      edition !== null,
+                              );
+                      })
+                      .filter((column) => column.length > 0)
+                      .map((column, columnIndex) => (
+                          <ul key={columnIndex} className={styles.desktopList}>
+                              {column.map((edition) => (
+                                  <li
+                                      key={edition.year}
+                                      className={styles.desktopListItem}
+                                      style={{backgroundImage: `url(${edition.image})`}}
+                                  >
+                                      <a href={edition.href}>
+                                          <span>{edition.year}</span>
+                                      </a>
+                                  </li>
+                              ))}
+                          </ul>
+                      ))}
+              </div>
+
+              <ul className={styles.mobileList}>
+                  {(Array.isArray(body?.pastEditions?.desktopColumns)
+                      ? body.pastEditions.desktopColumns
+                      : body?.pastEditions?.desktopColumns
+                          ? [body.pastEditions.desktopColumns]
+                          : [])
+                      .flatMap((column) => {
+                          if (!column) {
+                              return [];
+                          }
+
+                          const leftColumn = column.leftColumn;
+                          return (Array.isArray(leftColumn)
+                                  ? leftColumn
+                                  : leftColumn
+                                      ? [leftColumn]
+                                      : []
+                          )
+                              .map((edition) => {
+                                  if (!edition) {
+                                      return null;
+                                  }
+
+                                  const image = edition.image?.node?.sourceUrl;
+                                  const year =
+                                      typeof edition.year === 'string' ? edition.year : null;
+                                  const href =
+                                      typeof edition.link === 'string' && edition.link.length > 0
+                                          ? edition.link
+                                          : '#';
+
+                                  if (typeof image !== 'string' || !year) {
+                                      return null;
+                                  }
+
+                                  return {
+                                      image,
+                                      year,
+                                      href,
+                                  };
+                              })
+                              .filter(
+                                  (
+                                      edition,
+                                  ): edition is { image: string; year: string; href: string } =>
+                                      edition !== null,
+                              );
+                      })
+                      .map((edition) => (
+                          <li
+                              key={`mobile-${edition.year}`}
+                              className={styles.mobileListItem}
+                              style={{backgroundImage: `url(${edition.image})`}}
+                          >
+                              <a href={edition.href}>
+                                  <span>{edition.year}</span>
+                              </a>
+                          </li>
+                      ))}
+              </ul>
           </div>
-
-          <ul className={styles.mobileList}>
-            {(Array.isArray(body?.pastEditions?.desktopColumns)
-              ? body.pastEditions.desktopColumns
-              : body?.pastEditions?.desktopColumns
-                ? [body.pastEditions.desktopColumns]
-                : [])
-              .flatMap((column) => {
-                if (!column) {
-                  return [];
-                }
-
-                const leftColumn = column.leftColumn;
-                return (Array.isArray(leftColumn)
-                  ? leftColumn
-                  : leftColumn
-                    ? [leftColumn]
-                    : []
-                )
-                  .map((edition) => {
-                    if (!edition) {
-                      return null;
-                    }
-
-                    const image = edition.image?.node?.sourceUrl;
-                    const year =
-                      typeof edition.year === 'string' ? edition.year : null;
-                    const href =
-                      typeof edition.link === 'string' && edition.link.length > 0
-                        ? edition.link
-                        : '#';
-
-                    if (typeof image !== 'string' || !year) {
-                      return null;
-                    }
-
-                    return {
-                      image,
-                      year,
-                      href,
-                    };
-                  })
-                  .filter(
-                    (
-                      edition,
-                    ): edition is { image: string; year: string; href: string } =>
-                      edition !== null,
-                  );
-              })
-              .map((edition) => (
-                <li
-                  key={`mobile-${edition.year}`}
-                  className={styles.mobileListItem}
-                  style={{ backgroundImage: `url(${edition.image})` }}
-                >
-                  <a href={edition.href}>
-                    <span>{edition.year}</span>
-                  </a>
-                </li>
-              ))}
-          </ul>
-        </div>
       </section>
     </div>
   );
