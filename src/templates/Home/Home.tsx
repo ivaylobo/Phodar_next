@@ -1,43 +1,10 @@
-import type {
-  HomeTemplateCta,
-  HomeTemplateData as WordPressHomeTemplateData,
-  HomeTemplatePartner,
-  HomeTemplatePastEditionColumn,
-  HomeTemplatePastEditionColumnEntry,
-  HomeTemplateSlide,
-} from '@/graphql/queries/getHomePage';
+import type { HomeTemplateData as WordPressHomeTemplateData } from '@/graphql/queries/getHomePage';
 import BackgroundSlideshow from '@/components/BackgroundSlideshow/BackgroundSlideshow';
 import type { BackgroundSlide } from '@/components/BackgroundSlideshow/BackgroundSlideshow';
 import styles from './Home.module.css';
 
 type HomeTemplateProps = {
   homeTemplate?: WordPressHomeTemplateData | null;
-};
-
-type Maybe<T> = T | null | undefined;
-
-const toArray = <T,>(value?: Maybe<T | Array<Maybe<T>>>): T[] => {
-  if (Array.isArray(value)) {
-    return value.filter((item): item is T => item !== null && item !== undefined);
-  }
-
-  if (value === null || value === undefined) {
-    return [];
-  }
-
-  return [value];
-};
-
-const asDisplayString = (value: unknown): string => {
-  if (typeof value === 'string') {
-    return value;
-  }
-
-  if (typeof value === 'number') {
-    return String(value);
-  }
-
-  return '';
 };
 
 export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
@@ -49,22 +16,28 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
       <section className={styles.summary}>
         <BackgroundSlideshow
           className={styles.backgroundSlider}
-          images={toArray<HomeTemplateSlide>(head?.slides).reduce<BackgroundSlide[]>(
-            (slides, current) => {
-              const node = current.image?.node;
-              if (typeof node?.sourceUrl !== 'string') {
-                return slides;
-              }
+          images={
+            Array.isArray(head?.slides)
+              ? head.slides.reduce<BackgroundSlide[]>((slides, current) => {
+                  if (!current) {
+                    return slides;
+                  }
 
-              slides.push({
-                src: node.sourceUrl,
-                alt: typeof node.altText === 'string' ? node.altText : undefined,
-              });
+                  const node = current.image?.node;
+                  if (typeof node?.sourceUrl !== 'string') {
+                    return slides;
+                  }
 
-              return slides;
-            },
-            [],
-          )}
+                  slides.push({
+                    src: node.sourceUrl,
+                    alt:
+                      typeof node.altText === 'string' ? node.altText : undefined,
+                  });
+
+                  return slides;
+                }, [])
+              : []
+          }
           durationSeconds={
             typeof head?.durationSeconds === 'number'
               ? head.durationSeconds
@@ -81,42 +54,46 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
         <div className={`${styles.summaryContainer} container`}>
           <div className={styles.summaryTop}>
             <h4 className={styles.summaryEditionNumber}>
-              {asDisplayString(head?.editionNumber)}
+              {head?.editionNumber}
             </h4>
             <p
               className={styles.summaryEditionLabel}
-              aria-label={asDisplayString(head?.editionLabel)}
+              aria-label={head?.editionLabel ?? undefined}
             >
               <span className={styles.summaryEditionLabelSmall}>
-                {asDisplayString(head?.editionLabel)}
+                {head?.editionLabel}
               </span>
             </p>
           </div>
-          <h3 className={styles.summaryTitle}>{asDisplayString(head?.subtitle)}</h3>
+          <h3 className={styles.summaryTitle}>{head?.subtitle}</h3>
           <div className={styles.summaryBottom}>
             <span className={styles.summaryTopicLabel}>
-              {asDisplayString(head?.topicLabel)}
+              {head?.topicLabel}
             </span>
             <h1 className={styles.summaryTopicTitle}>
-              {asDisplayString(head?.topicTitle)}
+              {head?.topicTitle}
             </h1>
           </div>
           <div className={styles.summaryLinks}>
-            {toArray<HomeTemplateCta>(head?.cta)
+            {(Array.isArray(head?.cta) ? head.cta : head?.cta ? [head.cta] : [])
               .flatMap((cta) => {
+                if (!cta) {
+                  return [];
+                }
+
                 const href =
                   typeof cta.href === 'string'
                     ? cta.href
                     : typeof cta.href?.url === 'string'
                       ? cta.href.url
-                      : '';
+                      : undefined;
                 const label =
                   typeof cta.label === 'string'
                     ? cta.label
                     : typeof cta.href !== 'string' &&
                         typeof cta.href?.title === 'string'
                       ? cta.href.title
-                      : '';
+                      : undefined;
 
                 if (!href || !label) {
                   return [];
@@ -146,7 +123,7 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
             <h3
               className={styles.mainInfoHeadline}
               dangerouslySetInnerHTML={{
-                __html: asDisplayString(body?.additional?.headline),
+                __html: body?.additional?.headline ?? '',
               }}
             />
             <p
@@ -173,7 +150,7 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
                   key={`${paragraph}-${index}`}
                   className={styles.mainInfoParagraph}
                   dangerouslySetInnerHTML={{
-                    __html: asDisplayString(paragraph),
+                    __html: paragraph,
                   }}
                 />
               ))}
@@ -184,7 +161,7 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
             <h2
               className={styles.mainInfoTitle}
               dangerouslySetInnerHTML={{
-                __html: asDisplayString(body?.mainInfo?.headline),
+                __html: body?.mainInfo?.headline ?? '',
               }}
             />
             <div className={styles.mainInfoAwards}>
@@ -194,7 +171,7 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
                   <span
                     key={`${line}-${index}`}
                     dangerouslySetInnerHTML={{
-                      __html: asDisplayString(line),
+                      __html: line,
                     }}
                   />
                 ))}
@@ -212,7 +189,7 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
                     key={`${item}-${index}`}
                     className={styles.mainInfoHeading}
                     dangerouslySetInnerHTML={{
-                      __html: asDisplayString(item),
+                      __html: item,
                     }}
                   />
                 ))}
@@ -229,13 +206,13 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
                 return values
                   .filter((value): value is string => typeof value === 'string')
                   .map((item, index) => (
-                    <div
-                      key={`${item}-${index}`}
-                      className={styles.mainInfoParagraph}
-                      dangerouslySetInnerHTML={{
-                        __html: asDisplayString(item),
-                      }}
-                    />
+                  <div
+                    key={`${item}-${index}`}
+                    className={styles.mainInfoParagraph}
+                    dangerouslySetInnerHTML={{
+                      __html: item,
+                    }}
+                  />
                   ));
               })()}
             </div>
@@ -246,8 +223,16 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
       <section className={styles.logoSofia}>
         <div className={`container ${styles.partners}`}>
           <div className={styles.partnerGrid}>
-            {toArray<HomeTemplatePartner>(body?.partners)
+            {(Array.isArray(body?.partners)
+              ? body.partners
+              : body?.partners
+                ? [body.partners]
+                : [])
               .flatMap((partner) => {
+                if (!partner) {
+                  return [];
+                }
+
                 const image = partner.image?.node?.sourceUrl;
                 const name = partner.name;
 
@@ -281,7 +266,7 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
 
       <section className={styles.exhibitions}>
         <div className="container">
-          <h2>{asDisplayString(body?.exhibitions?.title)}</h2>
+          <h2>{body?.exhibitions?.title}</h2>
           <div className={styles.allWrapper}>
             {(() => {
               const imageNode = body?.exhibitions?.image1?.node;
@@ -344,7 +329,7 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
             <div className={styles.photoBookText}>
               <h3
                 dangerouslySetInnerHTML={{
-                  __html: asDisplayString(body?.photobook?.title),
+                  __html: body?.photobook?.title ?? '',
                 }}
               />
             </div>
@@ -355,22 +340,38 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
       <section className={styles.pastEditionsSection}>
         <div className="container">
           <h2 className={styles.pastEditionsTitle}>
-            {asDisplayString(body?.pastEditions?.title)}
+            {body?.pastEditions?.title}
           </h2>
           <h3
             className={styles.pastEditionsSubtitle}
             dangerouslySetInnerHTML={{
-              __html: asDisplayString(body?.pastEditions?.subtitle),
+              __html: body?.pastEditions?.subtitle ?? '',
             }}
           />
 
           <div>
-            {toArray<HomeTemplatePastEditionColumnEntry>(
-              body?.pastEditions?.desktopColumns,
-            )
-              .map((column) =>
-                toArray<HomeTemplatePastEditionColumn>(column.leftColumn)
+            {(Array.isArray(body?.pastEditions?.desktopColumns)
+              ? body.pastEditions.desktopColumns
+              : body?.pastEditions?.desktopColumns
+                ? [body.pastEditions.desktopColumns]
+                : [])
+              .map((column) => {
+                if (!column) {
+                  return [];
+                }
+
+                const leftColumn = column.leftColumn;
+                return (Array.isArray(leftColumn)
+                  ? leftColumn
+                  : leftColumn
+                    ? [leftColumn]
+                    : []
+                )
                   .map((edition) => {
+                    if (!edition) {
+                      return null;
+                    }
+
                     const image = edition.image?.node?.sourceUrl;
                     const year =
                       typeof edition.year === 'string' ? edition.year : null;
@@ -385,7 +386,7 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
 
                     return {
                       image,
-                      year: asDisplayString(year),
+                      year,
                       href,
                     };
                   })
@@ -394,8 +395,8 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
                       edition,
                     ): edition is { image: string; year: string; href: string } =>
                       edition !== null,
-                  ),
-              )
+                  );
+              })
               .filter((column) => column.length > 0)
               .map((column, columnIndex) => (
                 <ul key={columnIndex} className={styles.desktopList}>
@@ -415,12 +416,28 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
           </div>
 
           <ul className={styles.mobileList}>
-            {toArray<HomeTemplatePastEditionColumnEntry>(
-              body?.pastEditions?.desktopColumns,
-            )
-              .flatMap((column) =>
-                toArray<HomeTemplatePastEditionColumn>(column.leftColumn)
+            {(Array.isArray(body?.pastEditions?.desktopColumns)
+              ? body.pastEditions.desktopColumns
+              : body?.pastEditions?.desktopColumns
+                ? [body.pastEditions.desktopColumns]
+                : [])
+              .flatMap((column) => {
+                if (!column) {
+                  return [];
+                }
+
+                const leftColumn = column.leftColumn;
+                return (Array.isArray(leftColumn)
+                  ? leftColumn
+                  : leftColumn
+                    ? [leftColumn]
+                    : []
+                )
                   .map((edition) => {
+                    if (!edition) {
+                      return null;
+                    }
+
                     const image = edition.image?.node?.sourceUrl;
                     const year =
                       typeof edition.year === 'string' ? edition.year : null;
@@ -435,7 +452,7 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
 
                     return {
                       image,
-                      year: asDisplayString(year),
+                      year,
                       href,
                     };
                   })
@@ -444,8 +461,8 @@ export default function HomeTemplate({ homeTemplate }: HomeTemplateProps) {
                       edition,
                     ): edition is { image: string; year: string; href: string } =>
                       edition !== null,
-                  ),
-              )
+                  );
+              })
               .map((edition) => (
                 <li
                   key={`mobile-${edition.year}`}
