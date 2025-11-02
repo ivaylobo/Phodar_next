@@ -52,20 +52,43 @@ function parseStyleAttribute(styleString?: string): CSSProperties | undefined {
 }
 
 /** Normalize HTML attributes so React can understand them */
-function normalizeAttributes(attribs?: Record<string, string>): Record<string, any> | undefined {
+function normalizeAttributes(
+    attribs?: Record<string, string>
+): Record<string, string | number | boolean | CSSProperties> | undefined {
   if (!attribs) return undefined;
+
   const { style, ...rest } = attribs;
   const parsedStyle = parseStyleAttribute(style);
-  return parsedStyle ? { ...rest, style: parsedStyle } : rest;
+
+  const normalized: Record<string, string | number | boolean | CSSProperties> = {};
+
+  for (const [key, value] of Object.entries(rest)) {
+    switch (key) {
+      case "class":
+        normalized.className = value;
+        break;
+      case "for":
+        normalized.htmlFor = value;
+        break;
+      default:
+        normalized[key] = value;
+    }
+  }
+
+  if (parsedStyle) normalized.style = parsedStyle;
+
+  return normalized;
 }
 
-const createElementWithChildren: ElementHandler = (node, options) =>
-    createElement(
+
+const createElementWithChildren: ElementHandler = (node, options) =>{
+
+  return  createElement(
         node.name,
         normalizeAttributes(node.attribs),
         domToReact(node.children as DOMNode[], options),
     );
-
+}
 const createVoidElement: ElementHandler = (node) =>
     createElement(node.name, normalizeAttributes(node.attribs));
 
