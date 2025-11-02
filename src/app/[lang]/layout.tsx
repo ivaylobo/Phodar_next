@@ -2,6 +2,7 @@ import type {ReactNode} from 'react';
 import Header from '@/components/Header/Header';
 import type {SupportedLanguage} from '@/store/slices/languageSlice';
 import {getMenu} from "@/graphql/queries/getMenu";
+import Footer from "@/components/Footer/Footer";
 
 type LangLayoutProps = {
     children: ReactNode;
@@ -21,6 +22,7 @@ export default async function LangLayout({children, params}: LangLayoutProps) {
         <div className="wrap">
             <Header currentLang={lang} menu={menu}/>
             <main>{children}</main>
+            <Footer />
         </div>
     );
 }

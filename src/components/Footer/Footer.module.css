@@ -1,0 +1,77 @@
+.footer {
+    background: #000;
+    padding: 80px 0;
+}
+
+.footerWrap {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.paragraph {
+    font-size: 14px;
+    color: #6b6b6b;
+    max-width: 350px;
+    margin: 0;
+}
+
+.social {
+    width: 90px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.facebook {
+    width: 10px;
+    height: 20px;
+    background: url("../../assets/images/facebook.png") center center no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    background-size: contain;
+    margin: 0 10px;
+}
+
+.heading {
+    font-family: "Conv_Intro", sans-serif;
+    color: #fff;
+    font-size: 14px;
+}
+
+.copy {
+    color: #797979;
+    font-size: 14px;
+    margin-top: -20px;
+}
+
+.darina {
+    display: inline-block;
+    vertical-align: baseline;
+    width: 19px;
+    height: 20px;
+    background: url("../../assets/images/darina.png") center center no-repeat;
+    background-size: contain;
+    margin-left: 5px;
+}
+
+@media all and (max-width: 980px) {
+    .footerWrap {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .social {
+        padding: 10px 0;
+    }
+
+    .copy {
+        margin-top: 20px;
+    }
+}
