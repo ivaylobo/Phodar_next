@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useState, useEffect, Fragment, useCallback, useRef } from "react";
 import Galleries, { Author } from "../Galleries";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -128,10 +128,9 @@ const GalleriesList: React.FC<Props> = ({ edition, lang = "en", onAuthorNavigate
       .slice()
       .sort((a, b) => a.level - b.level)
       .forEach((author) => {
-        const hasUrls = author.urls && author.urls.length > 0;
-        const isWinner = !!author.award && hasUrls;
-        const isParticipant = !author.award && author.level <= 10 && hasUrls;
-        const isGuest = !author.award && author.level > 10 && hasUrls;
+        const isWinner = !!author.award;
+        const isGuest = author.guest;
+        const isParticipant = !author.award && !isGuest;
 
         if (isWinner) winnersArr.push(author);
         else if (isParticipant) participantsArr.push(author);
@@ -276,3 +275,4 @@ const GalleriesList: React.FC<Props> = ({ edition, lang = "en", onAuthorNavigate
 };
 
 export default GalleriesList;
+

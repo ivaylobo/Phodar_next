@@ -1,4 +1,4 @@
-export type GalleryImageTuple = [string, string];
+﻿export type GalleryImageTuple = [string, string];
 
 export type Author = {
     name: string;
@@ -11,6 +11,7 @@ export type Author = {
     urls: string[];
     urlsMedium: string[];
     urlsThumb: string[];
+	guest?: boolean;
 };
 
 export type GalleryEdition = {
@@ -781,7 +782,7 @@ const galleryObj: GalleryEdition[] = [
 				urlsThumb: [
 					"galleriesThumb/2003/Pravdoliub_Ivanov/Never_more_pessimism_Pravdoliub_Ivanov.jpg"
 				]
-			},
+				, guest: true},
 			{
 				name: "Venceslav Damyanov",
 				text: "",
@@ -1029,7 +1030,7 @@ const galleryObj: GalleryEdition[] = [
 				urlsThumb: [
 					"galleriesThumb/2005/BorianaPandova/Boriana_Pandova.jpg"
 				]
-			},
+			, guest: true},
 			{
 				name: "Maria Jelebova",
 				text: "",
@@ -1046,7 +1047,7 @@ const galleryObj: GalleryEdition[] = [
 				urlsThumb: [
 					"galleriesThumb/2005/Maria_Jelebova/StGeorge-MariaJelebova.jpg"
 				]
-			}
+			, guest: true}
 		]
 	},
 	{
@@ -1485,7 +1486,7 @@ const galleryObj: GalleryEdition[] = [
 				urlsThumb: [
 					"galleriesThumb/2009/Libushe_Kyndrova/Libushe_Kyndrova-Czech_Republic_Ocupace.jpg"
 				]
-			},
+			, guest: true},
 			{
 				name: "Nikola Mihov",
 				text: "",
