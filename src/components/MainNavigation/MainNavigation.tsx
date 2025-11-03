@@ -7,6 +7,12 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import type { SupportedLanguage } from '@/store/slices/languageSlice';
 import { setOpen } from '@/store/slices/mobileNavSlice';
 import type { MenuItem } from '@/graphql/queries/getMenu';
+import Galleries from '@/components/Gallery/Galleries';
+
+type GalleryItem = {
+  year: number;
+  [key: string]: unknown;
+};
 
 type MainNavigationProps = {
   currentLang: SupportedLanguage;
@@ -29,12 +35,26 @@ export default function MainNavigation({ currentLang, menu }: MainNavigationProp
     return clean.replace(/\/home\/?$/, '/');
   };
 
+  const allEditions = (Galleries as GalleryItem[]).map((e) => e.year);
+  const lastEdition = Math.max(...allEditions);
+
+  const editionsLabel = currentLang === 'bg' ? 'Издания' : 'Editions';
+  const editionsHref = `/${currentLang}/editions/${lastEdition}`;
+
+  const menuWithEditions: MenuItem[] = [
+    ...menu,
+    {
+      id: `editions-${currentLang}`,
+      label: editionsLabel,
+      url: editionsHref,
+    },
+  ];
+
   return (
       <ul className={navClassName}>
-        {menu.map((item) => {
+        {menuWithEditions.map((item) => {
           const href = normalizeUrl(item.url);
 
-          // 🧩 Нормализираме и текущия път
           const normalizedPath =
               pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
           const normalizedHref =
