@@ -1,4 +1,4 @@
-import YearsMenu from "@/components/YearsMenu/YearsMenu";
+import { redirect } from "next/navigation";
 import Galleries from "@/components/Gallery/Galleries";
 
 type PageProps = {
@@ -15,21 +15,7 @@ export default async function EditionsIndexPage({ params }: PageProps) {
   const years = Galleries.map((g) => g.year);
   const latest = years[years.length - 1];
 
-  return (
-    <section className="gallery">
-      <div className="galleryContainer">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <ul className="years">
-                <YearsMenu years={years} currentYear={latest} lang={language} />
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+  redirect(`/${language}/editions/${latest}`);
 }
 
 export async function generateStaticParams() {
