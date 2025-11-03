@@ -1,0 +1,11 @@
+.internal {
+  padding: 40px 0;
+}
+
+.internal h1 {
+  margin-bottom: 20px;
+}
+
+.internal p {
+  line-height: 1.6;
+}

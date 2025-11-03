@@ -27,7 +27,7 @@ const WinnersList: React.FC<Props> = ({ winners, allWinnersLength, edition, lang
 
     return (
       <div className={`${classes.authorShort} ${single ? classes.single : ""}`} key={`${author.name.replace(/ /g, "_")}_${edition}`}>
-        <div className="container">
+        <div className={`container ${classes.winnersList}`} >
           <div className="row">
             <div className={`col-md-12 ${classes.authorContent}`} id={author.name.replace(/ /g, "_")}> 
               <p className={classes.authorAward}>{author.award || ""}</p>
