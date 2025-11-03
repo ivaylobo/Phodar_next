@@ -4,6 +4,7 @@ import Galleries, { Author } from "../Galleries";
 import InfiniteScroll from "react-infinite-scroll-component";
 import WinnersList from "../WinnersList/WinnersList";
 import ParticipantsList from "../ParticipantsList/ParticipantsList";
+import { useAppSelector } from "@/store/hooks";
 
 type AuthorsState = {
   allAuthors: Author[];
@@ -53,6 +54,10 @@ const GalleriesList: React.FC<Props> = ({ edition, lang = "en", onAuthorNavigate
     scrollEnded: false,
   });
 
+  const { winnersFinished, participantsFinished, participantsIndex } = useAppSelector(
+    (state) => state.galleryProgress
+  );
+
   const winnersCount = winners.authors.length;
   const participantsCount = participants.authors.length;
   const guestsCount = guests.authors.length;
@@ -84,6 +89,77 @@ const GalleriesList: React.FC<Props> = ({ edition, lang = "en", onAuthorNavigate
       }
     };
   }, [persistState]);
+
+  useEffect(() => {
+    setWinners((prev) => {
+      if (prev.allAuthors.length === 0) return prev;
+
+      if (winnersFinished) {
+        if (prev.authors.length === prev.allAuthors.length && prev.scrollEnded) {
+          return prev;
+        }
+        const totalSteps = Math.max(Math.ceil(prev.allAuthors.length / itemsCount) - 1, 0);
+        return {
+          ...prev,
+          authors: prev.allAuthors,
+          scrollEnded: true,
+          step: totalSteps,
+        };
+      }
+
+      const desiredCount = Math.min(itemsCount, prev.allAuthors.length);
+      const scrollEnded = desiredCount >= prev.allAuthors.length;
+      if (prev.authors.length === desiredCount && prev.scrollEnded === scrollEnded) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        authors: prev.allAuthors.slice(0, desiredCount),
+        scrollEnded,
+        step: 0,
+      };
+    });
+  }, [winnersFinished, itemsCount, winners.allAuthors.length]);
+
+  useEffect(() => {
+    setParticipants((prev) => {
+      if (prev.allAuthors.length === 0) return prev;
+
+      const chunkSize = itemsCount * 2;
+
+      if (participantsFinished) {
+        if (prev.authors.length === prev.allAuthors.length && prev.scrollEnded) {
+          return prev;
+        }
+        const totalSteps = Math.max(Math.ceil(prev.allAuthors.length / chunkSize) - 1, 0);
+        return {
+          ...prev,
+          authors: prev.allAuthors,
+          scrollEnded: true,
+          step: totalSteps,
+        };
+      }
+
+      const desiredCountFromIndex = participantsIndex > 0
+        ? Math.min(participantsIndex, prev.allAuthors.length)
+        : Math.min(chunkSize, prev.allAuthors.length);
+
+      const scrollEnded = desiredCountFromIndex >= prev.allAuthors.length;
+      if (prev.authors.length === desiredCountFromIndex && prev.scrollEnded === scrollEnded) {
+        return prev;
+      }
+
+      const newStep = Math.max(Math.ceil(desiredCountFromIndex / chunkSize) - 1, 0);
+
+      return {
+        ...prev,
+        authors: prev.allAuthors.slice(0, desiredCountFromIndex),
+        scrollEnded,
+        step: newStep,
+      };
+    });
+  }, [participantsFinished, participantsIndex, itemsCount, participants.allAuthors.length]);
 
   const fetchAuthors = (
     type: "winners" | "participants" | "guests",

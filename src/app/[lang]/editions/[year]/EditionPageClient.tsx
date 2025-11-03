@@ -12,12 +12,13 @@ type Props = {
 
 export default function EditionPageClient({lang, year}: Props) {
     const years = Galleries.map((g) => g.year);
-    const handleAuthorNavigate = useCallback(() => {
+    const handleAuthorNavigate = useCallback((slug?: string) => {
         if (typeof window === "undefined") return;
         const globalObj = window as unknown as { __persistEditionState?: () => void };
         if (typeof globalObj.__persistEditionState === "function") {
             globalObj.__persistEditionState();
         }
+        console.log('navigate author', slug);
     }, []);
 
     return (
@@ -30,11 +31,11 @@ export default function EditionPageClient({lang, year}: Props) {
                 </div>
 
                 <div className="container">
-                  <EditionGallery editionYear={year} lang={lang} onAuthorNavigate={() => handleAuthorNavigate()}/>
+                  <EditionGallery editionYear={year} lang={lang} onAuthorNavigate={handleAuthorNavigate}/>
                 </div>
 
                 <div className="container">
-                  <GalleriesList edition={year} lang={lang} onAuthorNavigate={() => handleAuthorNavigate()}/>
+                  <GalleriesList edition={year} lang={lang} onAuthorNavigate={handleAuthorNavigate}/>
                 </div>
             </div>
         </section>
