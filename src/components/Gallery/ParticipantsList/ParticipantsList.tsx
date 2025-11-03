@@ -4,7 +4,11 @@ import Link from "next/link";
 import classes from "./ParticipantsList.module.css";
 import type { Author } from "../Galleries";
 import { useAppDispatch } from "@/store/hooks";
-import { setWinnersFinished } from "@/store/slices/galleryProgressSlice";
+import {
+  setParticipantsFinished,
+  setParticipantsIndex,
+  setWinnersFinished,
+} from "@/store/slices/galleryProgressSlice";
 
 type Props = {
     participants: Author[];
@@ -21,7 +25,7 @@ const ParticipantsList: React.FC<Props> = ({
                                                onAuthorNavigate,
                                            }) => {
     const dispatch = useAppDispatch();
-    const participantsHTML = participants.map((author) => {
+    const participantsHTML = participants.map((author, index) => {
         const slug = author.name.replace(/ /g, "_");
         const handleNavigate = () => {
             if (typeof window !== "undefined") {
@@ -29,6 +33,8 @@ const ParticipantsList: React.FC<Props> = ({
             }
             // Participant clicked -> we have finished winners section
             dispatch(setWinnersFinished(true));
+            dispatch(setParticipantsFinished(false));
+            dispatch(setParticipantsIndex(index + 1));
             onAuthorNavigate?.(slug);
         };
 

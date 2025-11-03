@@ -1,17 +1,17 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export type ProgressBucket = 'winners' | 'participants' | 'guests';
+﻿import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type GalleryProgressState = {
   winnersFinished: boolean;
   participantsFinished: boolean;
   guestsFinished: boolean;
+  participantsIndex: number;
 };
 
 const initialState: GalleryProgressState = {
   winnersFinished: false,
   participantsFinished: false,
   guestsFinished: false,
+  participantsIndex: 0,
 };
 
 const galleryProgressSlice = createSlice({
@@ -19,38 +19,20 @@ const galleryProgressSlice = createSlice({
   initialState,
   reducers: {
     setProgress(state, action: PayloadAction<Partial<GalleryProgressState>>) {
+      console.log('setProgress', action.payload);
       Object.assign(state, action.payload);
     },
     setWinnersFinished(state, action: PayloadAction<boolean>) {
-      console.log('winners finished')
+      console.log('setWinnersFinished', action.payload);
       state.winnersFinished = action.payload;
     },
     setParticipantsFinished(state, action: PayloadAction<boolean>) {
+      console.log('setParticipantsFinished', action.payload);
       state.participantsFinished = action.payload;
     },
-    setGuestsFinished(state, action: PayloadAction<boolean>) {
-      state.guestsFinished = action.payload;
-    },
-    markOnAuthorClick(state, action: PayloadAction<ProgressBucket>) {
-      const bucket = action.payload;
-      if (bucket === 'winners') {
-        console.log('winners');
-        state.winnersFinished = false;
-        state.participantsFinished = false;
-        state.guestsFinished = false;
-      } else if (bucket === 'participants') {
-        console.log('participants');
-        state.winnersFinished = true;
-        state.participantsFinished = false;
-        state.guestsFinished = false;
-      } else {
-        state.winnersFinished = true;
-        state.participantsFinished = true;
-        state.guestsFinished = false;
-      }
-    },
-    resetProgress() {
-      return initialState;
+    setParticipantsIndex(state, action: PayloadAction<number>) {
+      console.log('setParticipantsIndex', action.payload);
+      state.participantsIndex = action.payload;
     },
   },
 });
@@ -59,10 +41,7 @@ export const {
   setProgress,
   setWinnersFinished,
   setParticipantsFinished,
-  setGuestsFinished,
-  markOnAuthorClick,
-  resetProgress,
+  setParticipantsIndex,
 } = galleryProgressSlice.actions;
 
 export default galleryProgressSlice.reducer;
-
