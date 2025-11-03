@@ -1,5 +1,12 @@
 import { fetchGraphQL } from '../client';
 
+export type WordPressPostSummary = {
+    id: string;
+    title: string;
+    slug: string;
+    excerpt: string;
+};
+
 export async function getPosts(lang: 'EN' | 'BG') {
     const query = `
     query GetPosts($lang: LanguageCodeFilterEnum!) {
@@ -14,6 +21,6 @@ export async function getPosts(lang: 'EN' | 'BG') {
     }
   `;
 
-    const data = await fetchGraphQL<{ posts: { nodes: any[] } }>(query, { lang });
+    const data = await fetchGraphQL<{ posts: { nodes: WordPressPostSummary[] } }>(query, { lang });
     return data.posts.nodes;
 }

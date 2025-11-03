@@ -1,4 +1,4 @@
-import { createElement, ReactElement, CSSProperties } from "react";
+﻿import { createElement, ReactElement, CSSProperties } from "react";
 import parse, {
   domToReact,
   Element,
@@ -38,17 +38,17 @@ const SVG_ELEMENTS = new Set([
   "stop","switch","symbol","text","textPath","tspan","use","view",
 ]);
 
-/** Convert inline style string (from WP) → React style object */
+/** Convert inline style string (from WP) â†’ React style object */
 function parseStyleAttribute(styleString?: string): CSSProperties | undefined {
   if (!styleString) return undefined;
-  const styleObject: CSSProperties = {};
+  const styleObject: Record<string, string> = {};
   styleString.split(";").forEach((declaration) => {
     const [prop, value] = declaration.split(":").map((s) => s.trim());
     if (!prop || !value) return;
     const camelProp = prop.replace(/-([a-z])/g, (_, l) => l.toUpperCase());
-    (styleObject as any)[camelProp] = value;
+    styleObject[camelProp] = value;
   });
-  return styleObject;
+  return styleObject as CSSProperties;
 }
 
 /** Normalize HTML attributes so React can understand them */
@@ -130,3 +130,4 @@ function getHandler(node: Element): ElementHandler | undefined {
   }
   return undefined;
 }
+

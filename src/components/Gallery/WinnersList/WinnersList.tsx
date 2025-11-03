@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React from "react";
 import Link from "next/link";
 import classes from "./WinnersList.module.css";
@@ -33,7 +33,7 @@ const WinnersList: React.FC<Props> = ({ winners, allWinnersLength, edition, lang
               <p className={classes.authorAward}>{author.award || ""}</p>
               <ul className={`${classes.authorImages} ${containerClass}`}>
                 {author.urlsThumb.slice(0, 3).map((_, i) => {
-                  const liClass = (classes as any)[`image-li-${i}`] as string | undefined;
+                  const liClass = classes[`image-li-${i}` as keyof typeof classes];
                   return (
                     <li key={i} className={`${classes.infoContainer} ${liClass || ""}`}>
                       <div className={classes.authorInfo}>
@@ -64,3 +64,4 @@ const WinnersList: React.FC<Props> = ({ winners, allWinnersLength, edition, lang
 };
 
 export default WinnersList;
+
