@@ -410,3 +410,98 @@ span.Dropdown-arrow, .is-open span.Dropdown-arrow {
     pointer-events: none;
   }
 }
+
+/* Editions page & Years menu (keep as provided) */
+.gallery {
+    padding: 70px 0 60px;
+    overflow: hidden;
+    position: relative;
+}
+
+.gallery h2 {
+    margin: 0 0 15px;
+    padding-top: 20px;
+    font-size: 36px;
+}
+
+.galleryContainer {
+    background: #f7f7f7;
+    padding: 30px 0;
+}
+
+.galleryContainer .menuBar {
+    position: static;
+    padding: 0 0 100px;
+}
+
+.galleryContainer .menuBar:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #dcdcdc;
+    left: 0;
+}
+
+.menuBar > p {
+    font-family: 'Nunito', sans-serif;
+    font-size: 30px;
+    font-style: normal;
+    text-align: center;
+    color: #848484;
+    text-transform: capitalize;
+    font-weight: 300;
+    margin: 40px 0 0;
+}
+
+.galleryContainer ul {
+    list-style-type: none;
+    margin: 0;
+}
+
+.galleryContainer ul.years {
+    text-align: center;
+    padding-bottom: 0;
+}
+
+.galleryContainer ul.years li {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 18px;
+    color: #a0a0a0;
+    padding: 0 20px;
+}
+
+.galleryContainer ul.years li h4{
+    font-size: 18px;
+}
+
+.galleryContainer ul.years li:hover {
+    cursor: pointer;
+    color: #c12747;
+}
+
+.galleryContainer ul li a {
+    color: #000;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.galleryContainer ul li a.active {
+    color: #bc1818;
+}
+
+.galleryContainer ul.awards li a {
+    padding-left: 30px;
+}
+
+.galleryContainer ul li:not(.empty) a:hover {
+    color: #bc1818;
+}
+
+@media all and (max-width: 480px) {
+    .gallery h2{
+        font-size: 20px
+    }
+}

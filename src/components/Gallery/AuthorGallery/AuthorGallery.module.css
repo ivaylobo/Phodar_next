@@ -1,0 +1,135 @@
+.rightMenu {
+    position: fixed;
+    right: 15px;
+    top: 15px;
+    z-index: 9999;
+}
+
+.close {
+    display: block;
+    position: relative;
+    z-index: 1000;
+    float: none;
+    color: #b2b2b2;
+    font-size: 36px;
+    opacity: 1;
+    margin: 0 auto 20px;
+    width: 40px;
+    height: 40px;
+    background: url("../../../assets/images/X.svg") center center no-repeat;
+}
+
+.close:hover {
+    background-image: url("../../../assets/images/X_Hover.svg");
+}
+
+
+.countSwitch {
+    width: 40px;
+    height: 40px;
+    color: #ececec;
+    background: url('../../../assets/images/icon_gallery.svg') 50% no-repeat;
+    position: relative;
+    z-index: 2001;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.countSwitch:hover,
+.black .countSwitch:hover {
+    background-image: url("../../../assets/images/icon_gallery_red1.svg");
+}
+
+.black .countSwitch {
+    background-image: url("../../../assets/images/icon_gallery_blackBG.svg");
+}
+
+.countSwitch.active {
+    background-image: url("../../../assets/images/Icon_GALLERY_grey.svg");
+}
+
+.black .countSwitch.active {
+    background-image: url("../../../assets/images/Icon_GALLERY_grey_blackBG.svg");
+}
+
+.countSwitch.active:hover, .black .countSwitch.active:hover {
+    background-image: url("../../../assets/images/Icon_GALLERY_red.svg");
+}
+.information h2 {
+    font-size: 18px;
+    margin-top: 0;
+    color: #bc1818;
+}
+
+.information h4 {
+    font-size: 14px;
+}
+
+.colored {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    z-index: 1001;
+    margin: 20px auto 0;
+    cursor: pointer;
+    background: #979797;
+    position: relative;
+}
+
+.colored:before {
+    content: '';
+    display: block;
+    width: 34px;
+    height: 34px;
+    margin: 3px;
+    border-radius: 18px;
+    border: 3px solid #fff;
+    position: absolute;
+}
+
+.black .colored {
+    background: #313131;
+}
+
+.black .colored:before {
+    border: 3px solid #000;
+}
+
+.colored.white {
+    background: #a0a0a0;
+}
+
+.colored.white:before {
+    border: 3px solid #000;
+}
+
+.desktop {
+    display: block;
+}
+.mobile {
+    display: none;
+}
+
+.collectionText{
+    margin: 20px;
+}
+
+@media (max-width: 480px) {
+    .colored {
+        position: fixed;
+        left: 15px;
+        top: -5px;
+    }
+
+    .desktop{
+        display: none;
+    }
+
+    .mobile {
+        display: block;
+    }
+
+    .countSwitch{
+        display: none;
+    }
+}

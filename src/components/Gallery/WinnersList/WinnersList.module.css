@@ -1,0 +1,232 @@
+.authorShort {
+    position: relative;
+}
+
+.authorShort:nth-of-type(2n){
+    background: #f7f7f7;
+}
+
+.authorInfo a:hover{
+    text-decoration: none;
+}
+
+.authorInfo a:hover p{
+    color: #bc1818;
+}
+
+
+.authorShort:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 550px;
+    height: 250px;
+    border: 1px solid #e2e2e2;
+    left: 50%;
+    margin-left: -275px;
+    top: 10%;
+    z-index: -1;
+}
+
+.authorShort.single:before {
+    content: none;
+}
+
+.authorContent {
+    padding: 100px 0;
+}
+
+.authorAward {
+    font-family: "Conv_Intro", Sans-Serif;
+    font-size: 16px;
+    text-transform: uppercase;
+    padding-left: 8px;
+    width: 25%;
+}
+
+
+.authorImages{
+    display: flex;
+    flex-wrap: nowrap;
+    list-style-type: none;
+    padding: 0;
+}
+
+.authorShort.single .authorImages, .authorShort.single .authorImages li{
+    display: block;
+}
+
+
+.authorImages li{
+    padding: 0 5px;
+}
+
+.infoContainer{
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+/*---------------container 0--------------*/
+
+.container0 .infoContainer a{
+    order: 1;
+}
+
+.container0 .infoContainer .authorInfo{
+    order: 2;
+}
+
+.container0 .image-li-2{
+    align-self: flex-end;
+}
+
+
+/*---------------container 2--------------*/
+
+.container2 .image-li-1{
+    order: 1;
+}
+
+
+.container2 .image-li-0 {
+    order: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-around;
+}
+
+.container2 .image-li-0 a{
+    align-self: flex-end;
+}
+
+.container2 li.image-li-2{
+    order: 3;
+    align-content: center;
+}
+
+/*---------------container 1--------------*/
+
+.container1 .image-li-1{
+    order: 3;
+}
+
+.container1 .image-li-2{
+    align-self: center;
+}
+
+.container1 .image-li-0{
+    align-self: flex-start;
+}
+
+.image-li-1 .authorInfo, .image-li-2 .authorInfo{
+    display: none;
+}
+
+.authorName{
+    font-family: "Conv_Intro", Sans-Serif;
+    color: #797878;
+    font-size: 16px;
+    margin: 0;
+}
+
+.authorCountry {
+    color: #a4a4a4;
+    font-size: 16px;
+    font-family: "Nunito", sans-serif;
+}
+
+@media all and (max-width: 991px){
+    .authorContent{
+        max-width: 510px;
+        margin: 0 auto;
+    }
+    .authorImages{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        justify-content: space-between;
+    }
+
+    .authorImages li{
+        flex-direction: column;
+    }
+    .authorAward {
+        width: 100%;
+        text-align: center;
+    }
+
+    /*---------------container 0--------------*/
+
+    .container0 .image-li-2{
+        align-self: center;
+        margin-top: 20px;
+    }
+
+    /*---------------container 2--------------*/
+
+    .authorImages.container2{
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .container2 .image-li-1 .authorInfo{
+        display: block;
+    }
+    .container2 .image-li-0 .authorInfo{
+        display: none;
+    }
+
+    .container2 .image-li-0{
+        padding-top: 80px
+    }
+
+    .container2 .image-li-2{
+        align-self: flex-start;
+        padding-top: 20px;
+    }
+
+    /*---------------container 1--------------*/
+
+    .container1{
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+        grid-template-rows: auto; /* Automatically adjust row height */
+        gap: 10px; /* Space between grid items */
+        list-style-type: none; /* Remove default bullet points */
+        padding: 0;
+        margin: 0;
+    }
+
+    .container1 .image-li-0, .container1 .image-li-2{
+        grid-column: span 1;
+    }
+
+    .container1 .image-li-1{
+        grid-column: span 2; /* Span both columns */
+    }
+
+}
+
+@media all and (max-width: 480px){
+    .container2 .image-li-1, .container0 .image-li-1, .container1 .image-li-1{
+        display: none;
+    }
+
+    .container1{
+        display: block;
+    }
+    .container1 li{
+        align-content: center;
+        margin-bottom: 20px;
+    }
+
+    .container2 .authorInfo{
+        display: block;
+    }
+
+    .authorShort.single .authorImages, .authorShort.single .authorImages li img{
+        max-width: 100%;
+    }
+}

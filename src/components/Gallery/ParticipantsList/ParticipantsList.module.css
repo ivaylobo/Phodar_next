@@ -1,0 +1,38 @@
+.singleImg a:hover{
+   text-decoration: none;
+}
+
+.imgContainer {
+    height: 320px;
+    overflow: hidden;
+    text-align: left;
+}
+
+.authorName,
+.authorTitle {
+    font-family: 'Conv_Intro', Sans-Serif;
+    color: #797878;
+    font-size: 16px;
+    margin: 0;
+}
+
+.authorName:hover,
+.authorTitle:hover {
+    color: #bc1818;
+    text-decoration: none;
+}
+
+.authorCountry {
+    color: #a4a4a4;
+    font-size: 16px;
+    font-family: "Nunito", sans-serif;
+}
+.singleImg{
+    padding: 15px;
+}
+
+@media all and (max-width: 991px) {
+    .singleImg, .imgContainer{
+        text-align: center;
+    }
+}
