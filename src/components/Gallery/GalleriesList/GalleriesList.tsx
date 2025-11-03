@@ -59,7 +59,7 @@ const GalleriesList: React.FC<Props> = ({ edition, lang = "en", onAuthorNavigate
     (state) => state.galleryProgress
   );
 
-  useGalleryAutoExpand({
+  useGalleryAutoExpand<Author>({
     itemsCount,
     winnersFinished,
     participantsFinished,
@@ -290,6 +290,7 @@ const GalleriesList: React.FC<Props> = ({ edition, lang = "en", onAuthorNavigate
 };
 
 export default GalleriesList;
+
 
 
 

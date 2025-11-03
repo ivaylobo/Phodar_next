@@ -1,0 +1,49 @@
+.cookies {
+    background: #4e4e4e;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.cookies p {
+    color: #fff;
+    display: inline-block;
+    margin: 0;
+    width: calc(100% - 100px);
+    vertical-align: middle;
+}
+
+.cookies p a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.cookies p a:active {
+    color: #fff;
+}
+
+.cookies button {
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.acceptCookies{
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: 10px 30px;
+    cursor: pointer;
+    color: #4d4d4d;
+    background: #fff;
+    text-decoration: none;
+    opacity: .8;
+    border: none;
+    display: inline-block;
+    font-family: "Conv_Intro", Sans-Serif;
+}
+
+.acceptCookies:hover{
+    opacity: 0.6;
+}

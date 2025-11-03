@@ -3,6 +3,7 @@ import Header from '@/components/Header/Header';
 import type {SupportedLanguage} from '@/store/slices/languageSlice';
 import {getMenu} from "@/graphql/queries/getMenu";
 import Footer from "@/components/Footer/Footer";
+import CookiesPopup from "@/components/CookiesPopup/CookiesPopup";
 
 type LangLayoutProps = {
     children: ReactNode;
@@ -23,6 +24,7 @@ export default async function LangLayout({children, params}: LangLayoutProps) {
             <Header currentLang={lang} menu={menu}/>
             <main>{children}</main>
             <Footer />
+            <CookiesPopup lang={lang} />
         </div>
     );
 }
