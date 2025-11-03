@@ -3,6 +3,7 @@ export type GalleryImageTuple = [string, string];
 export type Author = {
     name: string;
     text: string;
+    translatedText?: string;
     title: string;
     award: string | false;
     country: string;

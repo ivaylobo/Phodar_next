@@ -1,4 +1,4 @@
-.rightMenu {
+﻿.rightMenu {
     position: fixed;
     right: 15px;
     top: 15px;
@@ -132,4 +132,9 @@
     .countSwitch{
         display: none;
     }
+}
+.information {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 30px;
 }

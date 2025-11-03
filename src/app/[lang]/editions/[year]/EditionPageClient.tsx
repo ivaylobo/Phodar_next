@@ -1,8 +1,8 @@
 "use client";
+import { useCallback } from "react";
 import YearsMenu from "@/components/YearsMenu/YearsMenu";
 import EditionGallery from "@/components/Gallery/EditionGallery/EditionGallery";
 import GalleriesList from "@/components/Gallery/GalleriesList/GalleriesList";
-import AuthorGallery from "@/components/Gallery/AuthorGallery/AuthorGallery";
 import Galleries from "@/components/Gallery/Galleries";
 
 type Props = {
@@ -12,6 +12,13 @@ type Props = {
 
 export default function EditionPageClient({ lang, year }: Props) {
   const years = Galleries.map((g) => g.year);
+  const handleAuthorNavigate = useCallback(() => {
+    if (typeof window === "undefined") return;
+    const globalObj = window as unknown as { __persistEditionState?: () => void };
+    if (typeof globalObj.__persistEditionState === "function") {
+      globalObj.__persistEditionState();
+    }
+  }, []);
 
   return (
     <section className="gallery">
@@ -28,20 +35,16 @@ export default function EditionPageClient({ lang, year }: Props) {
 
         <div className="container">
           <div className="row">
-            <EditionGallery editionYear={year} lang={lang} />
+            <EditionGallery editionYear={year} lang={lang} onAuthorNavigate={() => handleAuthorNavigate()} />
           </div>
         </div>
 
         <div className="container">
           <div className="row">
-            <GalleriesList edition={year} lang={lang} />
+            <GalleriesList edition={year} lang={lang} onAuthorNavigate={() => handleAuthorNavigate()} />
           </div>
         </div>
       </div>
-
-      {/* Overlay author view if ?author=... present */}
-      <AuthorGallery editionYear={year} lang={lang} />
     </section>
   );
 }
-

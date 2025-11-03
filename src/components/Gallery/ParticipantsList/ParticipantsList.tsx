@@ -9,21 +9,26 @@ type Props = {
   allParticipantsLength: number;
   edition: string;
   lang?: string;
+  onAuthorNavigate?: (authorSlug: string) => void;
 };
 
-const ParticipantsList: React.FC<Props> = ({ participants, edition, lang = "en" }) => {
+const ParticipantsList: React.FC<Props> = ({ participants, edition, lang = "en", onAuthorNavigate }) => {
   const participantsHTML = participants.map((author) => {
-    const addHistory = () => {
-      if (typeof window !== "undefined") localStorage.setItem("hasHistory", "1");
+    const slug = author.name.replace(/ /g, "_");
+    const handleNavigate = () => {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("hasHistory", "1");
+      }
+      onAuthorNavigate?.(slug);
     };
     return author.urls.length ? (
       <div className={`col-md-6 ${classes.singleImg}`} key={`${author.name}_${edition}`}>
         <div className={classes.imgContainer} id={author.name.replace(/ /g, "_")}> 
-          <Link onClick={addHistory} href={`/${lang}/editions/${edition}?author=${author.name.replace(/ /g, "_")}`}>
+          <Link onClick={handleNavigate} href={`/${lang}/editions/${edition}/${slug}`}>
             <img src={`/${author.urlsMedium[0]}`} alt="" />
           </Link>
         </div>
-        <Link onClick={addHistory} href={`/${lang}/editions/${edition}?author=${author.name.replace(/ /g, "_")}`}>
+        <Link onClick={handleNavigate} href={`/${lang}/editions/${edition}/${slug}`}>
           <p className={classes.authorName}>{author.name}</p>
         </Link>
         <p className={classes.authorCountry}>{author.country}</p>

@@ -9,16 +9,21 @@ type Props = {
   allWinnersLength: number;
   edition: string;
   lang?: string;
+  onAuthorNavigate?: (authorSlug: string) => void;
 };
 
-const WinnersList: React.FC<Props> = ({ winners, allWinnersLength, edition, lang = "en" }) => {
-  const addHistory = () => {
-    if (typeof window !== "undefined") localStorage.setItem("hasHistory", "1");
+const WinnersList: React.FC<Props> = ({ winners, allWinnersLength, edition, lang = "en", onAuthorNavigate }) => {
+  const handleNavigate = (slug: string) => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("hasHistory", "1");
+    }
+    onAuthorNavigate?.(slug);
   };
 
   const winnersHTML = winners.map((author, index) => {
     const single = author.urls.length === 1;
     const containerClass = classes["container" + ((allWinnersLength - index) % 3) as keyof typeof classes] || "";
+    const slug = author.name.replace(/ /g, "_");
 
     return (
       <div className={`${classes.authorShort} ${single ? classes.single : ""}`} key={`${author.name.replace(/ /g, "_")}_${edition}`}>
@@ -32,12 +37,12 @@ const WinnersList: React.FC<Props> = ({ winners, allWinnersLength, edition, lang
                   return (
                     <li key={i} className={`${classes.infoContainer} ${liClass || ""}`}>
                       <div className={classes.authorInfo}>
-                        <Link onClick={addHistory} href={`/${lang}/editions/${edition}?author=${author.name.replace(/ /g, "_")}`}>
+                        <Link onClick={() => handleNavigate(slug)} href={`/${lang}/editions/${edition}/${slug}`}>
                           <p className={classes.authorName}>{author.name}</p>
                         </Link>
                         <p className={classes.authorCountry}>{author.country}</p>
                       </div>
-                      <Link onClick={addHistory} href={`/${lang}/editions/${edition}?author=${author.name.replace(/ /g, "_")}`}>
+                      <Link onClick={() => handleNavigate(slug)} href={`/${lang}/editions/${edition}/${slug}`}>
                         {i === 1 || single ? (
                           <img className="big-img" src={`/${author.urlsMedium[i]}`} alt={author.name} />
                         ) : (

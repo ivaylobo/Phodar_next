@@ -5,8 +5,13 @@ type PageProps = {
   params: Promise<{ lang: string }>;
 };
 
+const SUPPORTED_LANGS = ["en", "bg"];
+
+const normalizeLang = (lang: string) => (SUPPORTED_LANGS.includes(lang) ? lang : "en");
+
 export default async function EditionsIndexPage({ params }: PageProps) {
   const { lang } = await params;
+  const language = normalizeLang(lang);
   const years = Galleries.map((g) => g.year);
   const latest = years[years.length - 1];
 
@@ -17,7 +22,7 @@ export default async function EditionsIndexPage({ params }: PageProps) {
           <div className="row">
             <div className="col-md-12">
               <ul className="years">
-                <YearsMenu years={years} currentYear={latest} lang={lang} />
+                <YearsMenu years={years} currentYear={latest} lang={language} />
               </ul>
             </div>
           </div>
@@ -28,6 +33,5 @@ export default async function EditionsIndexPage({ params }: PageProps) {
 }
 
 export async function generateStaticParams() {
-  return [{ lang: "en" }];
+  return SUPPORTED_LANGS.map((lang) => ({ lang }));
 }
-

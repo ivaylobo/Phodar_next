@@ -4,7 +4,7 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 type Props = {
-  sliderImages: React.ReactNode;
+  sliderImages: React.ReactNode[];
   thumbs: boolean;
   selectedItem: number;
 };
@@ -22,12 +22,12 @@ const Slider: React.FC<Props> = ({ sliderImages, thumbs, selectedItem }) => {
       swipeable={false}
       renderArrowPrev={(onClickHandler, hasPrev, label) =>
         hasPrev && (
-          <div type="button" className="arrow-left" onClick={onClickHandler as any} title={label}></div>
+          <div role="button" className="arrow-left" onClick={onClickHandler as any} title={label}></div>
         )
       }
       renderArrowNext={(onClickHandler, hasNext, label) =>
         hasNext && (
-          <div type="button" className="arrow-right" onClick={onClickHandler as any} title={label}></div>
+          <div role="button" className="arrow-right" onClick={onClickHandler as any} title={label}></div>
         )
       }
     >

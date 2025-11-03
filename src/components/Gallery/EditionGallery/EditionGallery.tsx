@@ -5,19 +5,25 @@ import Link from "next/link";
 import Slider from "../Slider/Slider";
 import classes from "./EditionGallery.module.css";
 
-type Props = { editionYear: number | string; lang?: string };
+type Props = {
+  editionYear: number | string;
+  lang?: string;
+  onAuthorNavigate?: (authorSlug: string) => void;
+};
 
-const EditionGallery: React.FC<Props> = ({ editionYear, lang = "en" }) => {
+const EditionGallery: React.FC<Props> = ({ editionYear, lang = "en", onAuthorNavigate }) => {
   const currentEdition = Galleries.find((edition) => +editionYear === edition.year);
   if (!currentEdition) return null;
   const winners = currentEdition.authors.filter((author) => author.award && author.award !== "");
 
   const winnersHTML = winners.map((winner) => {
+    const slug = winner.name.replace(/ /g, "_");
     return (
       <li key={winner.name}>
         <Link
-          href={`/${lang}/editions/${editionYear}?author=${winner.name.replace(/ /g, "_")}`}
+          href={`/${lang}/editions/${editionYear}/${slug}`}
           className="my-active"
+          onClick={() => onAuthorNavigate?.(slug)}
         >
           <span>{winner.award}</span> <strong>{winner.name} </strong>
           <span>{winner.country}</span>
@@ -27,8 +33,13 @@ const EditionGallery: React.FC<Props> = ({ editionYear, lang = "en" }) => {
   });
 
   const sliderImages = currentEdition.galleryUrls.map((url) => {
+    const slug = url[1].replace(/ /g, "_");
     return (
-      <Link href={`/${lang}/editions/${editionYear}?author=${url[1].replace(/ /g, "_")}`} key={url[0]}>
+      <Link
+        href={`/${lang}/editions/${editionYear}/${slug}`}
+        key={url[0]}
+        onClick={() => onAuthorNavigate?.(slug)}
+      >
         <img src={`/${url[0]}`} alt="product" />
       </Link>
     );

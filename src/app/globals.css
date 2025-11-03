@@ -411,6 +411,23 @@ span.Dropdown-arrow, .is-open span.Dropdown-arrow {
   }
 }
 
+body.gallery-fullscreen header,
+body.gallery-fullscreen footer {
+  display: none !important;
+}
+
+body.gallery-fullscreen .wrap {
+  min-height: 100vh;
+}
+
+body.gallery-fullscreen .wrap > main {
+  padding: 0;
+}
+
+body.gallery-fullscreen {
+  background: #000;
+}
+
 /* Editions page & Years menu (keep as provided) */
 .gallery {
     padding: 70px 0 60px;
