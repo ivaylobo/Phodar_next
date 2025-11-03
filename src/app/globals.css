@@ -7,6 +7,13 @@ html body {
   margin: 0;
   padding: 0;
 }
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  color: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: .5rem;
+  margin-top: 0;
+}
 
 html {
   height: 100%;
@@ -425,7 +432,7 @@ body.gallery-fullscreen .wrap > main {
 }
 
 body.gallery-fullscreen {
-  background: #000;
+  background: #fff
 }
 
 /* Editions page & Years menu (keep as provided) */
