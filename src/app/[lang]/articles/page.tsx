@@ -19,11 +19,8 @@ export default async function ArticlesIndexPage({ params }: PageProps) {
 
   const { nodes, edges } = await getArticles(wpLang);
 
-  const heading = lang === 'bg' ? 'Статии' : 'Articles';
-
   return (
     <section className={styles.wrapper}>
-      <h1 className={styles.heading}>{heading}</h1>
       <div className={styles.grid}>
         {nodes.map((node, idx) => {
           const fields = edges[idx]?.node?.articleFields;
@@ -34,7 +31,7 @@ export default async function ArticlesIndexPage({ params }: PageProps) {
           const href = `/${lang}/articles/${node.slug}`;
 
           return (
-            <article key={node.id} className={styles.card}>
+            <article key={node.id} className={`${styles.card} ${idx === 0 ? styles.featured : ''}`}>
               {imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={imageUrl} alt="" className={styles.cardImage} />

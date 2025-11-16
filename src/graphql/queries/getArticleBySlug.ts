@@ -28,7 +28,7 @@ export async function getArticleBySlug(
           slug
           title
           date
-          featuredImage { node { sourceUrl } }
+          language { code }
         }
         edges {
           node {
@@ -46,7 +46,13 @@ export async function getArticleBySlug(
   try {
     const result = await fetchGraphQL<{
       articles: {
-        nodes: Array<Pick<Article, 'id' | 'slug' | 'title' | 'date' | 'featuredImage'>>;
+        nodes: Array<{
+          id: string;
+          slug: string;
+          title: string;
+          date?: string | null;
+          language?: { code?: string | null } | null;
+        }>;
         edges: Array<{ node?: { articleFields?: ArticleFields } | null } | null>;
       };
     }>(query, { language });
