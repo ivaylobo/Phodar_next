@@ -41,18 +41,20 @@ export default function MainNavigation({ currentLang, menu }: MainNavigationProp
   const editionsLabel = currentLang === 'bg' ? 'Издания' : 'Editions';
   const editionsHref = `/${currentLang}/editions/${lastEdition}`;
 
-  const menuWithEditions: MenuItem[] = [
+  // Inject Articles link if not provided by WP menu
+  const articlesLabel = currentLang === 'bg' ? 'Статии' : 'Articles';
+  const articlesHref = `/${currentLang}/articles`;
+  const hasArticles = menu.some((item) => normalizeUrl(item.url) === articlesHref);
+
+  const items: MenuItem[] = [
     ...menu,
-    {
-      id: `editions-${currentLang}`,
-      label: editionsLabel,
-      url: editionsHref,
-    },
+    ...(!hasArticles ? [{ id: `articles-${currentLang}`, label: articlesLabel, url: articlesHref }] : []),
+    { id: `editions-${currentLang}`, label: editionsLabel, url: editionsHref },
   ];
 
   return (
       <ul className={navClassName}>
-        {menuWithEditions.map((item) => {
+        {items.map((item) => {
           const href = normalizeUrl(item.url);
 
           const normalizedPath =
@@ -76,3 +78,4 @@ export default function MainNavigation({ currentLang, menu }: MainNavigationProp
       </ul>
   );
 }
+

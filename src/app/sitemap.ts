@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import Galleries from '@/components/Gallery/Galleries';
 import { getAllPagesFromWordPress } from '@/graphql/queries/getAllPages';
+import { getArticles } from '@/graphql/queries/getArticles';
 
 function getBaseUrl(): string {
   if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '');
@@ -45,9 +46,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     )
   );
 
-  // 3) Merge and de-duplicate by URL
+  // 4) Collect Articles (custom post type)
+  const articlesEn = await getArticles('EN');
+  const articlesBg = await getArticles('BG');
+  const articles: MetadataRoute.Sitemap = [
+    ...articlesEn.nodes.map((n) => ({ url: `${baseUrl}/en/articles/${n.slug}`, lastModified: new Date() })),
+    ...articlesBg.nodes.map((n) => ({ url: `${baseUrl}/bg/articles/${n.slug}`, lastModified: new Date() })),
+  ];
+
+  // 5) Merge and de-duplicate by URL
   const byUrl = new Map<string, MetadataRoute.Sitemap[number]>();
-  [...wpItems, ...editions, ...authors].forEach((item) => byUrl.set(item.url, item));
+  [...wpItems, ...editions, ...authors, ...articles].forEach((item) => byUrl.set(item.url, item));
 
   return Array.from(byUrl.values());
 }
