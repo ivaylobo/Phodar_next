@@ -55,6 +55,11 @@ h3.align-left{
   position: absolute!important;
 }
 
+img.aligncenter{
+  display: block;
+  margin: 0 auto;
+}
+
 /*----------------LANGUAGE DROPDOWN---------------*/
 
 .Dropdown-root {
