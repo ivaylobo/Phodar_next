@@ -17,7 +17,9 @@ export default async function ArticlePage({ params }: PageProps) {
   const { lang: rawLang, slug } = await params;
   const lang = normalizeLang(rawLang);
 
-  const article = await getArticleBySlug(slug);
+  const wpLang = lang.toUpperCase() as 'EN' | 'BG';
+  const article = await getArticleBySlug(slug, wpLang);
+    console.log('article', article)
   if (!article) {
     notFound();
   }
