@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 import { getArticleBySlug } from '@/graphql/queries/getArticleBySlug';
 import { getArticles } from '@/graphql/queries/getArticles';
-import ArticleInlineImages from '@/components/ArticleInlineImages/ArticleInlineImages';
 
 type PageProps = {
   params: Promise<{ lang: string; slug: string }>;
@@ -54,14 +53,7 @@ export default async function ArticlePage({ params }: PageProps) {
         />
       ) : null}
 
-      {Array.isArray(article.articleFields?.inlineImages?.edges) &&
-        article.articleFields!.inlineImages!.edges!.length > 0 && (
-          <ArticleInlineImages
-            images={article.articleFields!.inlineImages!.edges!
-              .filter((e): e is { node: { sourceUrl?: string | null; altText?: string | null } } => !!e?.node?.sourceUrl)
-              .map((e) => ({ src: e.node.sourceUrl as string, alt: e.node.altText }))}
-          />
-        )}
+
     </article>
   );
 }
