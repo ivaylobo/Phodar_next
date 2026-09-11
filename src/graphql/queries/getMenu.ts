@@ -3,7 +3,7 @@ import { fetchGraphQL } from '../client';
 export type MenuItem = {
     id: string;
     label: string;
-    url: string;
+    path: string;
 };
 
 export type MenuResponse = {
@@ -30,7 +30,7 @@ export async function getMenu(lang: 'EN' | 'BG') {
           nodes {
             id
             label
-            url
+            path
           }
         }
       }

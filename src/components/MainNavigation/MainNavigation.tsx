@@ -30,11 +30,6 @@ export default function MainNavigation({ currentLang, menu }: MainNavigationProp
 
   const navClassName = `${styles.mainLinks} ${mobileOpen ? styles.active : ''}`;
 
-  const normalizeUrl = (url: string) => {
-    const clean = url.replace('http://phodar.local', '');
-    return clean.replace(/\/home\/?$/, '/');
-  };
-
   const allEditions = (Galleries as GalleryItem[]).map((e) => e.year);
   const lastEdition = Math.max(...allEditions);
 
@@ -44,18 +39,18 @@ export default function MainNavigation({ currentLang, menu }: MainNavigationProp
   // Inject Articles link if not provided by WP menu
   const articlesLabel = currentLang === 'bg' ? 'Статии' : 'Articles';
   const articlesHref = `/${currentLang}/articles`;
-  const hasArticles = menu.some((item) => normalizeUrl(item.url) === articlesHref);
+  const hasArticles = menu.some((item) => item.path === articlesHref);
 
   const items: MenuItem[] = [
     ...menu,
-    ...(!hasArticles ? [{ id: `articles-${currentLang}`, label: articlesLabel, url: articlesHref }] : []),
-    { id: `editions-${currentLang}`, label: editionsLabel, url: editionsHref },
+    ...(!hasArticles ? [{ id: `articles-${currentLang}`, label: articlesLabel, path: articlesHref }] : []),
+    { id: `editions-${currentLang}`, label: editionsLabel, path: editionsHref },
   ];
 
   return (
       <ul className={navClassName}>
         {items.map((item) => {
-          const href = normalizeUrl(item.url);
+          const href = item.path;
 
           const normalizedPath =
               pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;

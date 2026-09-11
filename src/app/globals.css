@@ -23,6 +23,10 @@ body {
   min-height: 100%;
 }
 
+*{
+    box-sizing: border-box;
+}
+
 
 @font-face {
   font-family: 'Conv_Intro';
@@ -216,9 +220,13 @@ span.Dropdown-arrow, .is-open span.Dropdown-arrow {
   .container {
     max-width: 970px;
     width: 970px;
-    margin: 0 auto;  }
+    margin: 0 auto;
+  }
 }
-
+.container {
+    padding: 0 15px;
+    overflow: hidden;
+}
 .lang li:last-of-type {
   border-top: 1px solid #cdcdcd;
 }

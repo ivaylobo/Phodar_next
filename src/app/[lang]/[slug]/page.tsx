@@ -13,7 +13,6 @@ export default async function LangSlugPage({ params }: LangSlugPageProps) {
 
     const page = await getPageBySlug(slugWithLang);
 
-    // ❌ Ако я няма → 404
     if (!page) {
         notFound();
     }

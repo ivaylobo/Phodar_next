@@ -9,6 +9,7 @@ import MobileNav from '@/components/MobileNav/MobileNav';
 import styles from './Header.module.css';
 import type { SupportedLanguage } from '@/store/slices/languageSlice';
 import type {MenuItem} from "@/graphql/queries/getMenu";
+import logo from '../../assets/images/logo.svg'
 
 type HeaderProps = {
   currentLang: SupportedLanguage;
@@ -16,7 +17,7 @@ type HeaderProps = {
 };
 
 const LOGO = {
-  src: '/assets/images/logo.svg',
+  src: logo,
   alt: 'Phodar biennial',
 };
 

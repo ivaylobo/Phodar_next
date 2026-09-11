@@ -14,17 +14,15 @@ export default function MobileNav() {
 
   return (
     <div className={styles.navTrigger}>
-      <button
-        type="button"
+      <div
         onClick={() => handleToggle(false)}
         className={`${styles.closeNav} ${isActive ? styles.active : ''}`}
         aria-label="Close navigation"
       >
         <span />
         <span />
-      </button>
-      <button
-        type="button"
+      </div>
+      <div
         onClick={() => handleToggle(true)}
         className={`${styles.openNav} ${!isActive ? styles.active : ''}`}
         aria-label="Open navigation"
@@ -32,7 +30,7 @@ export default function MobileNav() {
         <span />
         <span />
         <span />
-      </button>
+      </div>
     </div>
   );
 }
