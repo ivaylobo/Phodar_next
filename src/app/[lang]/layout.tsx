@@ -1,4 +1,5 @@
 import type {ReactNode} from 'react';
+import {notFound} from 'next/navigation';
 import Header from '@/components/Header/Header';
 import type {SupportedLanguage} from '@/store/slices/languageSlice';
 import {getMenu} from "@/graphql/queries/getMenu";
@@ -15,7 +16,9 @@ const isSupportedLanguage = (value: string): value is SupportedLanguage =>
 
 export default async function LangLayout({children, params}: LangLayoutProps) {
     const {lang: rawLang} = await params;
-    const lang = isSupportedLanguage(rawLang) ? rawLang : 'en';
+    if (!isSupportedLanguage(rawLang)) notFound();
+
+    const lang = rawLang;
     const menu = await getMenu(lang.toUpperCase() as 'EN' | 'BG');
 
 
