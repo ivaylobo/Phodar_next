@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -48,7 +49,9 @@ export default function Header({ currentLang, menu }: HeaderProps) {
         </Link>
         <MobileNav />
         <MainNavigation currentLang={currentLang} menu={menu}/>
-        <LanguageSwitch currentLang={currentLang} />
+        <Suspense fallback={null}>
+          <LanguageSwitch currentLang={currentLang} />
+        </Suspense>
       </div>
     </header>
   );
