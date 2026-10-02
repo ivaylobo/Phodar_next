@@ -11,7 +11,7 @@ const Footer = () => {
                     <div className={`col-md-12 ${classes.footerWrap}`}>
                         <div className={classes.left}>
                             <p className={classes.paragraph}>
-                                PHODARrrrr Fondation BULGARIA 1510 Sofia, P.O.box: 55
+                                PHODAR Fondation BULGARIA 1510 Sofia, P.O.box: 55
                             </p>
                             <p className={classes.paragraph}>phodar.new@gmail.com</p>
                         </div>
