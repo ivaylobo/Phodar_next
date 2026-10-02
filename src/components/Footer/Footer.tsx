@@ -3,6 +3,7 @@ import classes from "./Footer.module.css";
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
+    console.log('deploy passed');
 
     return (
         <footer className={classes.footer}>
