@@ -1,0 +1,45 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One deploy at a time; a newer push waits instead of killing a build mid-way.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://phodar.net
+    steps:
+      - name: Configure SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          test -n "$DEPLOY_SSH_KEY" || { echo "::error::DEPLOY_SSH_KEY secret is not set"; exit 1; }
+          test -n "$DEPLOY_KNOWN_HOSTS" || { echo "::error::DEPLOY_KNOWN_HOSTS secret is not set"; exit 1; }
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      # Server-side script: git pull --ff-only, npm ci, npm run build, restart phodar-next.service.
+      - name: Deploy to phodar.net
+        run: |
+          ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -o IdentitiesOnly=yes \
+            -i ~/.ssh/id_ed25519 deploy@phodar.net /home/deploy/bin/deploy-phodar
+
+      - name: Check site responds
+        run: |
+          curl -fsSL -o /dev/null --retry 10 --retry-delay 3 --retry-all-errors \
+            -w 'HTTP %{http_code} %{url_effective}\n' https://phodar.net
