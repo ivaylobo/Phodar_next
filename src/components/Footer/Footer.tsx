@@ -3,7 +3,6 @@ import classes from "./Footer.module.css";
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
-    console.log('deploy passed');
 
     return (
         <footer className={classes.footer}>
@@ -12,7 +11,7 @@ const Footer = () => {
                     <div className={`col-md-12 ${classes.footerWrap}`}>
                         <div className={classes.left}>
                             <p className={classes.paragraph}>
-                                PHODAR Fondation BULGARIA 1510 Sofia, P.O.box: 55
+                                PHODARrrrr Fondation BULGARIA 1510 Sofia, P.O.box: 55
                             </p>
                             <p className={classes.paragraph}>phodar.new@gmail.com</p>
                         </div>
