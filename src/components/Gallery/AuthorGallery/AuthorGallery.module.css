@@ -128,8 +128,8 @@
 @media (max-width: 480px) {
     .rightMenu {
         position: fixed;
-        right: auto;
-        left: 15px;
+        right: 15px;
+        left: auto;
         top: 10px;
     }
 
