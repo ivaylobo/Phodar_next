@@ -408,6 +408,9 @@ span.Dropdown-arrow, .is-open span.Dropdown-arrow {
 
 
 .my-gallery-class img{
+  display: block;
+  width: 100%;
+  height: auto;
   cursor: pointer;
 }
 
@@ -417,7 +420,7 @@ span.Dropdown-arrow, .is-open span.Dropdown-arrow {
   }
 }
 
-@media all and (max-width: 600px) {
+@media all and (max-width: 640px) {
   .my-gallery-class{
     max-width: 250px;
   }
