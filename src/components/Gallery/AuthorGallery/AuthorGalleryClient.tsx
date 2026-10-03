@@ -1,7 +1,7 @@
 ﻿"use client";
 
-import React, { useState, useEffect } from "react";
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import React, { useState, useSyncExternalStore } from "react";
+import Masonry from "react-responsive-masonry";
 import Slider from "../Slider/Slider";
 import { useRouter } from "next/navigation";
 import classes from "./AuthorGallery.module.css";
@@ -17,6 +17,15 @@ type Props = {
 const hasHighResolution = ():
   boolean => typeof window !== "undefined" && window.devicePixelRatio >= 2 && window.innerWidth < 510;
 
+const subscribeToResize = (onChange: () => void) => {
+  window.addEventListener("resize", onChange);
+  return () => window.removeEventListener("resize", onChange);
+};
+
+const getViewportWidth = () => window.innerWidth;
+const getServerViewportWidth = () => 0;
+const getServerPreferMedium = () => false;
+
 const nameToId = (name: string) => name.replace(/ /g, "_");
 
 const extractText = (author: Author) => {
@@ -29,15 +38,10 @@ const AuthorGalleryClient: React.FC<Props> = ({ author, editionYear, lang }) => 
   const [showSlider, setShowSlider] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
   const [blackBg, setBlackBg] = useState(false);
-  const [preferMedium, setPreferMedium] = useState<boolean>(hasHighResolution());
+  const viewportWidth = useSyncExternalStore(subscribeToResize, getViewportWidth, getServerViewportWidth);
+  const preferMedium = useSyncExternalStore(subscribeToResize, hasHighResolution, getServerPreferMedium);
+  const columnsCount = viewportWidth > 800 ? 3 : viewportWidth > 640 ? 2 : 1;
   const router = useRouter();
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const syncResolution = () => setPreferMedium(hasHighResolution());
-    window.addEventListener("resize", syncResolution);
-    return () => window.removeEventListener("resize", syncResolution);
-  }, []);
 
   const goBack = () => {
     setShowSlider(false);
@@ -106,11 +110,9 @@ const AuthorGalleryClient: React.FC<Props> = ({ author, editionYear, lang }) => 
                   <Slider sliderImages={sliderImages} thumbs={false} selectedItem={selectedItem} />
                 </div>
               ) : (
-                <ResponsiveMasonry columnsCountBreakPoints={{ 480: 1, 600: 2, 800: 3 }}>
-                  <Masonry className={"my-gallery-class"} gutter="10px">
-                    {gridImages}
-                  </Masonry>
-                </ResponsiveMasonry>
+                <Masonry className={"my-gallery-class"} gutter="10px" columnsCount={columnsCount}>
+                  {gridImages}
+                </Masonry>
               )}
 
               {collectionText && <p className={classes.collectionText}>{collectionText}</p>}

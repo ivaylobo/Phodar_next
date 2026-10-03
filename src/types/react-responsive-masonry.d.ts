@@ -8,6 +8,7 @@ declare module "react-responsive-masonry" {
 
   export interface MasonryProps {
     children: ReactNode;
+    columnsCount?: number;
     gutter?: string;
     className?: string;
   }
@@ -17,4 +18,3 @@ declare module "react-responsive-masonry" {
   const Masonry: ComponentType<MasonryProps>;
   export default Masonry;
 }
-
