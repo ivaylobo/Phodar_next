@@ -81,7 +81,7 @@ export default function HomeTemplate({homeTemplate}: HomeTemplateProps) {
       {/* MAIN INFO */}
       <section className={styles.mainInfo}>
         <div className="container">
-          {body?.additional?.headline && (
+          {body?.additional?.shouldShow === true && body.additional.headline && (
             <div className={styles.mainInfoHeader}>
               <h3 className={styles.mainInfoHeadline}>
                 {renderWPContent(body.additional.headline)}
@@ -89,7 +89,7 @@ export default function HomeTemplate({homeTemplate}: HomeTemplateProps) {
             </div>
           )}
 
-          {(body?.additional?.highlightText || body?.additional?.mainSectionText) && (
+          {body?.additional?.shouldShow === true && (body.additional.highlightText || body.additional.mainSectionText) && (
             <div className={styles.additionalColumns}>
               {body.additional?.highlightText && (
                 <div className={styles.additionalHighlight}>
