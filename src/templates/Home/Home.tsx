@@ -2,6 +2,7 @@ import type {HomeTemplateData as WordPressHomeTemplateData} from '@/graphql/quer
 import BackgroundSlideshow from '@/components/BackgroundSlideshow/BackgroundSlideshow';
 import type {BackgroundSlide} from '@/components/BackgroundSlideshow/BackgroundSlideshow';
 import {renderWPContent} from '../../helpers/parseWYSIWYG';
+import {getYouTubeEmbedUrl} from '../../helpers/getYouTubeEmbedUrl';
 import PastEditionsHome from './components/PastEditionsHome';
 import styles from './Home.module.css';
 
@@ -15,6 +16,7 @@ export default function HomeTemplate({homeTemplate}: HomeTemplateProps) {
   const head = homeTemplate.head;
   const body = homeTemplate.mainInfo;
   const mainInfoData = body?.mainInfo;
+  const exhibitionVideoUrl = getYouTubeEmbedUrl(body?.exhibitions?.youtubeVideo);
 
   const slides: BackgroundSlide[] =
     head?.slides?.map((s) => ({
@@ -189,6 +191,17 @@ export default function HomeTemplate({homeTemplate}: HomeTemplateProps) {
 
               ))}
           </div>
+          {exhibitionVideoUrl && (
+            <div className={styles.exhibitionVideo}>
+              <iframe
+                src={exhibitionVideoUrl}
+                title="Exhibitions — YouTube video"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+          )}
         </div>
       </section>
 

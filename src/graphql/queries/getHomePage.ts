@@ -61,6 +61,7 @@ export type HomeTemplateMainInfoBlock = {
  */
 export type HomeTemplateExhibitions = {
     title?: Maybe<string>;
+    youtubeVideo?: Maybe<string>;
     imgFirst?: Maybe<ImageField>;
     imgSecond?: Maybe<ImageField>;
     imgThird?: Maybe<ImageField>;
@@ -181,6 +182,7 @@ const GET_HOME_PAGE_QUERY = `
           }
           exhibitions {
             title
+            youtubeVideo
             imgFirst { node { altText sourceUrl } }
             imgSecond { node { altText sourceUrl } }
             imgThird { node { altText sourceUrl } }
