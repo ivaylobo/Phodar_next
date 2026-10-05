@@ -140,7 +140,7 @@ const GalleriesList: React.FC<Props> = ({ edition, lang = "en", onAuthorNavigate
     const participantsArr: Author[] = [];
     const guestsArr: Author[] = [];
     currentEdition.authors
-      .slice()
+      .filter((author) => author.urlsThumb.length > 0)
       .sort((a, b) => a.level - b.level)
       .forEach((author) => {
         const isWinner = !!author.award;
@@ -290,7 +290,6 @@ const GalleriesList: React.FC<Props> = ({ edition, lang = "en", onAuthorNavigate
 };
 
 export default GalleriesList;
-
 
 
 
