@@ -16,6 +16,9 @@ export type ArticleNode = {
   slug: string;
   title: string;
   date?: string | null;
+  featuredImage?: {
+    node?: { altText?: string | null; sourceUrl?: string | null } | null;
+  } | null;
   language?: { code?: string | null } | null;
 };
 
@@ -35,6 +38,7 @@ export async function getArticles(lang: 'EN' | 'BG'): Promise<ArticlesList> {
           slug
           title
           date
+          featuredImage { node { altText sourceUrl } }
           language { code }
         }
         edges {

@@ -1,5 +1,5 @@
 import { fetchGraphQL } from '../client';
-import type { ArticleFields } from './getArticles';
+import type { ArticleFields, ArticleNode } from './getArticles';
 
 export type Article = {
   id: string;
@@ -9,7 +9,7 @@ export type Article = {
   excerpt?: string | null;
   date?: string | null;
   articleFields?: ArticleFields;
-  featuredImage?: { node?: { sourceUrl?: string | null } | null } | null;
+  featuredImage?: ArticleNode['featuredImage'];
 };
 
 type ArticleWithTranslation = Article & { translation?: Article | null };
@@ -28,6 +28,7 @@ export async function getArticleBySlug(
           slug
           title
           date
+          featuredImage { node { altText sourceUrl } }
           language { code }
         }
         edges {
@@ -51,6 +52,7 @@ export async function getArticleBySlug(
           slug: string;
           title: string;
           date?: string | null;
+          featuredImage?: ArticleNode['featuredImage'];
           language?: { code?: string | null } | null;
         }>;
         edges: Array<{ node?: { articleFields?: ArticleFields } | null } | null>;

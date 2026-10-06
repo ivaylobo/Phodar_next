@@ -26,14 +26,13 @@ export default async function ArticlePage({ params }: PageProps) {
 
   const imageUrl =
     article.featuredImage?.node?.sourceUrl ||
-    article.articleFields?.inlineImages?.edges?.[0]?.node?.sourceUrl ||
     '';
 
   return (
     <article className={styles.wrapper}>
       {imageUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={imageUrl} alt="" className={styles.hero} />
+        <img src={imageUrl} alt={article.featuredImage?.node?.altText || ''} className={styles.hero} />
       ) : null}
       <header className={styles.header}>
         <h1 className={styles.title} dangerouslySetInnerHTML={{ __html: article.title }} />

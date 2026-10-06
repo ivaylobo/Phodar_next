@@ -24,17 +24,14 @@ export default async function ArticlesIndexPage({ params }: PageProps) {
       <div className={styles.grid}>
         {nodes.map((node, idx) => {
           const fields = edges[idx]?.node?.articleFields;
-          const a = node;
-          const imageUrl =
-            fields?.inlineImages?.edges?.[0]?.node?.sourceUrl ||
-            '';
+          const imageUrl = node.featuredImage?.node?.sourceUrl || '';
           const href = `/${lang}/articles/${node.slug}`;
 
           return (
             <article key={node.id} className={`${styles.card} ${idx === 0 ? styles.featured : ''}`}>
               {imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={imageUrl} alt="" className={styles.cardImage} />
+                <img src={imageUrl} alt={node.featuredImage?.node?.altText || ''} className={styles.cardImage} />
               ) : null}
               <div className={styles.cardBody}>
                 <h2 className={styles.cardTitle} dangerouslySetInnerHTML={{ __html: node.title }} />
