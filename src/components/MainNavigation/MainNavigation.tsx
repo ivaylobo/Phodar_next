@@ -27,10 +27,14 @@ export default function MainNavigation({ currentLang, menu }: MainNavigationProp
   // Inject Articles link if not provided by WP menu
   const articlesLabel = currentLang === 'bg' ? 'Статии' : 'Articles';
   const articlesHref = `/${currentLang}/articles`;
-  const hasArticles = menu.some((item) => item.path === articlesHref);
+  const localizedMenu = menu.map((item) => ({
+    ...item,
+    path: item.path.replace(/^\/(en|bg)(?=\/|$)/, `/${currentLang}`),
+  }));
+  const hasArticles = localizedMenu.some((item) => item.path.replace(/\/$/, '') === articlesHref);
 
   const items: MenuItem[] = [
-    ...menu,
+    ...localizedMenu,
     ...(!hasArticles ? [{ id: `articles-${currentLang}`, label: articlesLabel, path: articlesHref }] : []),
   ];
 
@@ -43,7 +47,10 @@ export default function MainNavigation({ currentLang, menu }: MainNavigationProp
               pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
           const normalizedHref =
               href.endsWith('/') && href !== '/' ? href.slice(0, -1) : href;
-          const isActive = normalizedPath === normalizedHref;
+          const isHomeLink = normalizedHref === '/' || normalizedHref === `/${currentLang}`;
+          const isActive =
+              normalizedPath === normalizedHref ||
+              (!isHomeLink && normalizedPath.startsWith(`${normalizedHref}/`));
 
           return (
               <li key={item.id}>
