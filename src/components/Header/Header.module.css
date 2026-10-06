@@ -14,9 +14,13 @@
 
 .headerRow {
     height: 70px;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
+}
+
+.headerRow > :last-child {
+    justify-self: end;
 }
 
 .logo {
@@ -40,6 +44,11 @@
 }
 
 @media (max-width: 980px) {
+    .headerRow {
+        display: flex;
+        justify-content: space-between;
+    }
+
     .header{
         padding: 0 20px;
     }

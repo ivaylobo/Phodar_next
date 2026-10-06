@@ -1,6 +1,7 @@
 .mainLinks {
     list-style-type: none;
     margin: 0;
+    padding: 0;
 }
 
 .mainLinks li a.buttonLink, .mainLinks li a.buttonLink:visited {
@@ -97,6 +98,10 @@
 
 .mainLinks li:first-of-type a {
     margin-left: 0;
+}
+
+.mainLinks li:last-of-type a {
+    margin-right: 0;
 }
 
 @media (max-width: 1280px) {
