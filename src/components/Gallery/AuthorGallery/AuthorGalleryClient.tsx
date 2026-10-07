@@ -28,12 +28,6 @@ const getServerPreferMedium = () => false;
 
 const nameToId = (name: string) => name.replace(/ /g, "_");
 
-const extractText = (author: Author) => {
-  const translated = typeof author.translatedText === "string" ? author.translatedText.trim() : "";
-  if (translated.length > 0) return translated;
-  return (author.text || "").trim();
-};
-
 const AuthorGalleryClient: React.FC<Props> = ({ author, editionYear, lang }) => {
   const [showSlider, setShowSlider] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
@@ -79,7 +73,7 @@ const AuthorGalleryClient: React.FC<Props> = ({ author, editionYear, lang }) => 
   const gridImages = preferMedium && author.urlsMedium.length > 0 ? mediumImages : thumbImages;
 
   const id = nameToId(author.name);
-  const collectionText = extractText(author);
+  const collectionText = (author.text || "").trim();
 
   return (
     <>
