@@ -9,9 +9,10 @@ type LangSlugPageProps = {
 export default async function LangSlugPage({ params }: LangSlugPageProps) {
     const { lang, slug } = await params;
 
-    const slugWithLang = lang.toUpperCase() === 'EN' ? slug : `${lang.toUpperCase()}/${slug}`;
+    if (lang !== 'en' && lang !== 'bg') notFound();
+    const slugWithLang = `/${lang}/${slug}/`;
 
-    const page = await getPageBySlug(slugWithLang);
+    const page = await getPageBySlug(slugWithLang, lang === 'bg' ? 'BG' : 'EN');
 
     if (!page) {
         notFound();

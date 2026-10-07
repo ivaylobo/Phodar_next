@@ -121,6 +121,7 @@ type TemplateEnvelope = {
 export type HomePageTranslation = {
     id: string;
     title?: Maybe<string>;
+    content?: Maybe<string>;
     slug?: Maybe<string>;
     uri?: Maybe<string>;
     template?: Maybe<TemplateEnvelope>;

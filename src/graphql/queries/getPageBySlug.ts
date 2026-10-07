@@ -11,27 +11,32 @@ export type WordPressPage = {
     } | null;
 };
 
-export async function getPageBySlug(slug: string): Promise<WordPressPage | null> {
+export async function getPageBySlug(slug: string, language: 'EN' | 'BG'): Promise<WordPressPage | null> {
     const query = `
-    query GetPageBySlug($slug: ID!) {
+    fragment PageFields on Page {
+      id
+      title
+      slug
+      content
+      uri
+      template { template }
+    }
+    query GetPageBySlug($slug: ID!, $language: LanguageCodeEnum!) {
       page(id: $slug, idType: URI) {
-        id
-        title
-        slug
-        content
-        uri
-        template {
-          template
+        ...PageFields
+        translation(language: $language) {
+          ...PageFields
         }
       }
     }
   `;
 
     try {
-        const data = await fetchGraphQL<{ page: WordPressPage | null }>(query, {
+        const data = await fetchGraphQL<{ page: (WordPressPage & { translation?: WordPressPage | null }) | null }>(query, {
             slug,
+            language,
         });
-        return data.page || null;
+        return data.page?.translation || null;
     } catch (error) {
         console.error('getPageBySlug error:', error);
         return null;

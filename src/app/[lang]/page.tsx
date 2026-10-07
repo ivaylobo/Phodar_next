@@ -2,16 +2,18 @@
 import styles from './page.module.css';
 import { getHomePageBySlug } from '@/graphql/queries/getHomePage';
 import HomeTemplate from '@/templates/Home/Home';
+import { notFound } from 'next/navigation';
 
 type LangPageParams = {
-  params: { lang: string };
+  params: Promise<{ lang: string }>;
 };
 
 export default async function LangHome({ params }: LangPageParams) {
   const { lang } = await params;
+  if (lang !== 'en' && lang !== 'bg') notFound();
 
   const languageCode = lang.toUpperCase();
-  const slugWithLang = languageCode === 'EN' ? '/home' : `${languageCode}/home`;
+  const slugWithLang = '/';
 
   const page = await getHomePageBySlug(slugWithLang, languageCode);
 
@@ -33,8 +35,8 @@ export default async function LangHome({ params }: LangPageParams) {
 
     return (
       <article style={{ padding: '2rem', maxWidth: 800, margin: '0 auto' }}>
-        <h1 dangerouslySetInnerHTML={{ __html: page.title }} />
-        <div dangerouslySetInnerHTML={{ __html: page.content }} />
+        <h1 dangerouslySetInnerHTML={{ __html: page.translation?.title ?? page.title }} />
+        <div dangerouslySetInnerHTML={{ __html: page.translation?.content ?? page.content }} />
       </article>
     );
   }
