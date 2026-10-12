@@ -29,6 +29,7 @@ export default async function ArticlesIndexPage({ params }: PageProps) {
 
           return (
             <article key={node.id} className={`${styles.card} ${idx === 0 ? styles.featured : ''}`}>
+              <Link className={styles.cardLink} href={href}>
               {imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={imageUrl} alt={node.featuredImage?.node?.altText || ''} className={styles.cardImage} />
@@ -38,10 +39,11 @@ export default async function ArticlesIndexPage({ params }: PageProps) {
                 {fields?.subtitle ? (
                   <p className={styles.cardSubtitle}>{fields.subtitle}</p>
                 ) : null}
-                <Link className={styles.readMore} href={href}>
+                <span className={styles.readMore}>
                   {lang === 'bg' ? 'Прочети ➜' : 'Read more ➜'}
-                </Link>
+                </span>
               </div>
+              </Link>
             </article>
           );
         })}

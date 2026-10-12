@@ -6,10 +6,19 @@ export async function fetchGraphQL<T>(query: string, variables?: Record<string, 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query, variables }),
-        next: { revalidate: 60 }, // ISR cache
+        ...(process.env.NODE_ENV === 'development'
+            ? { cache: 'no-store' as const }
+            : { next: { revalidate: 60 } }),
     });
 
-    if (!res.ok) throw new Error('GraphQL fetch failed');
-    const { data } = await res.json();
+    if (!res.ok) throw new Error(`GraphQL fetch failed: HTTP ${res.status}`);
+    const { data, errors } = await res.json() as {
+        data?: T | null;
+        errors?: Array<{ message: string }>;
+    };
+    if (errors?.length) {
+        throw new Error(`GraphQL errors: ${errors.map((error) => error.message).join('; ')}`);
+    }
+    if (data == null) throw new Error('GraphQL response contains no data');
     return data;
 }

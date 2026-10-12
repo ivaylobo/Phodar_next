@@ -25,6 +25,19 @@
   grid-row: span 2;
 }
 
+.cardLink {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.cardLink:focus-visible {
+  outline: 2px solid #bb1817;
+  outline-offset: 3px;
+}
+
 .cardImage {
   width: 100%;
   height: 160px;
@@ -55,6 +68,18 @@
 .cardSubtitle {
   margin: 0 0 .5rem 0;
   color: #666;
+}
+
+.card:not(.featured) {
+  height: auto;
+  align-self: start;
+}
+
+.card:not(.featured) .cardSubtitle {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .cardExcerpt {
