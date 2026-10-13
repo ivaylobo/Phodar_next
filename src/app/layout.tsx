@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+import Analytics from '@/components/Analytics/Analytics';
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -27,6 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ReduxProvider>{children}</ReduxProvider>
+        <Suspense fallback={null}><Analytics /></Suspense>
       </body>
     </html>
   );
