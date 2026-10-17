@@ -5,6 +5,7 @@ import type {SupportedLanguage} from '@/store/slices/languageSlice';
 import {getMenu} from "@/graphql/queries/getMenu";
 import Footer from "@/components/Footer/Footer";
 import CookiesPopup from "@/components/CookiesPopup/CookiesPopup";
+import Galleries from '@/components/Gallery/Galleries';
 
 type LangLayoutProps = {
     children: ReactNode;
@@ -20,11 +21,18 @@ export default async function LangLayout({children, params}: LangLayoutProps) {
 
     const lang = rawLang;
     const menu = await getMenu(lang.toUpperCase() as 'EN' | 'BG');
+    const latestYear = Math.max(...Galleries.map((edition) => edition.year));
+    const navigationMenu = menu.map((item) => ({
+        ...item,
+        path: /^\/(en|bg)\/editions\/?$/.test(item.path)
+            ? `/${lang}/editions/${latestYear}`
+            : item.path,
+    }));
 
 
     return (
         <div className="wrap">
-            <Header currentLang={lang} menu={menu}/>
+            <Header currentLang={lang} menu={navigationMenu}/>
             <main>{children}</main>
             <Footer />
             <CookiesPopup lang={lang} />

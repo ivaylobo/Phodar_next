@@ -47,10 +47,13 @@ export default function MainNavigation({ currentLang, menu }: MainNavigationProp
               pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
           const normalizedHref =
               href.endsWith('/') && href !== '/' ? href.slice(0, -1) : href;
+          const activeHref = /^\/(en|bg)\/editions\/\d+$/.test(normalizedHref)
+              ? normalizedHref.replace(/\/\d+$/, '')
+              : normalizedHref;
           const isHomeLink = normalizedHref === '/' || normalizedHref === `/${currentLang}`;
           const isActive =
-              normalizedPath === normalizedHref ||
-              (!isHomeLink && normalizedPath.startsWith(`${normalizedHref}/`));
+              normalizedPath === activeHref ||
+              (!isHomeLink && normalizedPath.startsWith(`${activeHref}/`));
 
           return (
               <li key={item.id}>
