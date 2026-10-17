@@ -38,8 +38,6 @@ export default function MainNavigation({ currentLang, menu }: MainNavigationProp
     ...(!hasArticles ? [{ id: `articles-${currentLang}`, label: articlesLabel, path: articlesHref }] : []),
   ];
 
-  console.log(123);
-
   return (
       <ul className={navClassName}>
         {items.map((item) => {
