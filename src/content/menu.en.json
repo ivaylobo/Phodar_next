@@ -1,0 +1,27 @@
+[
+  {
+    "id": "cG9zdDozMzI=",
+    "label": "Home",
+    "path": "/en"
+  },
+  {
+    "id": "cG9zdDo0MTk=",
+    "label": "Editions",
+    "path": "/en/editions/"
+  },
+  {
+    "id": "cG9zdDo0Ng==",
+    "label": "Regulations",
+    "path": "/en/regulations/"
+  },
+  {
+    "id": "cG9zdDo0Mg==",
+    "label": "Аbout",
+    "path": "/en/about/"
+  },
+  {
+    "id": "cG9zdDo0NDI=",
+    "label": "Enter",
+    "path": "https://entry.phodar.net/"
+  }
+]

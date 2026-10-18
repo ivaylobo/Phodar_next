@@ -2,10 +2,11 @@ import type {ReactNode} from 'react';
 import {notFound} from 'next/navigation';
 import Header from '@/components/Header/Header';
 import type {SupportedLanguage} from '@/store/slices/languageSlice';
-import {getMenu} from "@/graphql/queries/getMenu";
 import Footer from "@/components/Footer/Footer";
 import CookiesPopup from "@/components/CookiesPopup/CookiesPopup";
 import Galleries from '@/components/Gallery/Galleries';
+import englishMenu from '@/content/menu.en.json';
+import bulgarianMenu from '@/content/menu.bg.json';
 
 type LangLayoutProps = {
     children: ReactNode;
@@ -20,7 +21,7 @@ export default async function LangLayout({children, params}: LangLayoutProps) {
     if (!isSupportedLanguage(rawLang)) notFound();
 
     const lang = rawLang;
-    const menu = await getMenu(lang.toUpperCase() as 'EN' | 'BG');
+    const menu = lang === 'en' ? englishMenu : bulgarianMenu;
     const latestYear = Math.max(...Galleries.map((edition) => edition.year));
     const navigationMenu = menu.map((item) => ({
         ...item,

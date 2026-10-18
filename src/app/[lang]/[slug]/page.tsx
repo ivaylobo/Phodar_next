@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getPageBySlug } from '@/graphql/queries/getPageBySlug';
 import InformationalTemplate from "@/templates/Informational/Informational";
+import { getLocalPage } from '@/content/pages';
 
 type LangSlugPageProps = {
     params: Promise<{ lang: string; slug: string }>;
@@ -12,7 +13,8 @@ export default async function LangSlugPage({ params }: LangSlugPageProps) {
     if (lang !== 'en' && lang !== 'bg') notFound();
     const slugWithLang = `/${lang}/${slug}/`;
 
-    const page = await getPageBySlug(slugWithLang, lang === 'bg' ? 'BG' : 'EN');
+    const page = getLocalPage(lang, slug)
+        ?? await getPageBySlug(slugWithLang, lang === 'bg' ? 'BG' : 'EN');
 
     if (!page) {
         notFound();
@@ -34,4 +36,4 @@ export default async function LangSlugPage({ params }: LangSlugPageProps) {
     );
 }
 
-export { generateLangSlugStaticParams as generateStaticParams } from '../../../lib/staticParams';
+export { generateLocalPageParams as generateStaticParams } from '@/content/pages';

@@ -1,0 +1,27 @@
+[
+  {
+    "id": "cG9zdDozNzU=",
+    "label": "Начало",
+    "path": "/bg"
+  },
+  {
+    "id": "cG9zdDo0MTg=",
+    "label": "Издания",
+    "path": "/bg/editions/"
+  },
+  {
+    "id": "cG9zdDo0MA==",
+    "label": "Регламент",
+    "path": "/bg/regulations/"
+  },
+  {
+    "id": "cG9zdDo0MQ==",
+    "label": "За нас",
+    "path": "/bg/about/"
+  },
+  {
+    "id": "cG9zdDo0NDM=",
+    "label": "Участвай",
+    "path": "https://entry.phodar.net/"
+  }
+]

@@ -1,0 +1,273 @@
+{
+  "head": {
+    "cta": {
+      "label": "enter",
+      "targetBlanc": false,
+      "href": "https://entry.phodar.net/"
+    },
+    "durationSeconds": 5,
+    "editionLabel": "edition",
+    "editionNumber": "14",
+    "slides": [
+      {
+        "image": {
+          "node": {
+            "altText": "",
+            "sourceUrl": "/assets/home/en/head_1-1.jpg"
+          }
+        }
+      },
+      {
+        "image": {
+          "node": {
+            "altText": "",
+            "sourceUrl": "/assets/home/en/head_2.jpg"
+          }
+        }
+      },
+      {
+        "image": {
+          "node": {
+            "altText": "",
+            "sourceUrl": "/assets/home/en/head_3.jpg"
+          }
+        }
+      },
+      {
+        "image": {
+          "node": {
+            "altText": "",
+            "sourceUrl": "/assets/home/en/head_4.jpg"
+          }
+        }
+      }
+    ],
+    "subtitle": "international photo competition",
+    "topicLabel": "topic:",
+    "topicTitle": "Traces Remain",
+    "transitionSeconds": 1
+  },
+  "mainInfo": {
+    "additional": {
+      "headline": "We invite you to the XIV International Photo Festival - PHODAR Biennial",
+      "highlightText": "Events:",
+      "mainSectionText": "<ul>\n<li><strong>Opening of the exposition</strong> including the selected works and announcement of the prize winners &#8211; 04.03.2025, 6 pm.</li>\n<li><strong>Theoretical seminar</strong> on &#8220;Photographic Reality&#8221; &#8211; 11.03.2025, 6 pm in the exhibition hall. The seminar will be attended by experts in the field of humanities and visual arts from St. Kliment Ohridski&#8221;, NATFA, NBU and other higher education institutions, representatives of galleries and NGOs active in visual arts, students, amateur photographers and established visual artists.</li>\n<li><strong>Tour of the exhibition</strong> &#8211; 16.03.2025, 1 pm for those who wish to find out more about the festival and the general exhibition.</li>\n</ul>\n",
+      "shouldShow": false
+    },
+    "exhibitions": {
+      "title": "Exhibitions",
+      "youtubeVideo": "https://youtu.be/2jJC2Ou5RJs?si=BloZvKykwYopB-Pk",
+      "imgFirst": {
+        "node": {
+          "altText": "",
+          "sourceUrl": "/assets/home/en/PXL_20250316_104822139.MP-1-1.jpg"
+        }
+      },
+      "imgSecond": {
+        "node": {
+          "altText": "",
+          "sourceUrl": "/assets/home/en/PXL_20250311_160036801.MP-1-1.jpg"
+        }
+      },
+      "imgThird": {
+        "node": {
+          "altText": "",
+          "sourceUrl": "/assets/home/en/exibition1.jpg"
+        }
+      },
+      "imgFourth": {
+        "node": {
+          "altText": "",
+          "sourceUrl": "/assets/home/en/PXL_20250311_172132949-1-1.jpg"
+        }
+      }
+    },
+    "mainInfo": {
+      "awards": "<h3 style=\"text-align: left;\">2025 Grand Prize <strong>€2.000</strong><br />\nAward for Humanistic Photography <strong>€600</strong><br />\nDebut Award <strong>€600</strong></h3>\n",
+      "headline": "PHODAR SERIES AWARDS",
+      "leftColumnHeadlines": "<h4 style=\"text-align: left;\">Gain widespread exposure, your work will be exhibite during the Phodar festival in Sofia</h4>\n<h4 style=\"text-align: left;\">Showcased at the online Winners Gallery</h4>\n<h4 style=\"text-align: left;\">Get published in our Photobook</h4>\n",
+      "rightColumnText": "<p>The 14th edition of the “Fodar” International Photo Festival Biennale is dedicated to the theme “Traces Remain”. The title is borrowed from the novel of the same name by Bulgarian writer Pavel Vezhinov. In the context of the Biennale, it draws attention to the traces that time, human presence and historical events leave on the world — and to photography’s capacity to preserve and reinterpret them.</p>\n<p>In *On Photography*, Susan Sontag considers the photographic image as a trace of reality, physically connected to what once stood before the lens. At the same time, every photograph is a reminder of transience: in preserving a moment, it bears witness to its passing. Between presence and absence, between document and interpretation, a space emerges in which images acquire new meanings.</p>\n<p>How do we read the traces of the past in the present? What do abandoned spaces, altered landscapes, family archives and marks on the human body reveal? Which traces do we deliberately preserve, and which do we try to erase? Can a photograph sustain a memory when its story has already been lost?</p>\n<p>The theme offers broad possibilities for artistic interpretation — from personal memory and relationships between generations to social conflicts and the transformation of our surroundings. It invites photographers to explore both the visible evidence of lived experience and that which continues to exert an influence without taking an obvious visual form. For traces also remain in the ways we live, remember and see.</p>\n"
+    },
+    "partners": [
+      {
+        "image": {
+          "node": {
+            "altText": "",
+            "sourceUrl": "/assets/home/en/Kultura-Sof.obshtina.jpg"
+          }
+        },
+        "link": "https://kultura.sofia.bg/",
+        "name": "Culture Department Sofia"
+      },
+      {
+        "image": {
+          "node": {
+            "altText": "",
+            "sourceUrl": "/assets/home/en/en-logo-dark1.png"
+          }
+        },
+        "link": "https://nationalgallery.bg/",
+        "name": "National Gallery"
+      }
+    ],
+    "pastEditions": {
+      "desktopColumns": [
+        {
+          "leftColumn": {
+            "image": {
+              "node": {
+                "altText": "",
+                "sourceUrl": "/assets/home/en/23.jpg"
+              }
+            },
+            "link": "/en/editions/2023",
+            "year": "2023"
+          }
+        },
+        {
+          "leftColumn": {
+            "image": {
+              "node": {
+                "altText": "",
+                "sourceUrl": "/assets/home/en/21.jpg"
+              }
+            },
+            "link": "/en/editions/2021",
+            "year": "2021"
+          }
+        },
+        {
+          "leftColumn": {
+            "image": {
+              "node": {
+                "altText": "",
+                "sourceUrl": "/assets/home/en/19.jpg"
+              }
+            },
+            "link": "/en/editions/2019",
+            "year": "2019"
+          }
+        },
+        {
+          "leftColumn": {
+            "image": {
+              "node": {
+                "altText": "",
+                "sourceUrl": "/assets/home/en/15.jpg"
+              }
+            },
+            "link": "/en/editions/2015",
+            "year": "2015"
+          }
+        },
+        {
+          "leftColumn": {
+            "image": {
+              "node": {
+                "altText": "",
+                "sourceUrl": "/assets/home/en/13.jpg"
+              }
+            },
+            "link": "/en/editions/2013",
+            "year": "2013"
+          }
+        },
+        {
+          "leftColumn": {
+            "image": {
+              "node": {
+                "altText": "",
+                "sourceUrl": "/assets/home/en/11.jpg"
+              }
+            },
+            "link": "/en/editions/2011",
+            "year": "2011"
+          }
+        },
+        {
+          "leftColumn": {
+            "image": {
+              "node": {
+                "altText": "",
+                "sourceUrl": "/assets/home/en/09.jpg"
+              }
+            },
+            "link": "/en/editions/2009",
+            "year": "2009"
+          }
+        },
+        {
+          "leftColumn": {
+            "image": {
+              "node": {
+                "altText": "",
+                "sourceUrl": "/assets/home/en/07.jpg"
+              }
+            },
+            "link": "/en/editions/2007",
+            "year": "2007"
+          }
+        },
+        {
+          "leftColumn": {
+            "image": {
+              "node": {
+                "altText": "",
+                "sourceUrl": "/assets/home/en/05.jpg"
+              }
+            },
+            "link": "/en/editions/2005",
+            "year": "2005"
+          }
+        },
+        {
+          "leftColumn": {
+            "image": {
+              "node": {
+                "altText": "",
+                "sourceUrl": "/assets/home/en/03.jpg"
+              }
+            },
+            "link": "/en/editions/2003",
+            "year": "2003"
+          }
+        },
+        {
+          "leftColumn": {
+            "image": {
+              "node": {
+                "altText": "",
+                "sourceUrl": "/assets/home/en/01.jpg"
+              }
+            },
+            "link": "/en/editions/2001",
+            "year": "2001"
+          }
+        },
+        {
+          "leftColumn": {
+            "image": {
+              "node": {
+                "altText": "",
+                "sourceUrl": "/assets/home/en/99.jpg"
+              }
+            },
+            "link": "/en/editions/1999",
+            "year": "1999"
+          }
+        }
+      ],
+      "subtitle": "SEE THE FULL GALLERY OF WINNERS & PARTICIPANTS IN PAST EDITIONS",
+      "title": "editions"
+    },
+    "photobook": {
+      "title": "BE PART OF OUR EDITION PHOTO BOOK",
+      "image": {
+        "node": {
+          "altText": "",
+          "sourceUrl": "/assets/home/en/photobook.png"
+        }
+      }
+    }
+  }
+}
