@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Phodar
 
-## Getting Started
+Bilingual Next.js website with local content and images. No WordPress installation or API is required. See [content documentation](src/content/README.md) for editing locations.
 
-First, run the development server:
+## Development
 
-```bash
+```sh
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Current Next.js hosting
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+All supported routes are generated at build time. The existing production deployment uses this workflow and remains compatible.
 
-## Learn More
+## Static file hosting
 
-To learn more about Next.js, take a look at the following resources:
+```sh
+npm run build:static
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This creates a standalone `out/` directory, including HTML, JavaScript, CSS, images, sitemap and a 404 page. Upload the contents of `out/` to static hosting; no Node.js process is needed to serve it. Configure the host to resolve extensionless paths to their `.html` files (for example, Nginx `try_files $uri $uri.html $uri/ =404;`) and serve `404.html` for missing pages. The root and editions index use Next.js-generated HTML redirects.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`npm start` serves the normal Next.js build, not `out/`. The repository's SSH deployment currently runs a server-side build and restarts a Next.js service; switching production to static hosting also requires changing that server's deployment script and web-server configuration. Those external settings are not changed here.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Set `NEXT_PUBLIC_SITE_URL=https://phodar.net` when building for production (this is also the default for sitemap and article metadata). `NEXT_PUBLIC_WORDPRESS_API_URL` is obsolete and can be removed from local/server environment settings. Next.js downloads Geist fonts during a clean build; browser Google Fonts, YouTube, entry portal and optional analytics remain external.

@@ -1,4 +1,4 @@
-import type { HomeTemplatePastEditionColumnEntry } from '@/graphql/queries/getHomePage';
+import type { HomeTemplatePastEditionColumnEntry } from '@/content/types';
 import styles from '../Home.module.css';
 
 type PastEditionsProps = {

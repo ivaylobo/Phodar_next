@@ -6,7 +6,7 @@ import styles from './MainNavigation.module.css';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import type { SupportedLanguage } from '@/store/slices/languageSlice';
 import { setOpen } from '@/store/slices/mobileNavSlice';
-import type { MenuItem } from '@/graphql/queries/getMenu';
+import type { MenuItem } from '@/content/types';
 
 type MainNavigationProps = {
   currentLang: SupportedLanguage;

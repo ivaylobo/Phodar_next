@@ -1,10 +1,10 @@
-import type { WordPressPage } from '@/graphql/queries/getPageBySlug';
+import type { ContentPage } from '@/content/types';
 import styles from './Informational.module.css';
 import homeStyles from '@/templates/Home/Home.module.css';
 import parse, { Element } from 'html-react-parser';
 
 type InformationalTemplateProps = {
-    page: WordPressPage;
+    page: ContentPage;
 };
 
 export default function InformationalTemplate({ page }: InformationalTemplateProps) {

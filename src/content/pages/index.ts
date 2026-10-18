@@ -1,15 +1,17 @@
-import type { WordPressPage } from '@/graphql/queries/getPageBySlug';
+import type { ContentPage } from '@/content/types';
+import bgCookies from './bg/cookies.json';
+import enCookies from './en/cookies.json';
 import bgAbout from './bg/about.json';
 import bgRegulations from './bg/regulations.json';
 import enAbout from './en/about.json';
 import enRegulations from './en/regulations.json';
 
-export const localPages: Record<string, Record<string, WordPressPage>> = {
-    bg: { about: bgAbout, regulations: bgRegulations },
-    en: { about: enAbout, regulations: enRegulations },
+export const localPages: Record<string, Record<string, ContentPage>> = {
+    bg: { cookies: bgCookies, about: bgAbout, regulations: bgRegulations },
+    en: { cookies: enCookies, about: enAbout, regulations: enRegulations },
 };
 
-export function getLocalPage(lang: string, slug: string): WordPressPage | undefined {
+export function getLocalPage(lang: string, slug: string): ContentPage | undefined {
     if (!Object.hasOwn(localPages, lang)) return undefined;
     const pages = localPages[lang];
     return Object.hasOwn(pages, slug) ? pages[slug] : undefined;

@@ -1,4 +1,4 @@
-import type {HomeTemplateData as WordPressHomeTemplateData} from '@/graphql/queries/getHomePage';
+import type {HomeTemplateData as HomeContentData} from '@/content/types';
 import BackgroundSlideshow from '@/components/BackgroundSlideshow/BackgroundSlideshow';
 import type {BackgroundSlide} from '@/components/BackgroundSlideshow/BackgroundSlideshow';
 import {renderWPContent} from '../../helpers/parseWYSIWYG';
@@ -7,7 +7,7 @@ import PastEditionsHome from './components/PastEditionsHome';
 import styles from './Home.module.css';
 
 type HomeTemplateProps = {
-  homeTemplate?: WordPressHomeTemplateData | null;
+  homeTemplate?: HomeContentData | null;
 };
 
 export default function HomeTemplate({homeTemplate}: HomeTemplateProps) {

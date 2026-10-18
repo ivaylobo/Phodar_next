@@ -1,4 +1,4 @@
-import type { Article } from '@/graphql/queries/getArticleBySlug';
+import type { Article } from '@/content/types';
 import bgArticles from './bg.json';
 import enArticles from './en.json';
 

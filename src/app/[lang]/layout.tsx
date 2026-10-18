@@ -8,6 +8,9 @@ import Galleries from '@/components/Gallery/Galleries';
 import englishMenu from '@/content/menu.en.json';
 import bulgarianMenu from '@/content/menu.bg.json';
 
+export const dynamic = 'error';
+export const dynamicParams = false;
+
 type LangLayoutProps = {
     children: ReactNode;
     params: Promise<{ lang: string }>; // 👈 params вече е Promise

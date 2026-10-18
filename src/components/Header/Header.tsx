@@ -9,7 +9,7 @@ import LanguageSwitch from '@/components/LanguageSwitch/LanguageSwitch';
 import MobileNav from '@/components/MobileNav/MobileNav';
 import styles from './Header.module.css';
 import type { SupportedLanguage } from '@/store/slices/languageSlice';
-import type {MenuItem} from "@/graphql/queries/getMenu";
+import type {MenuItem} from "@/content/types";
 import logo from '../../assets/images/logo.svg'
 
 type HeaderProps = {
