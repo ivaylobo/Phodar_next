@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import styles from './page.module.css';
-import { getArticles } from '@/graphql/queries/getArticles';
+import { getLocalArticles } from '@/content/articles';
 
 type PageProps = {
   params: Promise<{ lang: string }>;
@@ -15,15 +15,13 @@ const normalizeLang = (lang: string): Supported =>
 export default async function ArticlesIndexPage({ params }: PageProps) {
   const { lang: rawLang } = await params;
   const lang = normalizeLang(rawLang);
-  const wpLang = lang.toUpperCase() as 'EN' | 'BG';
-
-  const { nodes, edges } = await getArticles(wpLang);
+  const nodes = getLocalArticles(lang);
 
   return (
     <section className={styles.wrapper}>
       <div className={styles.grid}>
         {nodes.map((node, idx) => {
-          const fields = edges[idx]?.node?.articleFields;
+          const fields = node.articleFields;
           const imageUrl = node.featuredImage?.node?.sourceUrl || '';
           const href = `/${lang}/articles/${node.slug}`;
 
@@ -52,4 +50,6 @@ export default async function ArticlesIndexPage({ params }: PageProps) {
   );
 }
 
-export { generateLangStaticParams as generateStaticParams } from '@/lib/staticParams';
+export function generateStaticParams() {
+  return [{ lang: 'en' }, { lang: 'bg' }];
+}

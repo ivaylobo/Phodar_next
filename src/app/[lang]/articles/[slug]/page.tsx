@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import styles from './page.module.css';
-import { getArticleBySlug } from '@/graphql/queries/getArticleBySlug';
-import { getArticles } from '@/graphql/queries/getArticles';
+import { getLocalArticle, getLocalArticles } from '@/content/articles';
 
 type PageProps = {
   params: Promise<{ lang: string; slug: string }>;
@@ -16,7 +15,7 @@ const normalizeLang = (lang: string): Supported =>
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { lang: rawLang, slug } = await params;
   const lang = normalizeLang(rawLang);
-  const article = await getArticleBySlug(slug, lang.toUpperCase() as 'EN' | 'BG');
+  const article = getLocalArticle(lang, slug);
   if (!article) notFound();
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://phodar.net';
@@ -54,8 +53,7 @@ export default async function ArticlePage({ params }: PageProps) {
   const { lang: rawLang, slug } = await params;
   const lang = normalizeLang(rawLang);
 
-  const wpLang = lang.toUpperCase() as 'EN' | 'BG';
-  const article = await getArticleBySlug(slug, wpLang);
+  const article = getLocalArticle(lang, slug);
   if (!article) {
     notFound();
   }
@@ -95,13 +93,8 @@ export default async function ArticlePage({ params }: PageProps) {
 
 export async function generateStaticParams() {
   const langs: Supported[] = ['en', 'bg'];
-  const entries = await Promise.all(
-    langs.map(async (lang) => {
-      const wpLang = lang.toUpperCase() as 'EN' | 'BG';
-      const { nodes } = await getArticles(wpLang);
-      return nodes.map((n) => ({ lang, slug: n.slug }));
-    }),
+  return langs.flatMap((lang) =>
+    getLocalArticles(lang).map((article) => ({ lang, slug: article.slug })),
   );
-  return entries.flat();
 }
 import type { Metadata } from 'next';
