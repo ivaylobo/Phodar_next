@@ -28,7 +28,7 @@ export async function getArticleBySlug(
           slug
           title
           date
-          featuredImage { node { altText sourceUrl } }
+          featuredImage { node { altText sourceUrl caption } }
           language { code }
         }
         edges {

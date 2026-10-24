@@ -63,12 +63,19 @@ export default async function ArticlePage({ params }: PageProps) {
   const imageUrl =
     article.featuredImage?.node?.sourceUrl ||
     '';
+  const imageCaption = article.featuredImage?.node?.caption;
 
   return (
     <article className={styles.wrapper}>
       {imageUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={imageUrl} alt={article.featuredImage?.node?.altText || ''} className={styles.hero} />
+      ) : null}
+      {imageUrl && imageCaption ? (
+        <small
+          className={styles.imageCaption}
+          dangerouslySetInnerHTML={{ __html: imageCaption.replace(/<\/?p\b[^>]*>/gi, '') }}
+        />
       ) : null}
       <header className={styles.header}>
         <h1 className={styles.title} dangerouslySetInnerHTML={{ __html: article.title }} />

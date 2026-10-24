@@ -17,7 +17,7 @@ export type ArticleNode = {
   title: string;
   date?: string | null;
   featuredImage?: {
-    node?: { altText?: string | null; sourceUrl?: string | null } | null;
+    node?: { altText?: string | null; sourceUrl?: string | null; caption?: string | null } | null;
   } | null;
   language?: { code?: string | null } | null;
 };
